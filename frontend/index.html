@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MazeScape</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Menu Bar -->
+
+    <!-- Menu Header for User Status -->
+    <div class="menu-header" id="menuHeader" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: rgba(26, 26, 46, 0.95);
+        backdrop-filter: blur(15px);
+        border-bottom: 2px solid #00BFFF;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+        z-index: 150;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    ">
+        <div class="logo">
+            <span style="
+                color: #00BFFF;
+                font-size: 26px;
+                font-weight: 700;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+                letter-spacing: 1px;
+            ">MazeScape</span>
+        </div>
+        <div class="user-info" style="
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        ">
+            <div class="user-welcome" style="
+                color: #39FF14;
+                font-size: 16px;
+                font-weight: 600;
+                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+                padding: 8px 16px;
+                background: rgba(57, 255, 20, 0.1);
+                border-radius: 8px;
+                border: 1px solid rgba(57, 255, 20, 0.3);
+            ">
+                <span id="menuHeaderWelcomeText">Welcome, Guest!</span>
+            </div>
+            <div class="score-info" id="menuHeaderScoreInfo" style="
+                color: #FFD700;
+                font-size: 16px;
+                font-weight: 600;
+                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+                padding: 8px 16px;
+                background: rgba(255, 215, 0, 0.1);
+                border-radius: 8px;
+                border: 1px solid rgba(255, 215, 0, 0.3);
+                display: none;
+            ">
+                <span id="menuHeaderTopScore">Best: -- Sec</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1200" height="800"></canvas>
+        <div id="ui-container">
+        </div>
+        
+        <!-- Menu Buttons Container -->
+        <div class="menu-buttons" id="menuButtons">
+            <!-- Game Title -->
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="
+                    font-size: 48px;
+                    font-weight: 700;
+                    color: #00BFFF;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+                    letter-spacing: 2px;
+                    margin: 0;
+                    font-family: 'Segoe UI', sans-serif;
+                ">MAZESCAPE</h1>
+                <p style="
+                    color: #888;
+                    font-size: 16px;
+                    margin: 10px 0 0 0;
+                    letter-spacing: 1px;
+                    font-weight: 300;
+                ">Navigate • Survive • Escape</p>
+            </div>
+            
+            <div class="button-row">
+                <button class="game-button primary" id="startGameBtn" onclick="startGame(); console.log('Direct onclick working!');">
+                    🎮 START GAME
+                </button>
+            </div>
+            <div class="button-row">
+                <button class="game-button" id="loginBtn" onclick="showLogin()">
+                    🔑 LOGIN
+                </button>
+                <button class="game-button" id="registerBtn" onclick="showRegister()">
+                    📝 REGISTER
+                </button>
+                <button class="game-button" id="profileBtn" onclick="showProfile()" style="display: none;">
+                    👤 PROFILE
+                </button>
+                <button class="game-button" id="logoutBtn" onclick="logout()" style="display: none;">
+                    🚪 LOGOUT
+                </button>
+            </div>
+            <div class="button-row">
+                <button class="game-button" id="helpBtn" onclick="showHelp()">
+                    ❓ HELP
+                </button>
+                <button class="game-button" id="leaderboardBtn" onclick="showLeaderboard()">
+                    🏆 LEADERBOARD
+                </button>
+                <button class="game-button" id="settingsBtn" onclick="showSettings()">
+                    ⚙️ SETTINGS
+                </button>
+            </div>
+        </div>
+        
+        <div id="status" style="display: none;">
+            <h4 style="color: #39FF14; margin-bottom: 8px;">ℹ️ GAME INFO</h4>
+            <div id="current-score">Score: <span style="color: #FFD700;">0</span></div>
+            <div id="current-time">Time: <span style="color: #FFD700;">0 Sec</span></div>
+            <div id="current-lives">Lives: <span style="color: #FF6B6B;">2</span></div>
+        </div>
+
+        <!-- Powerup Notifications -->
+        <div id="powerup-notifications"></div>
+        
+        <!-- Mobile On-Screen Controls -->
+        <div id="mobile-controls" style="display: none;">
+            <div class="control-pad">
+                <button class="control-btn" id="btn-up" ontouchstart="handleMobileMove('up')" ontouchend="handleMobileStop()">↑</button>
+                <div class="control-row">
+                    <button class="control-btn" id="btn-left" ontouchstart="handleMobileMove('left')" ontouchend="handleMobileStop()">←</button>
+                    <button class="control-btn" id="btn-right" ontouchstart="handleMobileMove('right')" ontouchend="handleMobileStop()">→</button>
+                </div>
+                <button class="control-btn" id="btn-down" ontouchstart="handleMobileMove('down')" ontouchend="handleMobileStop()">↓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load dependencies -->
+    <script src="astar.js"></script>
+    <script src="database_mongo.js"></script>
+    <script src="user_auth.js"></script>
+    <script src="game.js"></script>
+    
+    <script>
+        // Game initialization and controller
+        let game = null;
+        let ui = null;
+        let gameDB = null;  // Renamed to avoid conflict
+        let userAuth = null;
+        let currentUser = null;
+        let gameState = "menu"; // "menu", "playing", "paused"
+        
+        // Canvas and context
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Game controller class
+        class MazeChaseController {
+            constructor() {
+                try {
+                    console.log('🎮 Starting MazeChaseController construction...');
+                    this.canvas = canvas;
+                    this.ctx = ctx;
+                    this.gameLoopRunning = false;
+                    this.initialized = false; // Track initialization status
+                    console.log('✅ Canvas and context assigned');
+                    
+                    this.setupCanvas();
+                    console.log('✅ Canvas setup complete');
+                    
+                    this.setupEventListeners();
+                    console.log('✅ Event listeners setup complete');
+                    
+                    // Don't call initializeGame() here - do it after constructor
+                    this.setupUI();
+                    console.log('✅ UI setup complete');
+                    
+                    console.log('🎮 MazeChaseController construction finished successfully');
+                    
+                    // Initialize game asynchronously after construction
+                    setTimeout(() => {
+                        this.initializeGame().catch(error => {
+                            console.error('❌ Async initialization failed:', error);
+                        });
+                    }, 100);
+                    
+                } catch (error) {
+                    console.error('❌ Error in MazeChaseController constructor:', error);
+                    throw error;
+                }
+            }
+            
+            setupUI() {
+                // Update UI based on login status
+                this.updateMenuButtons();
+            }
+            
+            updateMenuButtons() {
+                const menuButtons = document.getElementById('menuButtons');
+                const topMenu = document.getElementById('topMenu');
+                const menuKeyboardHint = document.getElementById('menuKeyboardHint');
+                const loginBtn = document.getElementById('loginBtn');
+                const registerBtn = document.getElementById('registerBtn');
+                const profileBtn = document.getElementById('profileBtn');
+                const logoutBtn = document.getElementById('logoutBtn');
+                
+                console.log('🔄 Updating menu buttons, gameState:', gameState, 'currentUser:', currentUser);
+                
+                if (gameState === "menu") {
+                    if (menuButtons) menuButtons.style.display = 'flex';
+                    if (topMenu) topMenu.style.display = 'none';
+                    if (menuKeyboardHint) menuKeyboardHint.style.display = 'block';
+                    
+                    if (currentUser) {
+                        // User is logged in - show profile/logout, hide login/register
+                        console.log('👤 User logged in, showing profile buttons');
+                        if (loginBtn) loginBtn.style.display = 'none';
+                        if (registerBtn) registerBtn.style.display = 'none';
+                        if (profileBtn) profileBtn.style.display = 'inline-block';
+                        if (logoutBtn) logoutBtn.style.display = 'inline-block';
+                    } else {
+                        // User is not logged in - show login/register, hide profile/logout
+                        console.log('🔐 User not logged in, showing login buttons');
+                        if (loginBtn) loginBtn.style.display = 'inline-block';
+                        if (registerBtn) registerBtn.style.display = 'inline-block';
+                        if (profileBtn) profileBtn.style.display = 'none';
+                        if (logoutBtn) logoutBtn.style.display = 'none';
+                    }
+                } else if (gameState === "playing") {
+                    if (menuButtons) menuButtons.style.display = 'none';
+                    if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
+                    if (currentUser) {
+                        if (topMenu) topMenu.style.display = 'flex';
+                        this.updateScoreDisplay();
+                    }
+                } else {
+                    if (menuButtons) menuButtons.style.display = 'none';
+                    if (topMenu) topMenu.style.display = 'none';
+                    if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
+                }
+            }
+            
+            updateScoreDisplay() {
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                
+                if (game) {
+                    // Calculate current potential score based on elapsed time
+                    const currentTime = Math.floor((Date.now() / 1000) - game.startTime);
+                    const potentialScore = Math.max(100, 10000 - (currentTime * 50));
+                    
+                    // Update top menu score display
+                    if (scoreDisplay) {
+                        scoreDisplay.textContent = `Score: ${potentialScore}`;
+                    }
+                }
+            }
+            
+            setupCanvas() {
+                // Responsive canvas sizing
+                const maxWidth = window.innerWidth - 40;
+                const maxHeight = window.innerHeight - 40;
+                
+                let canvasWidth = Math.min(1200, maxWidth);
+                let canvasHeight = Math.min(800, maxHeight);
+                
+                // Maintain aspect ratio
+                const aspectRatio = 1200 / 800;
+                if (canvasWidth / canvasHeight > aspectRatio) {
+                    canvasWidth = canvasHeight * aspectRatio;
+                } else {
+                    canvasHeight = canvasWidth / aspectRatio;
+                }
+                
+                this.canvas.width = canvasWidth;
+                this.canvas.height = canvasHeight;
+                
+                console.log(`Canvas resized to: ${canvasWidth}x${canvasHeight}`);
+            }
+            
+            setupEventListeners() {
+                // Keyboard controls
+                document.addEventListener('keydown', (e) => {
+                    this.handleKeyPress(e);
+                });
+                
+                // Canvas click events for UI
+                this.canvas.addEventListener('click', (e) => {
+                    if (gameState !== "playing") {
+                        // Handle UI clicks here if needed
+                        console.log('UI click at:', e.offsetX, e.offsetY);
+                    }
+                });
+                
+                // Window resize
+                window.addEventListener('resize', () => {
+                    this.setupCanvas();
+                    if (game) {
+                        game.updateForScreenChange();
+                    }
+                });
+            }
+            
+            handleKeyPress(e) {
+                console.log('🔑 Key pressed:', e.key, 'Game state:', gameState);
+                
+                if (e.key === 'F11') {
+                    e.preventDefault();
+                    this.toggleFullscreen();
+                } else if (e.key === ' ' && gameState === "menu") {
+                    console.log('🚀 Spacebar pressed - Starting game!');
+                    this.startGame();
+                    e.preventDefault();
+                } else if (gameState === "playing" && game) {
+                    // Game controls - exact implementation from Python
+                    switch (e.key.toLowerCase()) {
+                        case 'w':
+                        case 'arrowup':
+                            game.movePlayer(-1, 0);
+                            e.preventDefault();
+                            break;
+                        case 's':
+                        case 'arrowdown':
+                            game.movePlayer(1, 0);
+                            e.preventDefault();
+                            break;
+                        case 'a':
+                        case 'arrowleft':
+                            game.movePlayer(0, -1);
+                            e.preventDefault();
+                            break;
+                        case 'd':
+                        case 'arrowright':
+                            game.movePlayer(0, 1);
+                            e.preventDefault();
+                            break;
+                    }
+                }
+            }
+            
+            toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+            
+            startGame() {
+                console.log('🎮 GameController.startGame() called');
+                console.log('Current gameState:', gameState);
+                console.log('gameLoopRunning:', this.gameLoopRunning);
+                console.log('Canvas element:', this.canvas);
+                console.log('Canvas dimensions:', this.canvas.width, 'x', this.canvas.height);
+                
+                try {
+                    console.log('🔧 Creating new MazeGame...');
+                    game = new MazeGame(this.canvas);
+                    console.log('✅ MazeGame created successfully:', game);
+                    
+                    gameState = "playing";
+                    this.updateStatus();
+                    this.updateMenuButtons();
+                    console.log('🎮 Starting game');
+                    
+                    // Start the game loop
+                    if (!this.gameLoopRunning) {
+                        console.log('🔄 Starting game loop');
+                        this.gameLoopRunning = true;
+                        this.gameLoop();
+                    } else {
+                        console.log('⚠️ Game loop already running');
+                    }
+                } catch (error) {
+                    console.error('❌ Error creating game:', error);
+                    console.error('Error stack:', error.stack);
+                    showAlert('Game Error', 'Failed to start game: ' + error.message);
+                }
+            }
+            
+            returnToMenu() {
+                game = null;
+                gameState = "menu";
+                this.gameLoopRunning = false;
+                
+                // Clear the canvas completely - let page background show through
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Hide powerup panel when returning to menu
+                const powerupPanel = document.getElementById('powerup-status');
+                if (powerupPanel) {
+                    powerupPanel.style.display = 'none';
+                }
+                
+                this.updateStatus();
+                this.updateMenuButtons();
+                console.log('Returned to menu');
+            }
+            
+            updateStatus() {
+                const statusPanel = document.getElementById('status');
+                const currentScoreEl = document.getElementById('current-score');
+                const currentTimeEl = document.getElementById('current-time');
+                const currentLivesEl = document.getElementById('current-lives');
+                
+                // Show panel only during gameplay
+                if (statusPanel) {
+                    if (gameState === "playing") {
+                        statusPanel.style.display = 'block';
+                    } else {
+                        statusPanel.style.display = 'none';
+                    }
+                }
+                
+                if (currentScoreEl) {
+                    const score = game ? game.score || 0 : 0;
+                    currentScoreEl.innerHTML = `Score: <span style="color: #FFD700;">${score}</span>`;
+                }
+                
+                if (currentTimeEl) {
+                    let timeText = '0 Sec';
+                    if (game && game.startTime) {
+                        const elapsedSeconds = Math.floor((Date.now() / 1000) - game.startTime);
+                        timeText = `${elapsedSeconds} Sec`;
+                    }
+                    currentTimeEl.innerHTML = `Time: <span style="color: #FFD700;">${timeText}</span>`;
+                }
+                
+                if (currentLivesEl) {
+                    const lives = game ? game.lives || 0 : 0;
+                    const livesColor = lives > 1 ? '#FF6B6B' : lives === 1 ? '#FFA500' : '#FF3333';
+                    currentLivesEl.innerHTML = `Lives: <span style="color: ${livesColor};">${lives}</span>`;
+                }
+                
+                // Update panels visibility based on game state
+                this.updatePanelVisibility();
+            }
+            
+            updateScoreDisplay() {
+                // This function updates score and time in real-time during gameplay
+                this.updateStatus();
+            }
+            
+            updatePanelVisibility() {
+                const sidePanels = document.querySelectorAll('.side-panel');
+                const menuButtons = document.getElementById('menuButtons');
+                const menuHeader = document.getElementById('menuHeader');
+                const mobileControls = document.getElementById('mobile-controls');
+                const gameContainer = document.getElementById('gameContainer');
+                
+                if (gameState === "playing" || gameState === "paused") {
+                    // Show game UI panels
+                    sidePanels.forEach(panel => panel.style.display = 'block');
+                    if (menuButtons) menuButtons.style.display = 'none';
+                    if (menuHeader) menuHeader.style.display = 'none'; // Hide menu header during game
+                    
+                    // Adjust game container for gameplay (no header)
+                    if (gameContainer) {
+                        gameContainer.style.marginTop = '0px';
+                        gameContainer.style.height = '100vh';
+                    }
+                    
+                    // Show mobile controls only during gameplay if enabled in settings
+                    if (mobileControls) {
+                        const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
+                        mobileControls.style.display = onScreenControls ? 'block' : 'none';
+                    }
+                } else {
+                    // Hide game UI panels
+                    sidePanels.forEach(panel => panel.style.display = 'none');
+                    if (menuButtons) menuButtons.style.display = 'flex';
+                    if (menuHeader) menuHeader.style.display = 'flex'; // Show menu header in menu
+                    
+                    // Adjust game container for menu (with header)
+                    if (gameContainer) {
+                        gameContainer.style.marginTop = '80px';
+                        gameContainer.style.height = 'calc(100vh - 80px)';
+                    }
+                    
+                    // Hide mobile controls when not playing
+                    if (mobileControls) {
+                        mobileControls.style.display = 'none';
+                    }
+                }
+            }
+            
+            showMessage(title, message, autoDismiss = false, dismissTime = 3000) {
+                // Remove any existing modal overlays first
+                const existingOverlays = document.querySelectorAll('.modal-overlay');
+                existingOverlays.forEach(overlay => {
+                    if (overlay.parentNode) {
+                        overlay.parentNode.removeChild(overlay);
+                    }
+                });
+                
+                const overlay = document.createElement('div');
+                overlay.className = 'modal-overlay';
+                
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                
+                modal.innerHTML = `
+                    <h2 class="glow-text primary-color">${title}</h2>
+                    <p>${message.replace(/\\n/g, '<br>')}</p>
+                    ${autoDismiss ? '<p style="margin-top: 20px; color: #888; font-size: 14px;">Returning to menu...</p>' : ''}
+                `;
+                
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+                
+                const removeModal = () => {
+                    if (overlay.parentNode) {
+                        overlay.parentNode.removeChild(overlay);
+                    }
+                };
+                
+                if (autoDismiss) {
+                    setTimeout(removeModal, dismissTime);
+                } else {
+                    overlay.addEventListener('click', removeModal);
+                }
+            }
+            
+            async initializeGame() {
+                try {
+                    console.log('🔄 Initializing Maze Chase...');
+                    
+                    // Initialize database (optional - don't fail if it doesn't work)
+                    try {
+                        if (typeof MazeChaseDB !== 'undefined') {
+                            gameDB = new MazeChaseDB();
+                            console.log('✅ MongoDB database initializing...');
+                            
+                            // Wait a moment for database connection
+                            setTimeout(() => {
+                                if (gameDB && gameDB.connected) {
+                                    console.log('✅ MongoDB database connected');
+                                    
+                                    // Initialize user authentication with database
+                                    if (typeof UserAuth !== 'undefined') {
+                                        userAuth = new UserAuth(gameDB);
+                                        console.log('✅ User authentication initialized with database');
+                                    }
+                                    
+                                    const dbStatusEl = document.getElementById('db-status');
+                                    if (dbStatusEl) {
+                                        dbStatusEl.innerHTML = 'Database: <span style="color: #39FF14;">Connected</span>';
+                                    }
+                                } else {
+                                    console.log('⚠️  Database connection failed');
+                                    const dbStatusEl = document.getElementById('db-status');
+                                    if (dbStatusEl) {
+                                        dbStatusEl.innerHTML = 'Database: <span style="color: #FF453A;">Offline</span>';
+                                    }
+                                }
+                            }, 1000); // Give 1 second for connection
+                            
+                        } else {
+                            console.log('⚠️  MazeChaseDB class not available');
+                        }
+                    } catch (dbError) {
+                        console.log('⚠️  Database initialization failed (non-fatal):', dbError);
+                        const dbStatusEl = document.getElementById('db-status');
+                        if (dbStatusEl) {
+                            dbStatusEl.innerHTML = 'Database: <span style="color: #FF453A;">Offline</span>';
+                        }
+                    }
+                    
+                    this.updateStatus();
+                    this.initialized = true; // Mark as initialized
+                    console.log('🎮 Game controller fully initialized');
+                    // Don't start game loop here - wait for user to start game
+                    
+                } catch (error) {
+                    console.error('Initialization error:', error);
+                    throw error; // Re-throw to be caught by constructor
+                }
+            }
+            
+            gameLoop() {
+                // Always clear canvas first
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                if (gameState === "playing" && game) {
+                    try {
+                        // Update and draw game
+                        const result = game.update();
+                        
+                        // Update score display during gameplay
+                        this.updateScoreDisplay();
+                        
+                        // Check for game end conditions BEFORE drawing
+                        if (result === "win") {
+                            game.draw(); // Draw final frame
+                            this.handleGameEnd("win");
+                            return; // Exit early to prevent further drawing
+                        } else if (result === "lose") {
+                            game.draw(); // Draw final frame
+                            this.handleGameEnd("lose");
+                            return; // Exit early to prevent further drawing
+                        }
+                        
+                        // Only draw if game is still active
+                        if (game) {
+                            game.draw();
+                        }
+                        console.log('🎮 Game loop iteration completed - gameState:', gameState, 'game exists:', !!game);
+                    } catch (error) {
+                        console.error('❌ Error in game loop:', error);
+                        console.error('Error stack:', error.stack);
+                        // Return to menu on error
+                        this.returnToMenu();
+                        showAlert('Game Error', 'Game error: ' + error.message);
+                        return;
+                    }
+                } else {
+                    // Clear canvas when not playing - let page background show through
+                    // No need to fill with dark color
+                }
+                
+                // Continue game loop only if it should be running
+                if (this.gameLoopRunning) {
+                    requestAnimationFrame(() => this.gameLoop());
+                }
+            }
+            
+            async handleGameEnd(result) {
+                if (!game) return;
+                
+                const survivalTime = Math.floor((Date.now() / 1000) - game.startTime);
+                
+                // Calculate score based on completion time (only for wins)
+                let finalScore = 0;
+                if (result === "win") {
+                    // Base score of 10000, minus 50 points per second (faster = higher score)
+                    // Minimum score of 100 to ensure positive scores
+                    finalScore = Math.max(100, 10000 - (survivalTime * 50));
+                } else {
+                    // For losses, give points based on survival time
+                    finalScore = Math.max(0, survivalTime * 10);
+                }
+                
+                // Save score to database
+                if (gameDB && gameDB.connected && currentUser) {
+                    try {
+                        const userId = currentUser.user_id || currentUser.id;
+                        const username = currentUser.username || String(currentUser);
+                        
+                        console.log(`💾 Saving ${result.toUpperCase()} score: ${username} (ID: ${userId}) - ${finalScore} points, ${survivalTime}s`);
+                        
+                        const scoreSaved = await gameDB.saveScore(userId, username, finalScore, result, survivalTime, "classic");
+                        console.log(`Score save result: ${scoreSaved ? '✅ SUCCESS' : '❌ FAILED'}`);
+                        
+                        // Update best score display if this is a win and user is logged in
+                        if (result === "win") {
+                            // First, immediately show the current time if it's likely a new best
+                            const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
+                            if (menuHeaderTopScore) {
+                                const currentDisplayedTime = menuHeaderTopScore.textContent.match(/\d+/);
+                                const currentBestTime = currentDisplayedTime ? parseInt(currentDisplayedTime[0]) : 9999;
+                                
+                                // If this completion time is better than displayed time, update immediately
+                                if (survivalTime < currentBestTime) {
+                                    menuHeaderTopScore.textContent = `Best: ${survivalTime} Sec`;
+                                    console.log('⚡ Immediately updated best score display with new record:', survivalTime, 'seconds');
+                                }
+                            }
+                            
+                            // Then refresh from database to ensure accuracy
+                            await this.updateBestScore();
+                        }
+                    } catch (error) {
+                        console.error(`Error saving ${result} result:`, error);
+                    }
+                }
+                
+                // Show result message with score details
+                if (result === "win") {
+                    this.showMessage("🏆 VICTORY! 🏆", `Congratulations! You completed the maze!\nTime: ${survivalTime} Sec\nScore: ${finalScore} points\n⚡ Faster completion = Higher score!`, true, 3000);
+                } else {
+                    this.showMessage("💀 GAME OVER", `You survived for ${survivalTime} Sec.\nScore: ${finalScore} points\nTry again!`, true, 2000);
+                }
+                
+                // Return to menu and stop game loop
+                game = null;
+                gameState = "menu";
+                this.gameLoopRunning = false; // Stop the game loop
+                
+                // Clear the canvas completely - let page background show through
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.updateStatus();
+                this.updateMenuButtons();
+            }
+            
+            // Update best score display in menu header
+            async updateBestScore() {
+                if (currentUser && userAuth) {
+                    try {
+                        console.log('🔄 Refreshing best score display...');
+                        
+                        // Add a small delay to ensure the database has processed the new score
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        
+                        // Get user's best completion time (fastest win)
+                        const bestScore = await userAuth.getBestScore();
+                        const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
+                        
+                        console.log('📊 Best score data received:', bestScore);
+                        
+                        if (bestScore && bestScore.time && menuHeaderTopScore) {
+                            menuHeaderTopScore.textContent = `Best: ${bestScore.time} Sec`;
+                            console.log('🏆 Updated best score display:', bestScore.time, 'seconds');
+                        } else if (menuHeaderTopScore) {
+                            console.log('⚠️ No best score found, setting to default');
+                            menuHeaderTopScore.textContent = 'Best: -- Sec';
+                        }
+                    } catch (error) {
+                        console.error('❌ Error updating best score:', error);
+                    }
+                }
+            }
+
+            // Show powerup notification
+            showPowerupNotification(message, icon = "⚡") {
+                const notificationsContainer = document.getElementById('powerup-notifications');
+                if (!notificationsContainer) return;
+
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = 'powerup-notification';
+                notification.innerHTML = `${icon} ${message}`;
+
+                // Add to container
+                notificationsContainer.appendChild(notification);
+
+                // Trigger animation
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+
+                // Remove after animation completes
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 3500);
+
+                console.log('⚡ Powerup notification shown:', message);
+            }
+        }
+        
+        // Start the game when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 DOM loaded, initializing game...');
+            
+            // Initialize the game controller
+            try {
+                console.log('Creating MazeChaseController...');
+                const controller = new MazeChaseController();
+                window.gameController = controller; // Make it globally accessible
+                console.log('✅ Game controller created and assigned to window.gameController');
+                
+                // Verify controller is accessible
+                if (window.gameController) {
+                    console.log('✅ window.gameController is accessible');
+                } else {
+                    console.error('❌ window.gameController is not accessible after assignment');
+                }
+                
+            } catch (error) {
+                console.error('❌ Failed to create game controller:', error);
+                console.error('Error stack:', error.stack);
+                showAlert('Initialization Error', 'Failed to initialize game controller: ' + error.message);
+                return; // Don't continue if controller failed to create
+            }
+            
+            // Add event listener for start button as backup - do this after a delay to ensure controller is ready
+            setTimeout(() => {
+                const startBtn = document.getElementById('startGameBtn');
+                if (startBtn) {
+                    startBtn.addEventListener('click', function(e) {
+                        console.log('🎮 Start button clicked via event listener');
+                        e.preventDefault();
+                        e.stopPropagation();
+                        startGame();
+                    });
+                    console.log('✅ Start button event listener added');
+                    
+                    // Test if button is clickable
+                    startBtn.style.cursor = 'pointer';
+                    console.log('✅ Start button event listener added successfully');
+                } else {
+                    console.error('❌ Start button not found');
+                }
+                
+                // Initialize database
+                window.database = new MazeChaseDB();
+                
+                // Initialize UserAuth with the database
+                userAuth = new UserAuth(window.database);
+                
+                // Initialize mobile controls - hide by default, only show during gameplay
+                const mobileControls = document.getElementById('mobile-controls');
+                if (mobileControls) {
+                    mobileControls.style.display = 'none';
+                }
+                
+            }, 500); // Wait 500ms for controller to initialize
+        });
+        
+        function updateDatabaseStatus(connected) {
+            const dbStatus = document.getElementById('dbStatus');
+            const dbStatusText = document.getElementById('dbStatusText');
+            const staticDbStatus = document.getElementById('db-status');
+            
+            if (dbStatus && dbStatusText) {
+                if (connected) {
+                    dbStatus.className = 'db-status connected';
+                    dbStatusText.textContent = 'Database: Online';
+                } else {
+                    dbStatus.className = 'db-status disconnected';
+                    dbStatusText.textContent = 'Database: Offline';
+                }
+            }
+            
+            // Update static status panel
+            if (staticDbStatus) {
+                const statusColor = connected ? '#39FF14' : '#FF6B6B';
+                const statusText = connected ? 'Online' : 'Offline';
+                staticDbStatus.innerHTML = `Database: <span style="color: ${statusColor};">${statusText}</span>`;
+            }
+            
+            console.log('📊 Database status updated:', connected ? 'Online' : 'Offline');
+            console.log('📊 window.database exists:', !!window.database);
+            console.log('📊 window.database.connected:', window.database?.connected);
+        }
+        
+        // Global Button Functions
+        function startGame() {
+            console.log('🎮 startGame() called - Button click working!');
+            console.log('window.gameController exists:', !!window.gameController);
+            
+            if (window.gameController) {
+                if (window.gameController.initialized) {
+                    console.log('Calling gameController.startGame()');
+                    window.gameController.startGame();
+                } else {
+                    console.log('Controller exists but not fully initialized yet, waiting...');
+                    setTimeout(() => {
+                        if (window.gameController && window.gameController.initialized) {
+                            console.log('✅ Controller now initialized, starting game...');
+                            window.gameController.startGame();
+                        } else {
+                            console.error('❌ Controller still not initialized');
+                            showAlert('Initialization Error', 'Game is still initializing. Please wait a moment.');
+                        }
+                    }, 1000);
+                }
+            } else {
+                console.error('❌ window.gameController is not defined');
+                console.log('Waiting for controller to initialize...');
+                
+                // Show available properties for debugging
+                console.log('Available window properties containing "game":', Object.keys(window).filter(k => k.toLowerCase().includes('game')));
+                console.log('Available window properties containing "controller":', Object.keys(window).filter(k => k.toLowerCase().includes('controller')));
+                
+                setTimeout(() => {
+                    if (window.gameController) {
+                        console.log('✅ Controller found on retry, starting game...');
+                        window.gameController.startGame();
+                    } else {
+                        console.error('❌ Controller still not found after retry');
+                        showAlert('Initialization Error', 'Game controller failed to initialize. Please refresh the page.');
+                    }
+                }, 1000);
+            }
+        }
+        
+        // Debug function to test controller creation
+        function testController() {
+            console.log('=== CONTROLLER DEBUG TEST ===');
+            console.log('window.gameController:', window.gameController);
+            console.log('typeof window.gameController:', typeof window.gameController);
+            
+            if (!window.gameController) {
+                console.log('Attempting to create controller manually...');
+                try {
+                    const testController = new MazeChaseController();
+                    window.gameController = testController;
+                    console.log('✅ Manual controller creation successful');
+                } catch (error) {
+                    console.error('❌ Manual controller creation failed:', error);
+                }
+            }
+        }
+        
+        // Make testController available globally
+        window.testController = testController;
+        
+        // Global function to start the game (called by buttons)
+        function startGame() {
+            console.log('🎮 Global startGame() called');
+            if (window.gameController) {
+                console.log('✅ Calling gameController.startGame()');
+                window.gameController.startGame();
+            } else {
+                console.error('❌ Game controller not available');
+                showAlert('Game Error', 'Game controller not initialized. Please refresh the page.');
+            }
+        }
+        
+        // Make startGame available globally
+        window.startGame = startGame;
+        
+        function restartCurrentGame() {
+            if (window.gameController && gameState !== "menu") {
+                window.gameController.startGame();
+            }
+        }
+        
+        function returnToMainMenu() {
+            if (window.gameController) {
+                window.gameController.returnToMenu();
+                const pauseBtn = document.getElementById('pause-text');
+                if (pauseBtn) pauseBtn.textContent = "⏸️ Pause";
+            }
+        }
+        
+        // Mobile control functions
+        function handleMobileMove(direction) {
+            if (window.gameController && gameState === "playing") {
+                // Map mobile directions to key codes
+                const directionMap = {
+                    'up': 87,    // W key
+                    'down': 83,  // S key
+                    'left': 65,  // A key
+                    'right': 68  // D key
+                };
+                
+                const keyCode = directionMap[direction];
+                if (keyCode) {
+                    // Simulate keydown event
+                    const event = new KeyboardEvent('keydown', {
+                        keyCode: keyCode,
+                        which: keyCode,
+                        bubbles: true
+                    });
+                    document.dispatchEvent(event);
+                }
+            }
+        }
+        
+        function handleMobileStop() {
+            // Mobile controls don't need stop action since keyup isn't used in this game
+            // The game checks for continuous key presses, not key states
+        }
+        
+        function showHelp() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'helpModal';
+            
+            overlay.innerHTML = `
+                <div class="modal" style="max-width: 600px;">
+                    <h2>🎮 HOW TO PLAY - MAZESCAPE</h2>
+                    <div style="text-align: left; margin: 20px 0; max-height: 400px; overflow-y: auto;">
+                        <h4 style="color: #00BFFF; margin-top: 0px; margin-bottom: 15px;">🎯 Objective</h4>
+                        <p style="margin-bottom: 20px;">Navigate through the randomly generated maze to reach the <strong style="color: #FFD700;">yellow exit square</strong> while avoiding the red ghost.</p>
+                        
+                        <h4 style="color: #39FF14; margin-top: 20px; margin-bottom: 15px;">🕹️ Controls</h4>
+                        <p style="margin-bottom: 20px;">
+                            <strong>Movement:</strong> Use <span style="color: #00BFFF;">WASD</span> or <span style="color: #00BFFF;">Arrow keys</span><br>
+                            <strong>Start Game:</strong> Spacebar (from menu)<br>
+                            <strong>Fullscreen:</strong> F11 key
+                        </p>
+                        
+                        <h4 style="color: #FF6B6B; margin-top: 20px; margin-bottom: 15px;">👻 Enemy</h4>
+                        <p style="margin-bottom: 20px;">
+                            <strong style="color: #FF6B6B;">Red Ghost</strong> - uses smart A* pathfinding to chase you!<br>
+                            • The ghost will find the optimal path to reach you<br>
+                            • If touched by the ghost, you lose a life and respawn at start<br>
+                            • You start with 2 lives total
+                        </p>
+                        
+                        <h4 style="color: #FFD700; margin-top: 20px; margin-bottom: 15px;">⚡ Power-ups</h4>
+                        <p style="margin-bottom: 20px;">
+                            Power-ups spawn randomly and last 15 seconds on the ground:<br>
+                            • <span style="color: #00BFFF;">⚡ Speed Boost:</span> Doubles your movement speed for 3 seconds<br>
+                            • <span style="color: #64C8FF;">❄ Freeze:</span> Stops the ghost for 3 seconds<br>
+                            • <span style="color: #FFA500;">🔨 Wall Breaker:</span> Break through walls for 3 seconds
+                        </p>
+                        
+                        <h4 style="color: #9D4EDD; margin-top: 20px; margin-bottom: 15px;">🏆 Scoring System</h4>
+                        <p style="margin-bottom: 20px;">
+                            • <strong>+10 points</strong> every second you survive<br>
+                            • <strong>+100 points</strong> for reaching the exit<br>
+                            • <strong>-10 points</strong> for collecting power-ups<br>
+                            • <strong>-20 points</strong> if you lose all lives
+                        </p>
+                        
+                        <h4 style="color: #FF8C00; margin-top: 20px; margin-bottom: 15px;">💡 Strategy Tips</h4>
+                        <p>
+                            • The maze is randomly generated each game<br>
+                            • Plan your route carefully - the ghost is intelligent<br>
+                            • Use power-ups strategically when cornered<br>
+                            • Wall Breaker can create new escape routes<br>
+                            • Speed Boost is great for outrunning the ghost<br>
+                            • Freeze gives you time to reposition safely
+                        </p>
+                        
+                        <h4 style="color: #39FF14; margin-top: 20px; margin-bottom: 15px;">🎮 Game Features</h4>
+                        <p>
+                            • Responsive design - works on any screen size<br>
+                            • Particle effects for visual feedback<br>
+                            • Real-time pathfinding AI for the ghost<br>
+                            • Automatic maze generation with guaranteed solution<br>
+                            • Progressive difficulty as you play
+                        </p>
+                    </div>
+                    <div class="button-row">
+                        <button class="game-button primary" onclick="closeModal('helpModal')">🎮 Let's Play!</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+        }
+        
+        function showLogin() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'loginModal';
+            
+            overlay.innerHTML = `
+                <div class="auth-form">
+                    <h3>🔑 Login</h3>
+                    <input type="text" class="game-input" id="loginUsername" placeholder="Username" maxlength="50">
+                    <input type="password" class="game-input" id="loginPassword" placeholder="Password" maxlength="100">
+                    <div class="button-row">
+                        <button class="game-button primary" onclick="performLogin()">Login</button>
+                        <button class="game-button secondary" onclick="closeModal('loginModal')">Cancel</button>
+                    </div>
+                    <p style="color: #888; font-size: 12px; margin-top: 15px;">
+                        Don't have an account? <a href="#" onclick="closeModal('loginModal'); showRegister();" style="color: #00BFFF;">Register here</a>
+                    </p>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            document.getElementById('loginUsername').focus();
+        }
+        
+        function showRegister() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'registerModal';
+            
+            overlay.innerHTML = `
+                <div class="auth-form">
+                    <h3>📝 Register</h3>
+                    <input type="text" class="game-input" id="registerUsername" placeholder="Username" maxlength="50">
+                    <input type="password" class="game-input" id="registerPassword" placeholder="Password" maxlength="100">
+                    <input type="password" class="game-input" id="registerConfirmPassword" placeholder="Confirm Password" maxlength="100">
+                    <div class="button-row">
+                        <button class="game-button primary" onclick="performRegister()">Register</button>
+                        <button class="game-button secondary" onclick="closeModal('registerModal')">Cancel</button>
+                    </div>
+                    <p style="color: #888; font-size: 12px; margin-top: 15px;">
+                        Already have an account? <a href="#" onclick="closeModal('registerModal'); showLogin();" style="color: #00BFFF;">Login here</a>
+                    </p>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            document.getElementById('registerUsername').focus();
+        }
+        
+        function showLeaderboard() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'leaderboardModal';
+            
+            overlay.innerHTML = `
+                <div class="modal" style="max-width: 600px;">
+                    <h2>🏆 LEADERBOARD</h2>
+                    <div id="leaderboardContent">
+                        <p>Loading leaderboard...</p>
+                    </div>
+                    <div class="button-row">
+                        <button class="game-button" onclick="closeModal('leaderboardModal')">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            loadLeaderboard();
+        }
+        
+        function showSettings() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'settingsModal';
+            
+            overlay.innerHTML = `
+                <div class="modal">
+                    <h2>⚙️ SETTINGS</h2>
+                    <div style="text-align: left; margin: 20px 0;">
+                        <label style="display: block; margin: 15px 0;">
+                            <input type="checkbox" id="soundEnabled" checked style="margin-right: 10px;">
+                            🔊 Sound Effects
+                        </label>
+                        <label style="display: block; margin: 15px 0;">
+                            <input type="checkbox" id="onScreenControls" style="margin-right: 10px;">
+                            📱 On-Screen Controls (Mobile)
+                        </label>
+                    </div>
+                    <div class="button-row">
+                        <button class="game-button primary" onclick="saveSettings()">Save</button>
+                        <button class="game-button secondary" onclick="closeModal('settingsModal')">Cancel</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            loadSettings();
+        }
+        
+        function showProfile() {
+            if (!currentUser) return;
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'profileModal';
+            
+            overlay.innerHTML = `
+                <div class="modal">
+                    <h2>👤 PROFILE</h2>
+                    <div style="text-align: left; margin: 20px 0;">
+                        <p><strong>Username:</strong> ${currentUser.username || 'Unknown'}</p>
+                        <p><strong>Joined:</strong> ${new Date(currentUser.created_at || Date.now()).toLocaleDateString()}</p>
+                        <p><strong>Games Played:</strong> <span id="gamesPlayed">Loading...</span></p>
+                        <p><strong>Best Score:</strong> <span id="bestScore">Loading...</span></p>
+                    </div>
+                    <div class="button-row">
+                        <button class="game-button" onclick="closeModal('profileModal')">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            loadUserStats();
+        }
+        
+        function exitGame() {
+            showConfirm('Exit Game', 'Are you sure you want to exit the game?', () => {
+                window.close();
+            });
+        }
+        
+        function logout() {
+            showConfirm('Logout', 'Are you sure you want to logout?', () => {
+                currentUser = null;
+                updateUserDisplay(); // Clear username display
+                if (window.gameController) {
+                    window.gameController.returnToMenu();
+                    window.gameController.updateStatus();
+                    window.gameController.updateMenuButtons();
+                }
+                showMessage('Logged Out', 'You have been successfully logged out.', true, 2000);
+            });
+        }
+        
+        // Update username display in menu header
+        function updateUserDisplay() {
+            const menuHeaderWelcomeText = document.getElementById('menuHeaderWelcomeText');
+            const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
+            const menuHeaderScoreInfo = document.getElementById('menuHeaderScoreInfo');
+            
+            if (currentUser) {
+                console.log('👤 Updated username display:', currentUser.username);
+                
+                // Update menu header welcome text
+                if (menuHeaderWelcomeText) {
+                    menuHeaderWelcomeText.textContent = `Welcome, ${currentUser.username}!`;
+                }
+                
+                // Show score info in menu header for logged in users
+                if (menuHeaderScoreInfo) {
+                    menuHeaderScoreInfo.style.display = 'block';
+                }
+                
+                // Load and display best score from database
+                if (userAuth && menuHeaderTopScore) {
+                    console.log('🔍 Loading best score for user:', currentUser.username);
+                    console.log('🔍 UserAuth object exists:', !!userAuth);
+                    console.log('🔍 UserAuth.getBestScore exists:', !!userAuth.getBestScore);
+                    
+                    // Add a small delay to ensure database connection is ready
+                    setTimeout(async () => {
+                        try {
+                            const bestScore = await userAuth.getBestScore();
+                            console.log('📊 Raw best score response:', bestScore);
+                            if (bestScore && bestScore.time) {
+                                menuHeaderTopScore.textContent = `Best: ${bestScore.time} Sec`;
+                                console.log('✅ Best score loaded successfully:', bestScore.time, 'seconds');
+                            } else {
+                                menuHeaderTopScore.textContent = 'Best: -- Sec';
+                                console.log('⚠️ No best score found or invalid data:', bestScore);
+                            }
+                        } catch (error) {
+                            console.error('❌ Error loading best score:', error);
+                            if (menuHeaderTopScore) {
+                                menuHeaderTopScore.textContent = 'Best: -- Sec';
+                            }
+                        }
+                    }, 500);
+                }
+            } else {
+                // Update menu header to Guest Mode
+                if (menuHeaderWelcomeText) {
+                    menuHeaderWelcomeText.textContent = 'Welcome, Guest!';
+                }
+                
+                // Hide score info for guest mode
+                if (menuHeaderScoreInfo) {
+                    menuHeaderScoreInfo.style.display = 'none';
+                }
+            }
+        }
+        
+        // Modal and Form Functions
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        async function performLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                showAlert('Login Error', 'Please enter both username and password.');
+                return;
+            }
+            
+            try {
+                if (window.database && window.database.connected) {
+                    console.log(`🔧 Attempting login for: ${username}`);
+                    currentUser = await userAuth.login(username, password);
+                    if (currentUser) {
+                        closeModal('loginModal');
+                        updateUserDisplay(); // Update username display
+                        if (window.gameController) {
+                            window.gameController.updateStatus();
+                            window.gameController.updateMenuButtons();
+                        }
+                        showMessage('Login Successful', `Welcome back, ${username}!`, true, 2000);
+                    } else {
+                        showAlert('Login Failed', 'Invalid username or password.');
+                    }
+                } else {
+                    showAlert('Connection Error', 'Database not connected. Please try again later.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('Login Error', 'Login failed. Please try again.');
+            }
+        }
+        
+        async function performRegister() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (!username || !password || !confirmPassword) {
+                showAlert('Registration Error', 'Please fill in all fields.');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showAlert('Registration Error', 'Passwords do not match.');
+                return;
+            }
+            
+            if (username.length < 3) {
+                showAlert('Registration Error', 'Username must be at least 3 characters long.');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAlert('Registration Error', 'Password must be at least 6 characters long.');
+                return;
+            }
+            
+            try {
+                if (window.database && window.database.connected) {
+                    console.log(`🔧 Attempting registration for: ${username}`);
+                    const [success, message] = await userAuth.register(username, password);
+                    if (success) {
+                        closeModal('registerModal');
+                        
+                        // Automatically log in the user after successful registration
+                        console.log(`🔧 Auto-logging in new user: ${username}`);
+                        try {
+                            currentUser = await userAuth.login(username, password);
+                            if (currentUser) {
+                                updateUserDisplay(); // Update username display
+                                // Update UI to reflect logged-in state
+                                if (window.gameController) {
+                                    window.gameController.updateStatus();
+                                    window.gameController.updateMenuButtons();
+                                }
+                                showMessage('Welcome to MazeScape!', `Registration successful! Welcome ${username}, you are now logged in and ready to play!`, true, 3000);
+                            } else {
+                                // Registration succeeded but auto-login failed
+                                showMessage('Registration Successful', `Welcome to Maze Chase, ${username}! Please login to continue.`, true, 3000);
+                            }
+                        } catch (loginError) {
+                            console.error('Auto-login after registration failed:', loginError);
+                            showMessage('Registration Successful', `Welcome to Maze Chase, ${username}! Please login to continue.`, true, 3000);
+                        }
+                    } else {
+                        showAlert('Registration Failed', message || 'Registration failed. Username might already exist.');
+                    }
+                } else {
+                    showAlert('Connection Error', 'Database not connected. Please try again later.');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showAlert('Registration Error', 'Registration failed. Please try again.');
+            }
+        }
+        
+        async function loadLeaderboard() {
+            try {
+                // Wait for database connection if not ready
+                let retries = 0;
+                while (!window.database?.connected && retries < 10) {
+                    console.log(`⏳ Waiting for database connection... (attempt ${retries + 1})`);
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    retries++;
+                }
+                
+                if (window.database && window.database.connected) {
+                    console.log('📊 Loading leaderboard from database...');
+                    const [scores, error] = await window.database.getLeaderboard();
+                    const content = document.getElementById('leaderboardContent');
+                    
+                    if (error) {
+                        console.error('Error fetching leaderboard:', error);
+                        content.innerHTML = '<p>Error loading leaderboard: ' + error + '</p>';
+                    } else if (scores && scores.length > 0) {
+                        console.log('✅ Loaded', scores.length, 'scores');
+                        let html = '<div style="text-align: left;">';
+                        scores.forEach((score, index) => {
+                            const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                            html += `
+                                <div style="padding: 8px; border-bottom: 1px solid #444; display: flex; justify-content: space-between;">
+                                    <span>${medal} ${score.username || 'Anonymous'}</span>
+                                    <span style="color: #FFD700;">${score.score} pts</span>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        content.innerHTML = html;
+                    } else {
+                        content.innerHTML = '<p>No scores yet. Be the first to play!</p>';
+                    }
+                } else {
+                    console.log('⚠️ Database not connected after waiting, showing offline message');
+                    const content = document.getElementById('leaderboardContent');
+                    if (content) {
+                        content.innerHTML = `
+                            <p>Leaderboard not available (database offline)</p>
+                            <button onclick="loadLeaderboard()" style="margin-top: 10px; padding: 8px 16px; background: #00BFFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                🔄 Retry
+                            </button>
+                        `;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading leaderboard:', error);
+                const content = document.getElementById('leaderboardContent');
+                if (content) {
+                    content.innerHTML = '<p>Error loading leaderboard</p>';
+                }
+            }
+        }
+        
+        function loadSettings() {
+            const sound = localStorage.getItem('soundEnabled') !== 'false';
+            const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
+            
+            document.getElementById('soundEnabled').checked = sound;
+            document.getElementById('onScreenControls').checked = onScreenControls;
+            
+            // Note: Mobile controls visibility is now managed by updatePanelVisibility() based on game state
+            // Settings only control whether they should be shown during gameplay
+        }
+        
+        function saveSettings() {
+            const sound = document.getElementById('soundEnabled').checked;
+            const onScreenControls = document.getElementById('onScreenControls').checked;
+            
+            localStorage.setItem('soundEnabled', sound);
+            localStorage.setItem('onScreenControls', onScreenControls);
+            
+            // Update mobile controls visibility based on current game state and new setting
+            if (window.gameController) {
+                window.gameController.updatePanelVisibility();
+            }
+            
+            closeModal('settingsModal');
+            showMessage('Settings Saved', 'Your settings have been saved successfully.', true, 2000);
+        }
+        
+        async function loadUserStats() {
+            try {
+                if (userAuth && userAuth.database && userAuth.database.connected && currentUser) {
+                    console.log('🔧 Loading user stats...');
+                    
+                    // Get user scores
+                    const userScores = await userAuth.getUserScores(50);
+                    const gamesPlayed = userScores.length;
+                    
+                    // Get best score
+                    const bestScore = await userAuth.getBestScore();
+                    const bestScoreValue = bestScore ? bestScore.score : 0;
+                    
+                    document.getElementById('gamesPlayed').textContent = gamesPlayed;
+                    document.getElementById('bestScore').textContent = bestScoreValue;
+                    
+                    console.log(`✅ User stats loaded: ${gamesPlayed} games, best score: ${bestScoreValue}`);
+                } else {
+                    document.getElementById('gamesPlayed').textContent = 'N/A';
+                    document.getElementById('bestScore').textContent = 'N/A';
+                }
+            } catch (error) {
+                console.error('❌ Error loading user stats:', error);
+                document.getElementById('gamesPlayed').textContent = 'Error';
+                document.getElementById('bestScore').textContent = 'Error';
+            }
+        }
+        
+        // Custom modal functions to replace browser alerts
+        function showAlert(title, message, callback = null) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'alertModal';
+            
+            overlay.innerHTML = `
+                <div class="modal">
+                    <h2 class="glow-text primary-color">${title}</h2>
+                    <p style="margin: 20px 0;">${message}</p>
+                    <div class="button-row">
+                        <button class="game-button primary" onclick="closeCustomAlert()">OK</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            // Store callback for when modal is closed
+            window.alertCallback = callback;
+        }
+        
+        function closeCustomAlert() {
+            const modal = document.getElementById('alertModal');
+            if (modal) {
+                modal.remove();
+            }
+            if (window.alertCallback) {
+                window.alertCallback();
+                window.alertCallback = null;
+            }
+        }
+        
+        function showConfirm(title, message, onConfirm, onCancel = null) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'confirmModal';
+            
+            overlay.innerHTML = `
+                <div class="modal">
+                    <h2 class="glow-text primary-color">${title}</h2>
+                    <p style="margin: 20px 0;">${message}</p>
+                    <div class="button-row">
+                        <button class="game-button primary" onclick="confirmYes()">Yes</button>
+                        <button class="game-button secondary" onclick="confirmNo()">No</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            // Store callbacks
+            window.confirmYesCallback = onConfirm;
+            window.confirmNoCallback = onCancel;
+        }
+        
+        function confirmYes() {
+            const modal = document.getElementById('confirmModal');
+            if (modal) {
+                modal.remove();
+            }
+            if (window.confirmYesCallback) {
+                window.confirmYesCallback();
+                window.confirmYesCallback = null;
+                window.confirmNoCallback = null;
+            }
+        }
+        
+        function confirmNo() {
+            const modal = document.getElementById('confirmModal');
+            if (modal) {
+                modal.remove();
+            }
+            if (window.confirmNoCallback) {
+                window.confirmNoCallback();
+            }
+            window.confirmYesCallback = null;
+            window.confirmNoCallback = null;
+        }
+        
+        // Helper function for showing messages (if not already defined)
+        function showMessage(title, message, autoDismiss = false, dismissTime = 3000) {
+            if (window.gameController) {
+                window.gameController.showMessage(title, message, autoDismiss, dismissTime);
+            }
+        }
+
+        // Helper function for showing powerup notifications
+        function showPowerupNotification(message, icon = "⚡") {
+            if (window.gameController) {
+                window.gameController.showPowerupNotification(message, icon);
+            }
+        }
+    </script>
+</body>
+</html>
