@@ -96,32 +96,32 @@
             </div>
             
             <div class="button-row">
-                <button class="game-button primary" id="startGameBtn" onclick="startGame(); console.log('Direct onclick working!');">
+                <button class="game-button primary" id="startGameBtn">
                     🎮 START GAME
                 </button>
             </div>
             <div class="button-row">
-                <button class="game-button" id="loginBtn" onclick="showLogin()">
+                <button class="game-button" id="loginBtn">
                     🔑 LOGIN
                 </button>
-                <button class="game-button" id="registerBtn" onclick="showRegister()">
+                <button class="game-button" id="registerBtn">
                     📝 REGISTER
                 </button>
-                <button class="game-button" id="profileBtn" onclick="showProfile()" style="display: none;">
+                <button class="game-button" id="profileBtn" style="display: none;">
                     👤 PROFILE
                 </button>
-                <button class="game-button" id="logoutBtn" onclick="logout()" style="display: none;">
+                <button class="game-button" id="logoutBtn" style="display: none;">
                     🚪 LOGOUT
                 </button>
             </div>
             <div class="button-row">
-                <button class="game-button" id="helpBtn" onclick="showHelp()">
+                <button class="game-button" id="helpBtn">
                     ❓ HELP
                 </button>
-                <button class="game-button" id="leaderboardBtn" onclick="showLeaderboard()">
+                <button class="game-button" id="leaderboardBtn">
                     🏆 LEADERBOARD
                 </button>
-                <button class="game-button" id="settingsBtn" onclick="showSettings()">
+                <button class="game-button" id="settingsBtn">
                     ⚙️ SETTINGS
                 </button>
             </div>
@@ -246,27 +246,12 @@
                     if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
                     if (currentUser) {
                         if (topMenu) topMenu.style.display = 'flex';
-                        this.updateScoreDisplay();
+                        this.updateStatus(); // Use updateStatus instead of updateScoreDisplay
                     }
                 } else {
                     if (menuButtons) menuButtons.style.display = 'none';
                     if (topMenu) topMenu.style.display = 'none';
                     if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
-                }
-            }
-            
-            updateScoreDisplay() {
-                const scoreDisplay = document.getElementById('scoreDisplay');
-                
-                if (game) {
-                    // Calculate current potential score based on elapsed time
-                    const currentTime = Math.floor((Date.now() / 1000) - game.startTime);
-                    const potentialScore = Math.max(100, 10000 - (currentTime * 50));
-                    
-                    // Update top menu score display
-                    if (scoreDisplay) {
-                        scoreDisplay.textContent = `Score: ${potentialScore}`;
-                    }
                 }
             }
             
@@ -427,8 +412,23 @@
                 }
                 
                 if (currentScoreEl) {
-                    const score = game ? game.score || 0 : 0;
-                    currentScoreEl.innerHTML = `Score: <span style="color: #FFD700;">${score}</span>`;
+                    // Calculate real-time increasing score during gameplay starting from 0
+                    let currentScore = 0;
+                    if (game && game.startTime) {
+                        const elapsedSeconds = Math.floor((Date.now() / 1000) - game.startTime);
+                        
+                        // Start from 0 and add points for survival/playing time (increase as playing)
+                        const survivalPoints = Math.floor(elapsedSeconds * 2); // 2 points per second
+                        currentScore += survivalPoints;
+                        
+                        // Subtract powerup penalty if any powerups used
+                        const powerupsUsed = game.powerupsUsed || 0;
+                        currentScore += (powerupsUsed * -10);
+                        
+                        // Ensure score is never negative
+                        currentScore = Math.max(0, currentScore);
+                    }
+                    currentScoreEl.innerHTML = `Score: <span style="color: #FFD700;">${currentScore}</span>`;
                 }
                 
                 if (currentTimeEl) {
@@ -452,6 +452,7 @@
             
             updateScoreDisplay() {
                 // This function updates score and time in real-time during gameplay
+                // Use the same logic as updateStatus for consistency
                 this.updateStatus();
             }
             
@@ -601,7 +602,7 @@
                         const result = game.update();
                         
                         // Update score display during gameplay
-                        this.updateScoreDisplay();
+                        this.updateStatus();
                         
                         // Check for game end conditions BEFORE drawing
                         if (result === "win") {
@@ -643,16 +644,64 @@
                 
                 const survivalTime = Math.floor((Date.now() / 1000) - game.startTime);
                 
-                // Calculate score based on completion time (only for wins)
+                // Calculate score using new comprehensive system
                 let finalScore = 0;
+                let scoreBreakdown = {};
+                
                 if (result === "win") {
-                    // Base score of 10000, minus 50 points per second (faster = higher score)
-                    // Minimum score of 100 to ensure positive scores
-                    finalScore = Math.max(100, 10000 - (survivalTime * 50));
+                    // WIN SCORING
+                    
+                    // Base Score: 100 points for winning
+                    scoreBreakdown.winBonus = 100;
+                    finalScore += scoreBreakdown.winBonus;
+                    
+                    // Time-based bonus/penalty
+                    if (survivalTime <= 15) {
+                        scoreBreakdown.timeBonus = 100;
+                    } else if (survivalTime > 15 && survivalTime <= 25) {
+                        scoreBreakdown.timeBonus = 50;
+                    } else {
+                        scoreBreakdown.timeBonus = 5;
+                    }
+                    finalScore += scoreBreakdown.timeBonus;
+                    
+                    // Playing time bonus (increases score as you play)
+                    scoreBreakdown.playingBonus = Math.floor(survivalTime * 2); // 2 points per second
+                    finalScore += scoreBreakdown.playingBonus;
+                    
+                    // Power-up penalty (count how many power-ups were used)
+                    const powerupsUsed = game.powerupsUsed || 0;
+                    scoreBreakdown.powerupPenalty = powerupsUsed * -10;
+                    finalScore += scoreBreakdown.powerupPenalty;
+                    
+                    // Lives bonus: 20 points if full lives (2 lives remaining)
+                    const livesRemaining = game.lives || 0;
+                    if (livesRemaining >= 2) {
+                        scoreBreakdown.livesBonus = 20;
+                        finalScore += scoreBreakdown.livesBonus;
+                    } else {
+                        scoreBreakdown.livesBonus = 0;
+                    }
+                    
                 } else {
-                    // For losses, give points based on survival time
-                    finalScore = Math.max(0, survivalTime * 10);
+                    // LOSE SCORING
+                    
+                    // Lose penalty: -50 points
+                    scoreBreakdown.losePenalty = -50;
+                    finalScore += scoreBreakdown.losePenalty;
+                    
+                    // Playing time bonus (still get points for time played when losing)
+                    scoreBreakdown.playingBonus = Math.floor(survivalTime * 1); // 1 point per second when losing
+                    finalScore += scoreBreakdown.playingBonus;
+                    
+                    // Power-up penalty still applies when losing
+                    const powerupsUsed = game.powerupsUsed || 0;
+                    scoreBreakdown.powerupPenalty = powerupsUsed * -10;
+                    finalScore += scoreBreakdown.powerupPenalty;
                 }
+                
+                // Ensure score is never negative (show zero if negative)
+                finalScore = Math.max(0, finalScore);
                 
                 // Save score to database
                 if (gameDB && gameDB.connected && currentUser) {
@@ -688,11 +737,40 @@
                     }
                 }
                 
-                // Show result message with score details
+                // Show result message with detailed score breakdown
                 if (result === "win") {
-                    this.showMessage("🏆 VICTORY! 🏆", `Congratulations! You completed the maze!\nTime: ${survivalTime} Sec\nScore: ${finalScore} points\n⚡ Faster completion = Higher score!`, true, 3000);
+                    let breakdownText = `🏆 SCORE BREAKDOWN 🏆\n` +
+                        `Win Bonus: +${scoreBreakdown.winBonus} pts\n` +
+                        `Time Bonus: +${scoreBreakdown.timeBonus} pts\n` +
+                        `Playing Bonus: +${scoreBreakdown.playingBonus} pts\n`;
+                    
+                    if (scoreBreakdown.powerupPenalty < 0) {
+                        breakdownText += `Powerup Penalty: ${scoreBreakdown.powerupPenalty} pts\n`;
+                    }
+                    
+                    if (scoreBreakdown.livesBonus > 0) {
+                        breakdownText += `Full Lives Bonus: +${scoreBreakdown.livesBonus} pts\n`;
+                    }
+                    
+                    breakdownText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                        `TOTAL: ${finalScore} pts\n` +
+                        `Time: ${survivalTime} seconds`;
+                    
+                    this.showMessage("🏆 VICTORY! 🏆", `Congratulations! You escaped the maze!\n\n${breakdownText}`, true, 4000);
                 } else {
-                    this.showMessage("💀 GAME OVER", `You survived for ${survivalTime} Sec.\nScore: ${finalScore} points\nTry again!`, true, 2000);
+                    let breakdownText = `💀 SCORE BREAKDOWN 💀\n` +
+                        `Lose Penalty: ${scoreBreakdown.losePenalty} pts\n` +
+                        `Playing Bonus: +${scoreBreakdown.playingBonus} pts\n`;
+                    
+                    if (scoreBreakdown.powerupPenalty < 0) {
+                        breakdownText += `Powerup Penalty: ${scoreBreakdown.powerupPenalty} pts\n`;
+                    }
+                    
+                    breakdownText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                        `TOTAL: ${finalScore} pts\n` +
+                        `Survived: ${survivalTime} seconds`;
+                    
+                    this.showMessage("💀 GAME OVER", `You fought bravely!\n\n${breakdownText}\n\nTry again to improve your score!`, true, 4000);
                 }
                 
                 // Return to menu and stop game loop
@@ -1007,10 +1085,23 @@
                         
                         <h4 style="color: #9D4EDD; margin-top: 20px; margin-bottom: 15px;">🏆 Scoring System</h4>
                         <p style="margin-bottom: 20px;">
-                            • <strong>+10 points</strong> every second you survive<br>
-                            • <strong>+100 points</strong> for reaching the exit<br>
-                            • <strong>-10 points</strong> for collecting power-ups<br>
-                            • <strong>-20 points</strong> if you lose all lives
+                            <strong style="color: #00BFFF;">🏆 WIN SCORING:</strong><br>
+                            • <span style="color: #FFD700;">Win Bonus:</span> +100 points for completing the maze<br>
+                            • <span style="color: #39FF14;">Time Bonus:</span><br>
+                            &nbsp;&nbsp;- 10-15 seconds = +100 points<br>
+                            &nbsp;&nbsp;- 15-25 seconds = +50 points<br>
+                            &nbsp;&nbsp;- Above 25 seconds = +5 points<br>
+                            • <span style="color: #00BFFF;">Playing Bonus:</span> +2 points per second played<br>
+                            • <span style="color: #FF6B6B;">Powerup Penalty:</span> -10 points per powerup used<br>
+                            • <span style="color: #39FF14;">Full Lives Bonus:</span> +20 points (if 2 lives remaining)<br><br>
+                            
+                            <strong style="color: #FF6B6B;">💀 LOSE SCORING:</strong><br>
+                            • <span style="color: #FF6B6B;">Lose Penalty:</span> -50 points<br>
+                            • <span style="color: #00BFFF;">Playing Bonus:</span> +1 point per second survived<br>
+                            • <span style="color: #FF6B6B;">Powerup Penalty:</span> -10 points per powerup used<br>
+                            • <span style="color: #888;">Note:</span> Score will show 0 if negative<br><br>
+                            
+                            <strong style="color: #FFD700;">💡 Strategy:</strong> Score increases as you play! Complete fast for maximum bonus!
                         </p>
                         
                         <h4 style="color: #FF8C00; margin-top: 20px; margin-bottom: 15px;">💡 Strategy Tips</h4>
@@ -1552,6 +1643,96 @@
                 window.gameController.showPowerupNotification(message, icon);
             }
         }
+
+        // Add event listeners for all buttons to replace onclick handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            // Main game buttons
+            const startGameBtn = document.getElementById('startGameBtn');
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const profileBtn = document.getElementById('profileBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const helpBtn = document.getElementById('helpBtn');
+            const leaderboardBtn = document.getElementById('leaderboardBtn');
+            const settingsBtn = document.getElementById('settingsBtn');
+
+            if (startGameBtn) {
+                startGameBtn.addEventListener('click', function() {
+                    startGame();
+                    console.log('Event listener onclick working!');
+                });
+            }
+
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function() {
+                    showLogin();
+                });
+            }
+
+            if (registerBtn) {
+                registerBtn.addEventListener('click', function() {
+                    showRegister();
+                });
+            }
+
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function() {
+                    showProfile();
+                });
+            }
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    logout();
+                });
+            }
+
+            if (helpBtn) {
+                helpBtn.addEventListener('click', function() {
+                    showHelp();
+                });
+            }
+
+            if (leaderboardBtn) {
+                leaderboardBtn.addEventListener('click', function() {
+                    showLeaderboard();
+                });
+            }
+
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', function() {
+                    showSettings();
+                });
+            }
+
+            // Modal buttons - these need to be added dynamically since modals are created on demand
+            document.body.addEventListener('click', function(e) {
+                if (e.target.classList.contains('game-button')) {
+                    const buttonText = e.target.textContent.trim();
+                    
+                    // Handle modal buttons
+                    if (buttonText === '🎮 Let\'s Play!' && e.target.getAttribute('onclick') === 'closeModal(\'helpModal\')') {
+                        closeModal('helpModal');
+                    } else if (buttonText === 'Login' && e.target.getAttribute('onclick') === 'performLogin()') {
+                        performLogin();
+                    } else if (buttonText === 'Cancel') {
+                        const modalId = e.target.closest('.modal-overlay')?.id;
+                        if (modalId) {
+                            closeModal(modalId.replace('Modal', ''));
+                        }
+                    } else if (buttonText === 'Register' && e.target.getAttribute('onclick') === 'performRegister()') {
+                        performRegister();
+                    } else if (buttonText === 'Close') {
+                        const modalId = e.target.closest('.modal-overlay')?.id;
+                        if (modalId) {
+                            closeModal(modalId.replace('Modal', ''));
+                        }
+                    }
+                }
+            });
+
+            console.log('✅ Event listeners added for all buttons');
+        });
     </script>
 </body>
 </html>

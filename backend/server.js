@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
+const path = require('path');
 require('dotenv').config();
 
 const connectDB = require('./config/database');
@@ -10,25 +11,29 @@ const authRoutes = require('./routes/auth');
 const scoresRoutes = require('./routes/scores');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3004;
 
 // Connect to MongoDB
 connectDB();
 
-// Security middleware
-app.use(helmet());
+// Security middleware with disabled CSP for game functionality
+app.use(helmet({
+    contentSecurityPolicy: false, // Disable CSP entirely for the game to work
+}));
 
 // Rate limiting
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    windowMs: 15 * 60 * 1000,
+    max: 100,
     message: 'Too many requests from this IP, please try again later.'
 });
 app.use(limiter);
 
-// CORS configuration - More permissive for development
+// CORS configuration
 const corsOptions = {
     origin: [
+        `http://localhost:${PORT}`,
+        `http://127.0.0.1:${PORT}`,
         'http://localhost:8000', 
         'http://127.0.0.1:8000', 
         'http://localhost:5500',
@@ -43,12 +48,13 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// Log accepted origins for debugging
-console.log('🌐 CORS Origins:', corsOptions.origin.join(', '));
-
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Serve static files from frontend directory
+const frontendPath = path.join(__dirname, '..', 'frontend');
+app.use(express.static(frontendPath));
 
 // Logging middleware
 app.use((req, res, next) => {
@@ -56,25 +62,13 @@ app.use((req, res, next) => {
     next();
 });
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-    res.json({
-        status: 'OK',
-        timestamp: new Date().toISOString(),
-        service: 'Maze Chase Backend',
-        version: '1.0.0'
-    });
-});
-
 // API routes
-// Mount routes
 app.use('/api/auth', authRoutes);
 app.use('/api/scores', scoresRoutes);
 
 // Health check endpoint
 app.get('/api/health', async (req, res) => {
     try {
-        // Test database connection
         const dbState = mongoose.connection.readyState;
         const states = {
             0: 'disconnected',
@@ -104,22 +98,6 @@ app.get('/api/health', async (req, res) => {
             error: error.message
         });
     }
-});
-
-// Root endpoint
-app.get('/', (req, res) => {
-    res.json({
-        success: true,
-        message: '🎮 Welcome to Maze Chase Backend API!',
-        version: '1.0.0',
-        endpoints: [
-            'GET /api/health - Health check',
-            'POST /api/auth/register - Register user',
-            'POST /api/auth/login - Login user',
-            'GET /api/scores/leaderboard - Get leaderboard',
-            'POST /api/scores/submit - Submit score'
-        ]
-    });
 });
 
 // Game statistics endpoint
@@ -159,22 +137,24 @@ app.use((err, req, res, next) => {
     });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
+// 404 handler for API routes only
+app.use('/api/*', (req, res) => {
     res.status(404).json({
         success: false,
-        message: 'Route not found'
+        message: 'API route not found'
     });
 });
 
-// Start server
+// Serve index.html for all non-API routes (SPA support)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+// Start server with clean logs
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Maze Chase Backend server running on port ${PORT}`);
+    console.log(`🚀 MazeScape Server running on port ${PORT}`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🔗 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:8000'}`);
-    console.log(`💾 Database: MongoDB Atlas`);
-    console.log(`📡 Server listening on: http://localhost:${PORT}`);
-    console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+    console.log(`🎯 Game available at: http://localhost:${PORT}`);
 });
 
 // Graceful shutdown
