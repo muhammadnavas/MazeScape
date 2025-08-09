@@ -1,8 +1,11 @@
 // Frontend Database Client - Connects to MongoDB Backend
 class MazeChaseDB {
     constructor() {
-        this.connected = false;
-        this.baseURL = 'http://localhost:3004/api';
+        this.baseURL = 
+    window.location.hostname === "localhost"
+        ? "http://localhost:3004/api"
+        : "https://mazescape.onrender.com/api";
+
         this.init();
     }
     
