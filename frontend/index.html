@@ -10,66 +10,26 @@
     <!-- Top Menu Bar -->
 
     <!-- Menu Header for User Status -->
-    <div class="menu-header" id="menuHeader" style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 80px;
-        background: rgba(26, 26, 46, 0.95);
-        backdrop-filter: blur(15px);
-        border-bottom: 2px solid #00BFFF;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 30px;
-        z-index: 150;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    ">
+    <div class="menu-header" id="menuHeader">
         <div class="logo">
-            <span style="
-                color: #00BFFF;
-                font-size: 26px;
-                font-weight: 700;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-                letter-spacing: 1px;
-            ">MazeScape</span>
+            <span class="logo-text">MazeScape</span>
         </div>
         <div class="user-info" style="
             display: flex;
             align-items: center;
             gap: 20px;
         ">
-            <div class="user-welcome" style="
-                color: #39FF14;
-                font-size: 16px;
-                font-weight: 600;
-                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-                padding: 8px 16px;
-                background: rgba(57, 255, 20, 0.1);
-                border-radius: 8px;
-                border: 1px solid rgba(57, 255, 20, 0.3);
-            ">
+            <div class="user-welcome">
                 <span id="menuHeaderWelcomeText">Welcome, Guest!</span>
             </div>
-            <div class="score-info" id="menuHeaderScoreInfo" style="
-                color: #FFD700;
-                font-size: 16px;
-                font-weight: 600;
-                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-                padding: 8px 16px;
-                background: rgba(255, 215, 0, 0.1);
-                border-radius: 8px;
-                border: 1px solid rgba(255, 215, 0, 0.3);
-                display: none;
-            ">
-                <span id="menuHeaderTopScore">Best: -- Sec</span>
+            <div class="score-info" id="menuHeaderScoreInfo">
+                <span id="menuHeaderTopScore">Best Score: -- </span>
             </div>
         </div>
     </div>
 
     <div id="gameContainer">
-        <canvas id="gameCanvas" width="1200" height="800"></canvas>
+        <canvas id="gameCanvas"></canvas>
         <div id="ui-container">
         </div>
         
@@ -77,22 +37,8 @@
         <div class="menu-buttons" id="menuButtons">
             <!-- Game Title -->
             <div style="text-align: center; margin-bottom: 40px;">
-                <h1 style="
-                    font-size: 48px;
-                    font-weight: 700;
-                    color: #00BFFF;
-                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-                    letter-spacing: 2px;
-                    margin: 0;
-                    font-family: 'Segoe UI', sans-serif;
-                ">MAZESCAPE</h1>
-                <p style="
-                    color: #888;
-                    font-size: 16px;
-                    margin: 10px 0 0 0;
-                    letter-spacing: 1px;
-                    font-weight: 300;
-                ">Navigate • Survive • Escape</p>
+                <h1 class="main-title">MAZESCAPE</h1>
+                <p class="main-subtitle">Navigate • Survive • Escape</p>
             </div>
             
             <div class="button-row">
@@ -124,6 +70,111 @@
                 <button class="game-button" id="settingsBtn">
                     ⚙️ SETTINGS
                 </button>
+                <button class="game-button mobile-only" id="mobileBlogBtn">
+                    📚 A* ALGORITHM
+                </button>
+            </div>
+        </div>
+        
+        <!-- A* Algorithm Blog Panel (Background Overlay) -->
+        <div class="blog-panel left" id="algorithmBlog">
+            <h4>🧠 A* PATHFINDING ALGORITHM</h4>
+            
+            <div class="blog-content" style="
+                font-size: 13px;
+                line-height: 1.6;
+                text-align: left;
+            ">
+                <div class="blog-section" style="margin-bottom: 20px;">
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">🎯 What is A*?</h5>
+                    <p style="margin-bottom: 10px;">
+                        A* (A-star) is a best-first search algorithm that finds the least-cost path from a given initial node 
+                        to one goal node out of one or more possible goals. It uses both the actual distance from the start 
+                        and a heuristic estimate to guide its search.
+                    </p>
+                </div>
+                
+                <div class="blog-section" style="margin-bottom: 20px;">
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">⚡ How It Works</h5>
+                    <p style="margin-bottom: 8px;">A* evaluates nodes using the formula:</p>
+                    <div style="
+                        background: rgba(0, 0, 0, 0.6);
+                        padding: 12px;
+                        border-radius: 8px;
+                        font-family: 'Courier New', monospace;
+                        font-size: 14px;
+                        color: #00BFFF;
+                        margin-bottom: 15px;
+                        border: 1px solid rgba(0, 191, 255, 0.3);
+                        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+                    ">f(n) = g(n) + h(n)</div>
+                    <ul style="margin-left: 15px; margin-bottom: 10px;">
+                        <li><strong style="color: #E0E0E0;">g(n):</strong> Exact cost from start node to node n</li>
+                        <li><strong style="color: #E0E0E0;">h(n):</strong> Heuristic estimate from node n to goal</li>
+                        <li><strong style="color: #E0E0E0;">f(n):</strong> Estimated total cost of path through n</li>
+                    </ul>
+                </div>
+                
+                <div class="blog-section" style="margin-bottom: 20px;">
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">📊 Key Properties</h5>
+                    <p style="margin-bottom: 10px;">
+                        A* is both complete and optimal when the heuristic function is admissible (never overestimates 
+                        the actual cost). It combines the advantages of Dijkstra's algorithm (guaranteed shortest path) 
+                        with the efficiency of greedy best-first search.
+                    </p>
+                    <div style="
+                        background: rgba(0, 191, 255, 0.2);
+                        border-left: 4px solid #00BFFF;
+                        padding: 12px;
+                        border-radius: 6px;
+                        font-size: 13px;
+                        margin-bottom: 15px;
+                        backdrop-filter: blur(5px);
+                        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+                    ">
+                        <strong>Optimality:</strong> Guaranteed to find the shortest path if one exists
+                    </div>
+                </div>
+                
+                <div class="blog-section" style="margin-bottom: 20px;">
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">🔧 Algorithm Steps</h5>
+                    <ol style="margin-left: 15px; font-size: 12px;">
+                        <li style="margin-bottom: 4px;">Initialize open list with start node</li>
+                        <li style="margin-bottom: 4px;">Select node with lowest f(n) from open list</li>
+                        <li style="margin-bottom: 4px;">Move selected node to closed list</li>
+                        <li style="margin-bottom: 4px;">Examine each neighbor of current node</li>
+                        <li style="margin-bottom: 4px;">Update costs and continue until goal is reached</li>
+                    </ol>
+                </div>
+                
+                <div class="blog-section" style="margin-bottom: 20px;">
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">🌍 Real-World Applications</h5>
+                    <ul style="margin-left: 15px; font-size: 12px;">
+                        <li style="margin-bottom: 4px;">GPS navigation and route planning</li>
+                        <li style="margin-bottom: 4px;">Video game AI pathfinding</li>
+                        <li style="margin-bottom: 4px;">Robotics and autonomous vehicles</li>
+                        <li style="margin-bottom: 4px;">Network routing protocols</li>
+                        <li style="margin-bottom: 4px;">Puzzle solving and optimization problems</li>
+                    </ul>
+                </div>
+                
+                <div class="blog-section">
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">📈 Advantages & Complexity</h5>
+                    <div style="
+                        background: rgba(0, 191, 255, 0.2);
+                        border: 1px solid rgba(0, 191, 255, 0.4);
+                        padding: 12px;
+                        border-radius: 8px;
+                        font-size: 13px;
+                        backdrop-filter: blur(5px);
+                        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+                    ">
+                        <p style="margin-bottom: 8px;"><strong>Time Complexity:</strong> O(b^d) where b is branching factor</p>
+                        <p style="margin-bottom: 8px;"><strong>Space Complexity:</strong> O(b^d) stores all generated nodes</p>
+                        <p style="margin-bottom: 8px;"><strong>Advantages:</strong> Optimal, complete, and efficient</p>
+                        <p><strong>Invented:</strong> 1968 by Peter Hart, Nils Nilsson, Bertram Raphael</p>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -138,14 +189,14 @@
         <div id="powerup-notifications"></div>
         
         <!-- Mobile On-Screen Controls -->
-        <div id="mobile-controls" style="display: none;">
+        <div id="mobile-controls">
             <div class="control-pad">
-                <button class="control-btn" id="btn-up" ontouchstart="handleMobileMove('up')" ontouchend="handleMobileStop()">↑</button>
+                <button class="control-btn" id="btn-up">↑</button>
                 <div class="control-row">
-                    <button class="control-btn" id="btn-left" ontouchstart="handleMobileMove('left')" ontouchend="handleMobileStop()">←</button>
-                    <button class="control-btn" id="btn-right" ontouchstart="handleMobileMove('right')" ontouchend="handleMobileStop()">→</button>
+                    <button class="control-btn" id="btn-left">←</button>
+                    <button class="control-btn" id="btn-right">→</button>
                 </div>
-                <button class="control-btn" id="btn-down" ontouchstart="handleMobileMove('down')" ontouchend="handleMobileStop()">↓</button>
+                <button class="control-btn" id="btn-down">↓</button>
             </div>
         </div>
     </div>
@@ -226,6 +277,9 @@
                     if (topMenu) topMenu.style.display = 'none';
                     if (menuKeyboardHint) menuKeyboardHint.style.display = 'block';
                     
+                    // Initialize blog panel state when returning to menu
+                    initializeBlogPanel();
+                    
                     if (currentUser) {
                         // User is logged in - show profile/logout, hide login/register
                         console.log('👤 User logged in, showing profile buttons');
@@ -256,25 +310,41 @@
             }
             
             setupCanvas() {
-                // Responsive canvas sizing
-                const maxWidth = window.innerWidth - 40;
-                const maxHeight = window.innerHeight - 40;
+                // Fixed maze dimensions for consistent gameplay
+                const FIXED_MAZE_WIDTH = 30;  // 30x20 grid for balanced gameplay
+                const FIXED_MAZE_HEIGHT = 20;
+                const GRID_SIZE = 40; // Same as game.js
                 
-                let canvasWidth = Math.min(1200, maxWidth);
-                let canvasHeight = Math.min(800, maxHeight);
+                // Calculate ideal canvas size based on fixed maze dimensions
+                const idealCanvasWidth = FIXED_MAZE_WIDTH * GRID_SIZE;
+                const idealCanvasHeight = FIXED_MAZE_HEIGHT * GRID_SIZE;
                 
-                // Maintain aspect ratio
-                const aspectRatio = 1200 / 800;
-                if (canvasWidth / canvasHeight > aspectRatio) {
-                    canvasWidth = canvasHeight * aspectRatio;
-                } else {
-                    canvasHeight = canvasWidth / aspectRatio;
-                }
+                // Get available space
+                const availableWidth = window.innerWidth - 40;
+                const availableHeight = window.innerHeight - 120; // Account for header
                 
-                this.canvas.width = canvasWidth;
-                this.canvas.height = canvasHeight;
+                // Calculate scale to fit while maintaining aspect ratio
+                const scaleX = availableWidth / idealCanvasWidth;
+                const scaleY = availableHeight / idealCanvasHeight;
+                const scale = Math.min(scaleX, scaleY, 1.5); // Cap at 1.5x for large screens
                 
-                console.log(`Canvas resized to: ${canvasWidth}x${canvasHeight}`);
+                // Set canvas size to maintain exact maze grid
+                this.canvas.width = idealCanvasWidth;
+                this.canvas.height = idealCanvasHeight;
+                
+                // Apply CSS scaling for responsive display
+                this.canvas.style.width = (idealCanvasWidth * scale) + 'px';
+                this.canvas.style.height = (idealCanvasHeight * scale) + 'px';
+                
+                // Disable image smoothing for crisp pixel art
+                const ctx = this.canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = false;
+                ctx.mozImageSmoothingEnabled = false;
+                ctx.webkitImageSmoothingEnabled = false;
+                ctx.msImageSmoothingEnabled = false;
+                
+                console.log(`Canvas setup: ${this.canvas.width}x${this.canvas.height} (scaled to ${this.canvas.style.width} x ${this.canvas.style.height})`);
+                console.log(`Maze will be: ${FIXED_MAZE_WIDTH}x${FIXED_MAZE_HEIGHT} grid`);
             }
             
             setupEventListeners() {
@@ -354,13 +424,27 @@
                 
                 try {
                     console.log('🔧 Creating new MazeGame...');
-                    game = new MazeGame(this.canvas);
+                    console.log('🔍 Checking if MazeGame is available:', typeof MazeGame, typeof window.MazeGame);
+                    console.log('🔍 Available window properties:', Object.keys(window).filter(k => k.toLowerCase().includes('maze')));
+                    
+                    if (typeof MazeGame === 'undefined' && typeof window.MazeGame !== 'undefined') {
+                        console.log('🔄 Using window.MazeGame instead');
+                        game = new window.MazeGame(this.canvas);
+                    } else if (typeof MazeGame !== 'undefined') {
+                        game = new MazeGame(this.canvas);
+                    } else {
+                        throw new Error('MazeGame class is not defined. Check if game.js loaded properly.');
+                    }
+                    
                     console.log('✅ MazeGame created successfully:', game);
                     
                     gameState = "playing";
                     this.updateStatus();
                     this.updateMenuButtons();
                     console.log('🎮 Starting game');
+                    
+                    // Update mobile controls visibility for gameplay
+                    updateMobileControlsVisibility(true);
                     
                     // Start the game loop
                     if (!this.gameLoopRunning) {
@@ -381,6 +465,9 @@
                 game = null;
                 gameState = "menu";
                 this.gameLoopRunning = false;
+                
+                // Hide mobile controls when returning to menu
+                updateMobileControlsVisibility(false);
                 
                 // Clear the canvas completely - let page background show through
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -462,12 +549,14 @@
                 const menuHeader = document.getElementById('menuHeader');
                 const mobileControls = document.getElementById('mobile-controls');
                 const gameContainer = document.getElementById('gameContainer');
+                const algorithmBlog = document.getElementById('algorithmBlog');
                 
                 if (gameState === "playing" || gameState === "paused") {
                     // Show game UI panels
                     sidePanels.forEach(panel => panel.style.display = 'block');
                     if (menuButtons) menuButtons.style.display = 'none';
                     if (menuHeader) menuHeader.style.display = 'none'; // Hide menu header during game
+                    if (algorithmBlog) algorithmBlog.classList.add('hidden'); // Hide blog during game
                     
                     // Adjust game container for gameplay (no header)
                     if (gameContainer) {
@@ -475,16 +564,14 @@
                         gameContainer.style.height = '100vh';
                     }
                     
-                    // Show mobile controls only during gameplay if enabled in settings
-                    if (mobileControls) {
-                        const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
-                        mobileControls.style.display = onScreenControls ? 'block' : 'none';
-                    }
+                    // Show mobile controls during gameplay - strict control
+                    updateMobileControlsVisibility(true);
                 } else {
                     // Hide game UI panels
                     sidePanels.forEach(panel => panel.style.display = 'none');
                     if (menuButtons) menuButtons.style.display = 'flex';
                     if (menuHeader) menuHeader.style.display = 'flex'; // Show menu header in menu
+                    if (algorithmBlog) algorithmBlog.classList.remove('hidden'); // Show blog in menu
                     
                     // Adjust game container for menu (with header)
                     if (gameContainer) {
@@ -492,10 +579,8 @@
                         gameContainer.style.height = 'calc(100vh - 80px)';
                     }
                     
-                    // Hide mobile controls when not playing
-                    if (mobileControls) {
-                        mobileControls.style.display = 'none';
-                    }
+                    // Always hide mobile controls when not playing
+                    updateMobileControlsVisibility(false);
                 }
             }
             
@@ -714,18 +799,18 @@
                         const scoreSaved = await gameDB.saveScore(userId, username, finalScore, result, survivalTime, "classic");
                         console.log(`Score save result: ${scoreSaved ? '✅ SUCCESS' : '❌ FAILED'}`);
                         
-                        // Update best score display if this is a win and user is logged in
-                        if (result === "win") {
-                            // First, immediately show the current time if it's likely a new best
+                        // Update best score display if user is logged in
+                        if (currentUser) {
+                            // First, immediately show the current score if it's likely a new best
                             const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
                             if (menuHeaderTopScore) {
-                                const currentDisplayedTime = menuHeaderTopScore.textContent.match(/\d+/);
-                                const currentBestTime = currentDisplayedTime ? parseInt(currentDisplayedTime[0]) : 9999;
+                                const currentDisplayedScore = menuHeaderTopScore.textContent.match(/\d+/);
+                                const currentBestScore = currentDisplayedScore ? parseInt(currentDisplayedScore[0]) : 0;
                                 
-                                // If this completion time is better than displayed time, update immediately
-                                if (survivalTime < currentBestTime) {
-                                    menuHeaderTopScore.textContent = `Best: ${survivalTime} Sec`;
-                                    console.log('⚡ Immediately updated best score display with new record:', survivalTime, 'seconds');
+                                // If this score is higher than displayed score, update immediately
+                                if (finalScore > currentBestScore) {
+                                    menuHeaderTopScore.textContent = `Best: ${finalScore} Pts`;
+                                    console.log('⚡ Immediately updated best score display with new record:', finalScore, 'points');
                                 }
                             }
                             
@@ -800,15 +885,19 @@
                         
                         console.log('📊 Best score data received:', bestScore);
                         
-                        if (bestScore && bestScore.time && menuHeaderTopScore) {
-                            menuHeaderTopScore.textContent = `Best: ${bestScore.time} Sec`;
-                            console.log('🏆 Updated best score display:', bestScore.time, 'seconds');
+                        if (bestScore && bestScore.score !== undefined && menuHeaderTopScore) {
+                            menuHeaderTopScore.textContent = `Best: ${bestScore.score} Pts`;
+                            console.log('🏆 Updated best score display:', bestScore.score, 'points');
                         } else if (menuHeaderTopScore) {
                             console.log('⚠️ No best score found, setting to default');
-                            menuHeaderTopScore.textContent = 'Best: -- Sec';
+                            menuHeaderTopScore.textContent = 'Best: -- Pts';
                         }
                     } catch (error) {
                         console.error('❌ Error updating best score:', error);
+                        const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
+                        if (menuHeaderTopScore) {
+                            menuHeaderTopScore.textContent = 'Best: -- Pts';
+                        }
                     }
                 }
             }
@@ -892,11 +981,23 @@
                 // Initialize UserAuth with the database
                 userAuth = new UserAuth(window.database);
                 
-                // Initialize mobile controls - hide by default, only show during gameplay
+                // Initialize mobile controls - ensure they're hidden initially
                 const mobileControls = document.getElementById('mobile-controls');
                 if (mobileControls) {
                     mobileControls.style.display = 'none';
+                    console.log('🎮 Mobile controls initialized as hidden');
                 }
+                
+                // Initialize algorithm blog panel
+                initializeBlogPanel();
+                
+                // Check if user is already logged in and update best score
+                setTimeout(async () => {
+                    if (currentUser && userAuth) {
+                        console.log('🔄 User already logged in, updating best score...');
+                        await gameController.updateBestScore();
+                    }
+                }, 1000);
                 
             }, 500); // Wait 500ms for controller to initialize
         });
@@ -1021,31 +1122,72 @@
         
         // Mobile control functions
         function handleMobileMove(direction) {
-            if (window.gameController && gameState === "playing") {
-                // Map mobile directions to key codes
+            console.log('🎮 Mobile control pressed:', direction, 'Game state:', gameState);
+            
+            // Add visual feedback
+            const button = event.target;
+            if (button) {
+                button.classList.add('active');
+                setTimeout(() => button.classList.remove('active'), 150);
+            }
+            
+            if (window.gameController && gameState === "playing" && game) {
+                // Map mobile directions to key values that the game expects
                 const directionMap = {
-                    'up': 87,    // W key
-                    'down': 83,  // S key
-                    'left': 65,  // A key
-                    'right': 68  // D key
+                    'up': 'w',
+                    'down': 's', 
+                    'left': 'a',
+                    'right': 'd'
                 };
                 
-                const keyCode = directionMap[direction];
-                if (keyCode) {
-                    // Simulate keydown event
+                const key = directionMap[direction];
+                if (key) {
+                    console.log('🔑 Simulating key press:', key);
+                    
+                    // Create a proper keyboard event with the key property
                     const event = new KeyboardEvent('keydown', {
-                        keyCode: keyCode,
-                        which: keyCode,
-                        bubbles: true
+                        key: key,
+                        code: `Key${key.toUpperCase()}`,
+                        bubbles: true,
+                        cancelable: true
                     });
+                    
+                    // Dispatch the event to trigger the game's handleKeyPress method
                     document.dispatchEvent(event);
+                    
+                    // Also directly call the game's movement method as backup
+                    try {
+                        switch(direction) {
+                            case 'up':
+                                game.movePlayer(-1, 0);
+                                break;
+                            case 'down':
+                                game.movePlayer(1, 0);
+                                break;
+                            case 'left':
+                                game.movePlayer(0, -1);
+                                break;
+                            case 'right':
+                                game.movePlayer(0, 1);
+                                break;
+                        }
+                        console.log('✅ Direct movement successful');
+                    } catch (error) {
+                        console.log('❌ Direct movement call failed:', error);
+                    }
                 }
+            } else {
+                console.log('⚠️ Mobile control not working - missing requirements:', {
+                    gameController: !!window.gameController,
+                    gameState: gameState,
+                    game: !!game
+                });
             }
         }
         
         function handleMobileStop() {
-            // Mobile controls don't need stop action since keyup isn't used in this game
-            // The game checks for continuous key presses, not key states
+            // Mobile controls don't need stop action since the game handles discrete moves
+            console.log('🎮 Mobile control released');
         }
         
         function showHelp() {
@@ -1212,8 +1354,8 @@
                     <h2>⚙️ SETTINGS</h2>
                     <div style="text-align: left; margin: 20px 0;">
                         <label style="display: block; margin: 15px 0;">
-                            <input type="checkbox" id="soundEnabled" checked style="margin-right: 10px;">
-                            🔊 Sound Effects
+                            <input type="checkbox" id="texturesEnabled" checked style="margin-right: 10px;">
+                            🎨 Enhanced Textures
                         </label>
                         <label style="display: block; margin: 15px 0;">
                             <input type="checkbox" id="onScreenControls" style="margin-right: 10px;">
@@ -1276,6 +1418,66 @@
             });
         }
         
+        // Function to control mobile controls visibility
+        function updateMobileControlsVisibility(gameIsPlaying = false) {
+            const mobileControls = document.getElementById('mobile-controls');
+            if (!mobileControls) return;
+            
+            if (gameIsPlaying && (gameState === "playing" || gameState === "paused")) {
+                const isMobile = window.innerWidth <= 768;
+                const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
+                const shouldShow = isMobile || onScreenControls;
+                
+                if (shouldShow) {
+                    mobileControls.style.display = 'block';
+                    // Add visible class for smooth transition
+                    setTimeout(() => mobileControls.classList.add('visible'), 10);
+                    console.log('🎮 Mobile controls shown during gameplay');
+                } else {
+                    mobileControls.classList.remove('visible');
+                    setTimeout(() => mobileControls.style.display = 'none', 300);
+                    console.log('🎮 Mobile controls hidden (not mobile device)');
+                }
+            } else {
+                mobileControls.classList.remove('visible');
+                setTimeout(() => mobileControls.style.display = 'none', 300);
+                console.log('🎮 Mobile controls hidden (not playing)');
+            }
+        }
+        
+        // Function to update welcome text responsively based on screen size
+        function updateWelcomeText(username = null) {
+            const menuHeaderWelcomeText = document.getElementById('menuHeaderWelcomeText');
+            if (!menuHeaderWelcomeText) return;
+            
+            const isSmallScreen = window.innerWidth <= 400;
+            const isMobileScreen = window.innerWidth <= 600;
+            
+            if (username) {
+                if (isSmallScreen) {
+                    // Very short text for very small screens
+                    menuHeaderWelcomeText.textContent = `Hi, ${username}!`;
+                } else if (isMobileScreen) {
+                    // Shorter text for mobile screens
+                    menuHeaderWelcomeText.textContent = `Welcome, ${username}!`;
+                } else {
+                    // Full text for larger screens
+                    menuHeaderWelcomeText.textContent = `Welcome, ${username}!`;
+                }
+            } else {
+                if (isSmallScreen) {
+                    // Very short text for very small screens
+                    menuHeaderWelcomeText.textContent = 'Hi, Guest!';
+                } else if (isMobileScreen) {
+                    // Shorter text for mobile screens
+                    menuHeaderWelcomeText.textContent = 'Welcome, Guest!';
+                } else {
+                    // Full text for larger screens
+                    menuHeaderWelcomeText.textContent = 'Welcome, Guest!';
+                }
+            }
+        }
+        
         // Update username display in menu header
         function updateUserDisplay() {
             const menuHeaderWelcomeText = document.getElementById('menuHeaderWelcomeText');
@@ -1285,9 +1487,9 @@
             if (currentUser) {
                 console.log('👤 Updated username display:', currentUser.username);
                 
-                // Update menu header welcome text
+                // Update menu header welcome text responsively
                 if (menuHeaderWelcomeText) {
-                    menuHeaderWelcomeText.textContent = `Welcome, ${currentUser.username}!`;
+                    updateWelcomeText(currentUser.username);
                 }
                 
                 // Show score info in menu header for logged in users
@@ -1306,17 +1508,17 @@
                         try {
                             const bestScore = await userAuth.getBestScore();
                             console.log('📊 Raw best score response:', bestScore);
-                            if (bestScore && bestScore.time) {
-                                menuHeaderTopScore.textContent = `Best: ${bestScore.time} Sec`;
-                                console.log('✅ Best score loaded successfully:', bestScore.time, 'seconds');
+                            if (bestScore && bestScore.score !== undefined) {
+                                menuHeaderTopScore.textContent = `Best: ${bestScore.score} Pts`;
+                                console.log('✅ Best score loaded successfully:', bestScore.score, 'points');
                             } else {
-                                menuHeaderTopScore.textContent = 'Best: -- Sec';
+                                menuHeaderTopScore.textContent = 'Best: -- Pts';
                                 console.log('⚠️ No best score found or invalid data:', bestScore);
                             }
                         } catch (error) {
                             console.error('❌ Error loading best score:', error);
                             if (menuHeaderTopScore) {
-                                menuHeaderTopScore.textContent = 'Best: -- Sec';
+                                menuHeaderTopScore.textContent = 'Best: -- Pts';
                             }
                         }
                     }, 500);
@@ -1324,7 +1526,7 @@
             } else {
                 // Update menu header to Guest Mode
                 if (menuHeaderWelcomeText) {
-                    menuHeaderWelcomeText.textContent = 'Welcome, Guest!';
+                    updateWelcomeText();
                 }
                 
                 // Hide score info for guest mode
@@ -1459,13 +1661,21 @@
                         content.innerHTML = '<p>Error loading leaderboard: ' + error + '</p>';
                     } else if (scores && scores.length > 0) {
                         console.log('✅ Loaded', scores.length, 'scores');
-                        let html = '<div style="text-align: left;">';
+                        console.log('📊 Sample score data:', scores[0]);
+                        let html = `
+                            <div style="text-align: left;">
+                                <div style="padding: 10px; background: rgba(0, 191, 255, 0.1); border-radius: 5px; margin-bottom: 10px; text-align: center; font-size: 12px; color: #00BFFF;">
+                                    🏆 Top Players by Highest Score
+                                </div>
+                        `;
                         scores.forEach((score, index) => {
                             const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
                             html += `
-                                <div style="padding: 8px; border-bottom: 1px solid #444; display: flex; justify-content: space-between;">
+                                <div style="padding: 8px; border-bottom: 1px solid #444; display: flex; justify-content: space-between; align-items: center;">
                                     <span>${medal} ${score.username || 'Anonymous'}</span>
-                                    <span style="color: #FFD700;">${score.score} pts</span>
+                                    <span style="color: #FFD700; font-weight: bold;">
+                                        ${score.score} pts
+                                    </span>
                                 </div>
                             `;
                         });
@@ -1496,10 +1706,12 @@
         }
         
         function loadSettings() {
-            const sound = localStorage.getItem('soundEnabled') !== 'false';
+            const textures = localStorage.getItem('texturesEnabled') !== 'false';
             const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
             
-            document.getElementById('soundEnabled').checked = sound;
+            if (document.getElementById('texturesEnabled')) {
+                document.getElementById('texturesEnabled').checked = textures;
+            }
             document.getElementById('onScreenControls').checked = onScreenControls;
             
             // Note: Mobile controls visibility is now managed by updatePanelVisibility() based on game state
@@ -1507,11 +1719,17 @@
         }
         
         function saveSettings() {
-            const sound = document.getElementById('soundEnabled').checked;
+            const textures = document.getElementById('texturesEnabled') ? document.getElementById('texturesEnabled').checked : true;
             const onScreenControls = document.getElementById('onScreenControls').checked;
             
-            localStorage.setItem('soundEnabled', sound);
+            localStorage.setItem('texturesEnabled', textures);
             localStorage.setItem('onScreenControls', onScreenControls);
+            
+            // Apply texture setting to current game if running
+            if (game && game.textureManager) {
+                game.textureManager.setEnabled(textures);
+                console.log('🎨 Textures', textures ? 'enabled' : 'disabled');
+            }
             
             // Update mobile controls visibility based on current game state and new setting
             if (window.gameController) {
@@ -1533,7 +1751,7 @@
                     
                     // Get best score
                     const bestScore = await userAuth.getBestScore();
-                    const bestScoreValue = bestScore ? bestScore.score : 0;
+                    const bestScoreValue = bestScore && bestScore.score !== undefined ? `${bestScore.score} Pts` : 'N/A';
                     
                     document.getElementById('gamesPlayed').textContent = gamesPlayed;
                     document.getElementById('bestScore').textContent = bestScoreValue;
@@ -1630,7 +1848,6 @@
             window.confirmNoCallback = null;
         }
         
-        // Helper function for showing messages (if not already defined)
         function showMessage(title, message, autoDismiss = false, dismissTime = 3000) {
             if (window.gameController) {
                 window.gameController.showMessage(title, message, autoDismiss, dismissTime);
@@ -1641,6 +1858,46 @@
         function showPowerupNotification(message, icon = "⚡") {
             if (window.gameController) {
                 window.gameController.showPowerupNotification(message, icon);
+            }
+        }
+
+        // Blog panel is always visible - toggle functionality removed
+        function initializeBlogPanel() {
+            const blogPanel = document.querySelector('.blog-panel');
+            
+            // Mobile blog panel expansion functionality
+            if (blogPanel) {
+                // Add click listener for mobile tap-to-expand
+                blogPanel.addEventListener('click', function() {
+                    if (window.innerWidth <= 700) {
+                        blogPanel.classList.toggle('expanded');
+                    }
+                });
+                
+                // Add touch listener for better mobile interaction
+                blogPanel.addEventListener('touchstart', function(e) {
+                    if (window.innerWidth <= 700) {
+                        // Prevent default to avoid double-tap zoom
+                        e.preventDefault();
+                        blogPanel.classList.toggle('expanded');
+                    }
+                });
+                
+                // Close expanded panel when clicking outside on mobile
+                document.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 700 && 
+                        !blogPanel.contains(e.target) && 
+                        blogPanel.classList.contains('expanded')) {
+                        blogPanel.classList.remove('expanded');
+                    }
+                });
+                
+                // Handle window resize to remove expanded state on desktop
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 700 && blogPanel.classList.contains('expanded')) {
+                        blogPanel.classList.remove('expanded');
+                    }
+                });
             }
         }
 
@@ -1705,6 +1962,12 @@
                 });
             }
 
+            if (document.getElementById('blogToggleBtn')) {
+                document.getElementById('blogToggleBtn').addEventListener('click', function() {
+                    toggleAlgorithmBlog();
+                });
+            }
+
             // Modal buttons - these need to be added dynamically since modals are created on demand
             document.body.addEventListener('click', function(e) {
                 if (e.target.classList.contains('game-button')) {
@@ -1731,7 +1994,95 @@
                 }
             });
 
+            // Mobile A* Blog Button
+            const mobileBlogBtn = document.getElementById('mobileBlogBtn');
+            if (mobileBlogBtn) {
+                mobileBlogBtn.addEventListener('click', function() {
+                    const blogPanel = document.querySelector('.blog-panel');
+                    if (blogPanel) {
+                        console.log('📚 Mobile blog button clicked');
+                        console.log('Blog panel classes:', blogPanel.className);
+                        console.log('Current window width:', window.innerWidth);
+                        
+                        // Remove hidden class if present
+                        if (blogPanel.classList.contains('hidden')) {
+                            blogPanel.classList.remove('hidden');
+                        }
+                        
+                        // Toggle expanded class for mobile view
+                        blogPanel.classList.toggle('expanded');
+                        
+                        console.log('Blog panel classes after toggle:', blogPanel.className);
+                    }
+                });
+            }
+
             console.log('✅ Event listeners added for all buttons');
+            
+            // Initialize blog panel mobile functionality
+            initializeBlogPanel();
+            
+            // Add window resize listener for responsive welcome text
+            window.addEventListener('resize', function() {
+                if (currentUser) {
+                    updateWelcomeText(currentUser.username);
+                } else {
+                    updateWelcomeText();
+                }
+                
+                // Update mobile controls visibility on screen resize
+                const isPlaying = gameState === "playing" || gameState === "paused";
+                updateMobileControlsVisibility(isPlaying);
+            });
+            
+            // Initialize welcome text with current screen size
+            updateWelcomeText();
+            
+            // Add mobile control event listeners
+            const mobileControlButtons = {
+                'btn-up': 'up',
+                'btn-down': 'down', 
+                'btn-left': 'left',
+                'btn-right': 'right'
+            };
+            
+            Object.entries(mobileControlButtons).forEach(([buttonId, direction]) => {
+                const button = document.getElementById(buttonId);
+                if (button) {
+                    // Touch events
+                    button.addEventListener('touchstart', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.classList.add('active');
+                        handleMobileMove(direction);
+                    });
+                    
+                    button.addEventListener('touchend', function(e) {
+                        e.preventDefault(); 
+                        e.stopPropagation();
+                        this.classList.remove('active');
+                        handleMobileStop();
+                    });
+                    
+                    // Mouse events for desktop testing
+                    button.addEventListener('mousedown', function(e) {
+                        e.preventDefault();
+                        this.classList.add('active');
+                        handleMobileMove(direction);
+                    });
+                    
+                    button.addEventListener('mouseup', function(e) {
+                        e.preventDefault();
+                        this.classList.remove('active');
+                        handleMobileStop();
+                    });
+                    
+                    // Prevent context menu on mobile
+                    button.addEventListener('contextmenu', function(e) {
+                        e.preventDefault();
+                    });
+                }
+            });
         });
     </script>
 </body>

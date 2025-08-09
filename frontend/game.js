@@ -1,6 +1,8 @@
 // Maze Chase - Exact JavaScript Implementation of Python Game
 // Complete gameplay implementation matching Python version
 
+console.log('🎮 Loading game.js...');
+
 // Game Constants - Exact values from Python
 const GRID_SIZE = 40;
 const DIRECTIONS = [[-1, 0], [1, 0], [0, -1], [0, 1]];
@@ -71,6 +73,521 @@ function distance(a, b) {
     return Math.sqrt(dx * dx + dy * dy);
 }
 
+// Texture System
+class TextureManager {
+    constructor() {
+        console.log('🎨 Initializing TextureManager...');
+        this.textures = {};
+        this.patterns = {};
+        this.enabled = true; // Allow toggling textures
+        try {
+            this.init();
+            console.log('✅ TextureManager initialized successfully');
+        } catch (error) {
+            console.error('❌ Error initializing TextureManager:', error);
+            throw error;
+        }
+    }
+    
+    setEnabled(enabled) {
+        this.enabled = enabled;
+    }
+    
+    isEnabled() {
+        return this.enabled;
+    }
+    
+    init() {
+        // Create procedural textures
+        this.createWallTexture();
+        this.createFloorTexture();
+        this.createPlayerTexture();
+        this.createGhostTexture();
+        this.createTargetTexture();
+        this.createPowerupTextures();
+    }
+    
+    createWallTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = GRID_SIZE;
+        canvas.height = GRID_SIZE;
+        const ctx = canvas.getContext('2d');
+        
+        // Stone-like brick texture with improved depth
+        const gradient = ctx.createLinearGradient(0, 0, GRID_SIZE, GRID_SIZE);
+        gradient.addColorStop(0, '#5A5A6A');
+        gradient.addColorStop(0.2, '#4A4A5A');
+        gradient.addColorStop(0.5, '#3A3A4A');
+        gradient.addColorStop(0.8, '#2A2A3A');
+        gradient.addColorStop(1, '#1A1A2A');
+        
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
+        
+        // Add metallic shine
+        const shineGradient = ctx.createLinearGradient(0, 0, GRID_SIZE * 0.3, GRID_SIZE * 0.3);
+        shineGradient.addColorStop(0, 'rgba(135, 206, 250, 0.3)');
+        shineGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = shineGradient;
+        ctx.fillRect(0, 0, GRID_SIZE * 0.4, GRID_SIZE * 0.4);
+        
+        // Add brick lines
+        ctx.strokeStyle = '#00BFFF';
+        ctx.lineWidth = 0.5;
+        ctx.globalAlpha = 0.3;
+        
+        // Horizontal lines
+        for (let i = 0; i < GRID_SIZE; i += 8) {
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(GRID_SIZE, i);
+            ctx.stroke();
+        }
+        
+        // Vertical lines (offset for brick pattern)
+        for (let i = 0; i < GRID_SIZE; i += 12) {
+            const offset = Math.floor(i / 8) % 2 === 0 ? 0 : 6;
+            ctx.beginPath();
+            ctx.moveTo(i + offset, 0);
+            ctx.lineTo(i + offset, GRID_SIZE);
+            ctx.stroke();
+        }
+        
+        // Add some noise/texture
+        ctx.globalAlpha = 0.1;
+        for (let i = 0; i < 50; i++) {
+            ctx.fillStyle = Math.random() > 0.5 ? '#5A5A6A' : '#2A2A3A';
+            ctx.fillRect(
+                Math.random() * GRID_SIZE,
+                Math.random() * GRID_SIZE,
+                2, 2
+            );
+        }
+        
+        // Add depth shadow at bottom and right
+        ctx.globalAlpha = 0.4;
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(GRID_SIZE - 2, 0, 2, GRID_SIZE); // Right shadow
+        ctx.fillRect(0, GRID_SIZE - 2, GRID_SIZE, 2); // Bottom shadow
+        
+        this.textures.wall = canvas;
+    }
+    
+    createFloorTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = GRID_SIZE;
+        canvas.height = GRID_SIZE;
+        const ctx = canvas.getContext('2d');
+        
+        // Dark floor with subtle pattern and depth
+        const baseGradient = ctx.createRadialGradient(GRID_SIZE/2, GRID_SIZE/2, 0, GRID_SIZE/2, GRID_SIZE/2, GRID_SIZE/2);
+        baseGradient.addColorStop(0, '#0F0F1A');
+        baseGradient.addColorStop(0.7, '#0A0A15');
+        baseGradient.addColorStop(1, '#050508');
+        
+        ctx.fillStyle = baseGradient;
+        ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
+        
+        // Add circuit-like pattern
+        ctx.strokeStyle = '#1A1A25';
+        ctx.lineWidth = 0.5;
+        ctx.globalAlpha = 0.4;
+        
+        // Create tech grid
+        const gridSpacing = GRID_SIZE / 4;
+        for (let i = 0; i <= GRID_SIZE; i += gridSpacing) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, GRID_SIZE);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(GRID_SIZE, i);
+            ctx.stroke();
+        }
+        
+        // Add corner connectors for tech feel
+        ctx.fillStyle = '#1A1A25';
+        ctx.globalAlpha = 0.6;
+        const cornerSize = 2;
+        for (let i = 0; i <= GRID_SIZE; i += gridSpacing) {
+            for (let j = 0; j <= GRID_SIZE; j += gridSpacing) {
+                ctx.fillRect(i - cornerSize/2, j - cornerSize/2, cornerSize, cornerSize);
+            }
+        }
+        
+        // Add some subtle noise and scratches
+        ctx.globalAlpha = 0.1;
+        for (let i = 0; i < 40; i++) {
+            ctx.fillStyle = Math.random() > 0.5 ? '#1A1A25' : '#0A0A15';
+            const size = Math.random() > 0.8 ? 2 : 1;
+            ctx.fillRect(
+                Math.random() * GRID_SIZE,
+                Math.random() * GRID_SIZE,
+                size, size
+            );
+        }
+        
+        // Add subtle blue accent lines
+        ctx.globalAlpha = 0.1;
+        ctx.strokeStyle = '#00BFFF';
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < 3; i++) {
+            const x = Math.random() * GRID_SIZE;
+            const y = Math.random() * GRID_SIZE;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + Math.random() * 10 - 5, y + Math.random() * 10 - 5);
+            ctx.stroke();
+        }
+        
+        this.textures.floor = canvas;
+    }
+    
+    createPlayerTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = GRID_SIZE;
+        canvas.height = GRID_SIZE;
+        const ctx = canvas.getContext('2d');
+        
+        // Futuristic player design
+        const centerX = GRID_SIZE / 2;
+        const centerY = GRID_SIZE / 2;
+        const radius = GRID_SIZE * 0.4;
+        
+        // Outer glow
+        const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius * 1.2);
+        glowGradient.addColorStop(0, NEON_GREEN);
+        glowGradient.addColorStop(0.7, NEON_GREEN + '80');
+        glowGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = glowGradient;
+        ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
+        
+        // Main body
+        const bodyGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+        bodyGradient.addColorStop(0, '#4AFF4A');
+        bodyGradient.addColorStop(0.6, NEON_GREEN);
+        bodyGradient.addColorStop(1, '#20AA20');
+        
+        ctx.fillStyle = bodyGradient;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Inner core
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius * 0.3, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Direction indicator
+        ctx.fillStyle = '#000000';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY - radius * 0.5, radius * 0.15, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        this.textures.player = canvas;
+    }
+    
+    createGhostTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = GRID_SIZE;
+        canvas.height = GRID_SIZE;
+        const ctx = canvas.getContext('2d');
+        
+        // Menacing ghost design
+        const centerX = GRID_SIZE / 2;
+        const centerY = GRID_SIZE / 2;
+        
+        // Outer glow
+        const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, GRID_SIZE * 0.6);
+        glowGradient.addColorStop(0, RED);
+        glowGradient.addColorStop(0.7, RED + '60');
+        glowGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = glowGradient;
+        ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
+        
+        // Main ghost body (rounded rectangle)
+        const bodyGradient = ctx.createLinearGradient(0, 0, 0, GRID_SIZE);
+        bodyGradient.addColorStop(0, '#FF6666');
+        bodyGradient.addColorStop(0.5, RED);
+        bodyGradient.addColorStop(1, '#CC0000');
+        
+        ctx.fillStyle = bodyGradient;
+        ctx.fillRect(GRID_SIZE * 0.1, GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8);
+        
+        // Ghost bottom wavy edge
+        ctx.fillStyle = bodyGradient;
+        ctx.beginPath();
+        ctx.moveTo(GRID_SIZE * 0.1, GRID_SIZE * 0.7);
+        for (let i = 0; i < 4; i++) {
+            const x = GRID_SIZE * (0.1 + (i * 0.2));
+            const y = GRID_SIZE * (0.8 + (i % 2 === 0 ? 0.1 : 0));
+            ctx.lineTo(x, y);
+        }
+        ctx.lineTo(GRID_SIZE * 0.9, GRID_SIZE * 0.7);
+        ctx.fill();
+        
+        // Eyes
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(centerX - GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.08, 0, 2 * Math.PI);
+        ctx.arc(centerX + GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.08, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Pupils
+        ctx.fillStyle = '#000000';
+        ctx.beginPath();
+        ctx.arc(centerX - GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.04, 0, 2 * Math.PI);
+        ctx.arc(centerX + GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.04, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        this.textures.ghost = canvas;
+    }
+    
+    createTargetTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = GRID_SIZE;
+        canvas.height = GRID_SIZE;
+        const ctx = canvas.getContext('2d');
+        
+        // Golden target with shine effect
+        const centerX = GRID_SIZE / 2;
+        const centerY = GRID_SIZE / 2;
+        
+        // Outer glow
+        const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, GRID_SIZE * 0.6);
+        glowGradient.addColorStop(0, YELLOW);
+        glowGradient.addColorStop(0.7, YELLOW + '80');
+        glowGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = glowGradient;
+        ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
+        
+        // Main target body
+        const bodyGradient = ctx.createLinearGradient(0, 0, GRID_SIZE, GRID_SIZE);
+        bodyGradient.addColorStop(0, '#FFFF99');
+        bodyGradient.addColorStop(0.5, YELLOW);
+        bodyGradient.addColorStop(1, '#CCAA00');
+        
+        ctx.fillStyle = bodyGradient;
+        ctx.fillRect(GRID_SIZE * 0.05, GRID_SIZE * 0.05, GRID_SIZE * 0.9, GRID_SIZE * 0.9);
+        
+        // Target rings
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 2;
+        for (let i = 1; i <= 3; i++) {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, (GRID_SIZE * 0.4 * i) / 3, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+        
+        // Center dot
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, GRID_SIZE * 0.08, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Shine effect
+        const shineGradient = ctx.createLinearGradient(0, 0, GRID_SIZE * 0.3, GRID_SIZE * 0.3);
+        shineGradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
+        shineGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = shineGradient;
+        ctx.beginPath();
+        ctx.arc(centerX - GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.15, GRID_SIZE * 0.2, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        this.textures.target = canvas;
+    }
+    
+    createPowerupTextures() {
+        // Speed Powerup
+        this.textures.powerup_speed = this.createPowerupTexture(ELECTRIC_BLUE, '⚡');
+        
+        // Freeze Powerup
+        this.textures.powerup_freeze = this.createPowerupTexture('#64C8FF', '❄');
+        
+        // Wall Breaker Powerup
+        this.textures.powerup_wallbreaker = this.createPowerupTexture(ORANGE, '🔨');
+    }
+    
+    createPowerupTexture(color, symbol) {
+        const canvas = document.createElement('canvas');
+        canvas.width = GRID_SIZE;
+        canvas.height = GRID_SIZE;
+        const ctx = canvas.getContext('2d');
+        
+        const centerX = GRID_SIZE / 2;
+        const centerY = GRID_SIZE / 2;
+        
+        // Outer glow
+        const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, GRID_SIZE * 0.6);
+        glowGradient.addColorStop(0, color);
+        glowGradient.addColorStop(0.7, color + '60');
+        glowGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = glowGradient;
+        ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
+        
+        // Main powerup crystal
+        const bodyGradient = ctx.createLinearGradient(0, 0, GRID_SIZE, GRID_SIZE);
+        bodyGradient.addColorStop(0, color + 'CC');
+        bodyGradient.addColorStop(0.5, color);
+        bodyGradient.addColorStop(1, color + '80');
+        
+        // Diamond shape
+        ctx.fillStyle = bodyGradient;
+        ctx.beginPath();
+        ctx.moveTo(centerX, GRID_SIZE * 0.1);
+        ctx.lineTo(GRID_SIZE * 0.9, centerY);
+        ctx.lineTo(centerX, GRID_SIZE * 0.9);
+        ctx.lineTo(GRID_SIZE * 0.1, centerY);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Inner highlight
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.beginPath();
+        ctx.moveTo(centerX, GRID_SIZE * 0.2);
+        ctx.lineTo(GRID_SIZE * 0.7, centerY);
+        ctx.lineTo(centerX, GRID_SIZE * 0.8);
+        ctx.lineTo(GRID_SIZE * 0.3, centerY);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Center symbol (simplified as circle for now)
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, GRID_SIZE * 0.15, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        return canvas;
+    }
+    
+    getTexture(type) {
+        return this.textures[type];
+    }
+    
+    drawTexturedRect(ctx, textureType, x, y, width, height, animationTime = 0) {
+        if (!this.enabled) {
+            // Fallback to original rendering when textures are disabled
+            this.drawFallbackRect(ctx, textureType, x, y, width, height);
+            return;
+        }
+        
+        const texture = this.getTexture(textureType);
+        if (texture) {
+            // Apply animation effects for certain textures
+            ctx.save();
+            
+            if (textureType.startsWith('powerup_')) {
+                // Rotate powerup textures for visual appeal
+                const centerX = x + width / 2;
+                const centerY = y + height / 2;
+                ctx.translate(centerX, centerY);
+                ctx.rotate((animationTime || Date.now()) * 0.002);
+                ctx.translate(-centerX, -centerY);
+            }
+            
+            // Scale texture to fit the rectangle
+            ctx.drawImage(texture, x, y, width, height);
+            
+            ctx.restore();
+        } else {
+            // Fallback to solid color
+            this.drawFallbackRect(ctx, textureType, x, y, width, height);
+        }
+    }
+    
+    drawFallbackRect(ctx, textureType, x, y, width, height) {
+        // Original game rendering for compatibility
+        ctx.save();
+        
+        switch (textureType) {
+            case 'wall':
+                // Original wall rendering
+                const gradient = ctx.createLinearGradient(x, y, x, y + height);
+                gradient.addColorStop(0, '#3C3C50');
+                gradient.addColorStop(1, '#282838');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, width, height);
+                ctx.strokeStyle = ACCENT_COLOR;
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, width, height);
+                break;
+                
+            case 'floor':
+                // Original floor rendering
+                ctx.fillStyle = '#14141E';
+                ctx.fillRect(x, y, width, height);
+                ctx.strokeStyle = '#1E1E28';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, width, height);
+                break;
+                
+            case 'player':
+                // Original player rendering
+                ctx.fillStyle = NEON_GREEN;
+                ctx.fillRect(x, y, width, height);
+                ctx.strokeStyle = WHITE;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, width, height);
+                break;
+                
+            case 'ghost':
+                // Original ghost rendering
+                ctx.fillStyle = RED;
+                ctx.fillRect(x, y, width, height);
+                break;
+                
+            case 'target':
+                // Original target rendering
+                ctx.fillStyle = YELLOW;
+                ctx.fillRect(x, y, width, height);
+                ctx.strokeStyle = WHITE;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, width, height);
+                break;
+                
+            case 'powerup_speed':
+                ctx.fillStyle = ELECTRIC_BLUE;
+                ctx.fillRect(x, y, width, height);
+                ctx.strokeStyle = WHITE;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, width, height);
+                break;
+                
+            case 'powerup_freeze':
+                ctx.fillStyle = '#64C8FF';
+                ctx.fillRect(x, y, width, height);
+                ctx.strokeStyle = WHITE;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, width, height);
+                break;
+                
+            case 'powerup_wallbreaker':
+                ctx.fillStyle = ORANGE;
+                ctx.fillRect(x, y, width, height);
+                ctx.strokeStyle = WHITE;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, width, height);
+                break;
+                
+            default:
+                // Fallback color
+                ctx.fillStyle = '#FF00FF';
+                ctx.fillRect(x, y, width, height);
+        }
+        
+        ctx.restore();
+    }
+}
+
 // Drawing Utilities
 function drawGradientRect(ctx, color1, color2, x, y, width, height, vertical = true) {
     const gradient = vertical 
@@ -107,41 +624,6 @@ function drawGlowingText(ctx, text, font, color, x, y, glowColor = null, center 
     ctx.restore();
     
     return { x, y, width: metrics.width, height: 20 };
-}
-
-function drawAnimatedBackground(ctx, width, height, timeOffset = 0) {
-    // Fill with primary background
-    ctx.fillStyle = PRIMARY_BG;
-    ctx.fillRect(0, 0, width, height);
-    
-    // Add animated grid pattern
-    const gridSize = 50;
-    ctx.save();
-    ctx.globalAlpha = 0.1;
-    
-    for (let x = 0; x < width; x += gridSize) {
-        const alpha = 0.2 + 0.1 * (1 + Math.sin((x + timeOffset) * 0.01));
-        ctx.globalAlpha = alpha;
-        ctx.strokeStyle = ACCENT_COLOR;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-    }
-    
-    for (let y = 0; y < height; y += gridSize) {
-        const alpha = 0.2 + 0.1 * (1 + Math.cos((y + timeOffset) * 0.01));
-        ctx.globalAlpha = alpha;
-        ctx.strokeStyle = ACCENT_COLOR;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-    }
-    
-    ctx.restore();
 }
 
 function drawPanel(ctx, x, y, width, height, title = null, alpha = 0.9) {
@@ -425,7 +907,7 @@ class Ghost {
         }
     }
     
-    draw(ctx, offsetX, offsetY, currentTime) {
+    draw(ctx, offsetX, offsetY, currentTime, textureManager = null) {
         const ghostRect = {
             x: offsetX + this.pos[1] * GRID_SIZE,
             y: offsetY + this.pos[0] * GRID_SIZE,
@@ -451,9 +933,23 @@ class Ghost {
         ctx.fillRect(ghostRect.x - 7, ghostRect.y - 7, GRID_SIZE + 15, GRID_SIZE + 15);
         ctx.restore();
         
-        // Main ghost body
-        ctx.fillStyle = frozenColor;
-        ctx.fillRect(ghostRect.x, ghostRect.y, ghostRect.width, ghostRect.height);
+        // Main ghost body with texture if available
+        if (textureManager) {
+            textureManager.drawTexturedRect(ctx, 'ghost', ghostRect.x, ghostRect.y, ghostRect.width, ghostRect.height, currentTime);
+            
+            // Apply frozen tint if needed
+            if (this.isFrozen()) {
+                ctx.save();
+                ctx.globalAlpha = 0.4;
+                ctx.fillStyle = frozenColor;
+                ctx.fillRect(ghostRect.x, ghostRect.y, ghostRect.width, ghostRect.height);
+                ctx.restore();
+            }
+        } else {
+            // Fallback to solid color
+            ctx.fillStyle = frozenColor;
+            ctx.fillRect(ghostRect.x, ghostRect.y, ghostRect.width, ghostRect.height);
+        }
     }
 }
 
@@ -482,7 +978,7 @@ class PowerUp {
         return Date.now() / 1000 - this.spawnTime > this.lifetime;
     }
     
-    draw(ctx, offsetX, offsetY, currentTime) {
+    draw(ctx, offsetX, offsetY, currentTime, textureManager = null) {
         // Pulsing effect - matching Python implementation
         const pulse = 0.8 + 0.2 * Math.sin(currentTime * 0.01);
         const size = GRID_SIZE * pulse;
@@ -502,19 +998,31 @@ class PowerUp {
         ctx.fillRect(powerupRect.x - 5, powerupRect.y - 5, size + 10, size + 10);
         ctx.restore();
         
-        // Main power-up - matching Python styling
-        ctx.fillStyle = this.color;
-        ctx.fillRect(powerupRect.x, powerupRect.y, powerupRect.width, powerupRect.height);
-        ctx.strokeStyle = WHITE;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(powerupRect.x, powerupRect.y, powerupRect.width, powerupRect.height);
-        
-        // Symbol (simplified as colored dot for now) - matching Python
-        const centerDotSize = Math.max(3, size / 4);
-        ctx.fillStyle = WHITE;
-        ctx.beginPath();
-        ctx.arc(powerupRect.x + size / 2, powerupRect.y + size / 2, centerDotSize, 0, 2 * Math.PI);
-        ctx.fill();
+        // Main power-up with texture if available
+        if (textureManager) {
+            let textureType = 'powerup_speed'; // default
+            if (this.type === POWERUP_FREEZE) {
+                textureType = 'powerup_freeze';
+            } else if (this.type === POWERUP_WALLBREAKER) {
+                textureType = 'powerup_wallbreaker';
+            }
+            
+            textureManager.drawTexturedRect(ctx, textureType, powerupRect.x, powerupRect.y, powerupRect.width, powerupRect.height, currentTime);
+        } else {
+            // Fallback to solid color - matching original Python styling
+            ctx.fillStyle = this.color;
+            ctx.fillRect(powerupRect.x, powerupRect.y, powerupRect.width, powerupRect.height);
+            ctx.strokeStyle = WHITE;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(powerupRect.x, powerupRect.y, powerupRect.width, powerupRect.height);
+            
+            // Symbol (simplified as colored dot for now) - matching Python
+            const centerDotSize = Math.max(3, size / 4);
+            ctx.fillStyle = WHITE;
+            ctx.beginPath();
+            ctx.arc(powerupRect.x + size / 2, powerupRect.y + size / 2, centerDotSize, 0, 2 * Math.PI);
+            ctx.fill();
+        }
     }
 }
 
@@ -524,11 +1032,20 @@ class MazeGame {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         
-        // Calculate grid dimensions based on current screen
-        this.GRID_WIDTH = Math.max(10, Math.floor(canvas.width / GRID_SIZE));
-        this.GRID_HEIGHT = Math.max(10, Math.floor(canvas.height / GRID_SIZE));
+        // Fixed maze dimensions for consistent gameplay across all screen sizes
+        this.GRID_WIDTH = 30;   // Fixed width - always 30 columns
+        this.GRID_HEIGHT = 20;  // Fixed height - always 20 rows
         
         this.pathfinder = new AStar();
+        
+        // Initialize texture system
+        this.textureManager = new TextureManager();
+        
+        // Check texture setting from localStorage
+        const texturesEnabled = localStorage.getItem('texturesEnabled') !== 'false';
+        this.textureManager.setEnabled(texturesEnabled);
+        console.log('🎨 Texture system initialized:', texturesEnabled ? 'enabled' : 'disabled');
+        console.log(`🎮 Fixed maze dimensions: ${this.GRID_WIDTH}x${this.GRID_HEIGHT}`);
         
         // Enhanced game state
         this.particles = new ParticleSystem();
@@ -631,59 +1148,13 @@ class MazeGame {
     }
     
     updateForScreenChange() {
-        // Update game state when screen dimensions change (like fullscreen toggle)
-        const oldGridWidth = this.GRID_WIDTH;
-        const oldGridHeight = this.GRID_HEIGHT;
+        // With fixed maze dimensions, we only need to update the canvas scaling
+        // The maze itself remains the same size for consistent gameplay
+        console.log('🔄 Screen change detected - maintaining fixed maze dimensions');
+        console.log(`Maze remains: ${this.GRID_WIDTH}x${this.GRID_HEIGHT} grid`);
         
-        this.GRID_WIDTH = Math.max(10, Math.floor(this.canvas.width / GRID_SIZE));
-        this.GRID_HEIGHT = Math.max(10, Math.floor(this.canvas.height / GRID_SIZE));
-        
-        // If grid size changed significantly, regenerate maze
-        if (Math.abs(this.GRID_WIDTH - oldGridWidth) > 2 || 
-            Math.abs(this.GRID_HEIGHT - oldGridHeight) > 2) {
-            
-            // Preserve relative positions
-            const playerRatioX = this.playerPos[1] / oldGridWidth;
-            const playerRatioY = this.playerPos[0] / oldGridHeight;
-            
-            // Update positions
-            this.playerPos = [
-                Math.min(this.GRID_HEIGHT - 2, Math.max(1, Math.floor(playerRatioY * this.GRID_HEIGHT))),
-                Math.min(this.GRID_WIDTH - 2, Math.max(1, Math.floor(playerRatioX * this.GRID_WIDTH)))
-            ];
-            this.playerPosFloat = [...this.playerPos];
-            
-            this.targetPos = [this.GRID_HEIGHT - 2, this.GRID_WIDTH - 2];
-            
-            // Update ghost positions
-            for (let ghost of this.ghosts) {
-                const ghostRatioX = ghost.pos[1] / oldGridWidth;
-                const ghostRatioY = ghost.pos[0] / oldGridHeight;
-                ghost.pos = [
-                    Math.min(this.GRID_HEIGHT - 2, Math.max(1, Math.floor(ghostRatioY * this.GRID_HEIGHT))),
-                    Math.min(this.GRID_WIDTH - 2, Math.max(1, Math.floor(ghostRatioX * this.GRID_WIDTH)))
-                ];
-                ghost.path = [];  // Clear old paths
-            }
-            
-            // Update power-up positions
-            for (let powerup of this.powerups) {
-                const powerupRatioX = powerup.pos[1] / oldGridWidth;
-                const powerupRatioY = powerup.pos[0] / oldGridHeight;
-                powerup.pos = [
-                    Math.min(this.GRID_HEIGHT - 2, Math.max(1, Math.floor(powerupRatioY * this.GRID_HEIGHT))),
-                    Math.min(this.GRID_WIDTH - 2, Math.max(1, Math.floor(powerupRatioX * this.GRID_WIDTH)))
-                ];
-            }
-            
-            // Regenerate maze with new dimensions
-            this.generateMaze();
-            
-            // Update ghost paths
-            for (let ghost of this.ghosts) {
-                ghost.updatePath(this.maze, this.targetPos, this.playerPos);
-            }
-        }
+        // The canvas scaling is handled by CSS, so no maze regeneration needed
+        // This ensures consistent gameplay across all screen sizes
     }
     
     resetGame() {
@@ -1009,25 +1480,23 @@ class MazeGame {
         // Game area background
         drawPanel(this.ctx, offsetX - 10, offsetY - 10, gameWidth + 20, gameHeight + 20);
         
-        // Draw maze with modern styling
+        // Draw maze with textures
         for (let y = 0; y < this.GRID_HEIGHT; y++) {
             for (let x = 0; x < this.GRID_WIDTH; x++) {
                 const rectX = offsetX + x * GRID_SIZE;
                 const rectY = offsetY + y * GRID_SIZE;
                 
                 if (this.maze[y][x] === 1) {
-                    // Wall with gradient effect
-                    drawGradientRect(this.ctx, '#3C3C50', '#282838', rectX, rectY, GRID_SIZE, GRID_SIZE);
-                    this.ctx.strokeStyle = ACCENT_COLOR;
-                    this.ctx.lineWidth = 1;
+                    // Wall with texture
+                    this.textureManager.drawTexturedRect(this.ctx, 'wall', rectX, rectY, GRID_SIZE, GRID_SIZE, currentTime);
+                    
+                    // Add subtle border for definition
+                    this.ctx.strokeStyle = ACCENT_COLOR + '40';
+                    this.ctx.lineWidth = 0.5;
                     this.ctx.strokeRect(rectX, rectY, GRID_SIZE, GRID_SIZE);
                 } else {
-                    // Floor
-                    this.ctx.fillStyle = '#14141E';
-                    this.ctx.fillRect(rectX, rectY, GRID_SIZE, GRID_SIZE);
-                    this.ctx.strokeStyle = '#1E1E28';
-                    this.ctx.lineWidth = 1;
-                    this.ctx.strokeRect(rectX, rectY, GRID_SIZE, GRID_SIZE);
+                    // Floor with texture
+                    this.textureManager.drawTexturedRect(this.ctx, 'floor', rectX, rectY, GRID_SIZE, GRID_SIZE, currentTime);
                 }
             }
         }
@@ -1049,12 +1518,12 @@ class MazeGame {
             }
         }
         
-        // Draw power-ups
+        // Draw power-ups with textures
         for (let powerup of this.powerups) {
-            powerup.draw(this.ctx, offsetX, offsetY, currentTime);
+            powerup.draw(this.ctx, offsetX, offsetY, currentTime, this.textureManager);
         }
         
-        // Draw target with pulsing glow effect
+        // Draw target with texture and pulsing glow effect
         const pulse = 50 + 30 * (1 + Math.sin(currentTime * 0.01));
         const targetX = offsetX + this.targetPos[1] * GRID_SIZE;
         const targetY = offsetY + this.targetPos[0] * GRID_SIZE;
@@ -1066,14 +1535,10 @@ class MazeGame {
         this.ctx.fillRect(targetX - 10, targetY - 10, GRID_SIZE + 20, GRID_SIZE + 20);
         this.ctx.restore();
         
-        // Main target
-        this.ctx.fillStyle = YELLOW;
-        this.ctx.fillRect(targetX, targetY, GRID_SIZE, GRID_SIZE);
-        this.ctx.strokeStyle = WHITE;
-        this.ctx.lineWidth = 2;
-        this.ctx.strokeRect(targetX, targetY, GRID_SIZE, GRID_SIZE);
+        // Main target with texture
+        this.textureManager.drawTexturedRect(this.ctx, 'target', targetX, targetY, GRID_SIZE, GRID_SIZE, currentTime);
         
-        // Draw player with modern styling and power-up effects
+        // Draw player with texture and power-up effects
         const playerX = offsetX + Math.floor(this.playerPosFloat[1] * GRID_SIZE);
         const playerY = offsetY + Math.floor(this.playerPosFloat[0] * GRID_SIZE);
         
@@ -1094,16 +1559,12 @@ class MazeGame {
         this.ctx.fillRect(playerX - 5, playerY - 5, GRID_SIZE + 10, GRID_SIZE + 10);
         this.ctx.restore();
         
-        // Main player
-        this.ctx.fillStyle = playerColor;
-        this.ctx.fillRect(playerX, playerY, GRID_SIZE, GRID_SIZE);
-        this.ctx.strokeStyle = WHITE;
-        this.ctx.lineWidth = 2;
-        this.ctx.strokeRect(playerX, playerY, GRID_SIZE, GRID_SIZE);
+        // Main player with texture
+        this.textureManager.drawTexturedRect(this.ctx, 'player', playerX, playerY, GRID_SIZE, GRID_SIZE, currentTime);
         
-        // Draw all ghosts
+        // Draw all ghosts with textures
         for (let ghost of this.ghosts) {
-            ghost.draw(this.ctx, offsetX, offsetY, currentTime);
+            ghost.draw(this.ctx, offsetX, offsetY, currentTime, this.textureManager);
         }
         
         // Draw particles
@@ -1211,12 +1672,15 @@ class MazeGame {
 
 // Export for use (browser compatibility)
 if (typeof window !== 'undefined') {
+    console.log('🔧 Exporting classes to window object...');
     window.MazeGame = MazeGame;
     window.Ghost = Ghost;
     window.PowerUp = PowerUp;
     window.ParticleSystem = ParticleSystem;
+    window.TextureManager = TextureManager;
+    console.log('✅ Classes exported successfully. MazeGame available:', typeof window.MazeGame);
 }
 // For Node.js (testing, not used in browser)
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { MazeGame, Ghost, PowerUp, ParticleSystem };
+    module.exports = { MazeGame, Ghost, PowerUp, ParticleSystem, TextureManager };
 }

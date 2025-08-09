@@ -69,7 +69,7 @@ router.get('/top/:limit?', async (req, res) => {
         // Aggregate to get best score per user
         const topScores = await Score.aggregate([
             {
-                $sort: { survival_time: -1 }
+                $sort: { score: -1 } // Sort by highest score first
             },
             {
                 $group: {
@@ -87,8 +87,7 @@ router.get('/top/:limit?', async (req, res) => {
             },
             {
                 $sort: {
-                    game_result: -1, // wins first
-                    survival_time: -1 // then by survival time
+                    best_score: -1 // Sort by highest score
                 }
             },
             {
@@ -156,7 +155,7 @@ router.get('/best/:user_id', async (req, res) => {
         const { user_id } = req.params;
         
         const bestScore = await Score.findOne({ user_id })
-            .sort({ game_result: -1, survival_time: -1 })
+            .sort({ score: -1 }) // Sort by highest score
             .select('-__v');
         
         if (!bestScore) {
