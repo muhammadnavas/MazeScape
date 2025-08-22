@@ -202,6 +202,7 @@
     </div>
 
     <!-- Load dependencies -->
+     <script src="config.js"></script>
     <script src="astar.js"></script>
     <script src="database_mongo.js"></script>
     <script src="user_auth.js"></script>
@@ -333,8 +334,8 @@
                 this.canvas.height = idealCanvasHeight;
                 
                 // Apply CSS scaling for responsive display
-                this.canvas.style.width = (idealCanvasWidth * scale) + 'px';
-                this.canvas.style.height = (idealCanvasHeight * scale) + 'px';
+                this.canvas.style.width = '100%';
+                this.canvas.style.height = '100%';
                 
                 // Disable image smoothing for crisp pixel art
                 const ctx = this.canvas.getContext('2d');

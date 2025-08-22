@@ -11,14 +11,12 @@ const authRoutes = require('./routes/auth');
 const scoresRoutes = require('./routes/scores');
 
 const app = express();
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB
 connectDB();
 
-// Security middleware with disabled CSP for game functionality
 app.use(helmet({
-    contentSecurityPolicy: false, // Disable CSP entirely for the game to work
+    contentSecurityPolicy: false,
 }));
 
 // Rate limiting
@@ -29,18 +27,10 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS configuration
+// CORS configuration for single frontend URL
+const frontendUrl = process.env.FRONTEND_URL || `http://localhost:3000`;
 const corsOptions = {
-    origin: [
-        `http://localhost:${PORT}`,
-        `http://127.0.0.1:${PORT}`,
-        'http://localhost:8000', 
-        'http://127.0.0.1:8000', 
-        'http://localhost:5500',
-        'http://127.0.0.1:5500',
-        'http://localhost:5501',
-        'http://127.0.0.1:5501'
-    ],
+    origin: frontendUrl,
     credentials: true,
     optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -48,25 +38,20 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static files from frontend directory
 const frontendPath = path.join(__dirname, '..', 'frontend');
 app.use(express.static(frontendPath));
 
-// Logging middleware
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
 });
 
-// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/scores', scoresRoutes);
 
-// Health check endpoint
 app.get('/api/health', async (req, res) => {
     try {
         const dbState = mongoose.connection.readyState;
@@ -100,7 +85,6 @@ app.get('/api/health', async (req, res) => {
     }
 });
 
-// Game statistics endpoint
 app.get('/api/stats', async (req, res) => {
     try {
         const User = require('./models/User');
@@ -127,7 +111,6 @@ app.get('/api/stats', async (req, res) => {
     }
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({
@@ -137,7 +120,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-// 404 handler for API routes only
 app.use('/api/*', (req, res) => {
     res.status(404).json({
         success: false,
@@ -145,7 +127,6 @@ app.use('/api/*', (req, res) => {
     });
 });
 
-// Serve index.html for all non-API routes (SPA support)
 app.get('*', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
 });
