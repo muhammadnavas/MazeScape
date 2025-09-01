@@ -1,14 +1,39 @@
 /* MazeScape - Main Stylesheet */
 
+/* Performance optimizations for all elements */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* GPU acceleration for better performance */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Optimize hardware acceleration for animations */
+.modal-overlay,
+.menu-buttons,
+.blog-panel,
+#mobile-controls,
+.control-btn,
+.game-button {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 html, body {
     border: none;
     outline: none;
+    /* Disable text selection for better touch experience */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Prevent pull-to-refresh on mobile */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Responsive Typography Base */
@@ -146,7 +171,7 @@ body {
     font-weight: 300;
 }
 
-/* Responsive Header & Title */
+/* Responsive Header & Title - Much larger for mobile */
 @media (max-width: 900px) {
     .menu-header {
         height: 60px;
@@ -154,16 +179,16 @@ body {
     }
     
     .logo-text {
-        font-size: 22px;
+        font-size: 24px;
     }
     
     .main-title {
-        font-size: 36px;
-        letter-spacing: 1.5px;
+        font-size: 42px; /* Increased from 36px */
+        letter-spacing: 2px;
     }
     
     .main-subtitle {
-        font-size: 14px;
+        font-size: 16px; /* Increased from 14px */
     }
     
     .user-info {
@@ -171,34 +196,76 @@ body {
     }
     
     .user-welcome {
-        font-size: 14px;
-        padding: 6px 12px;
+        font-size: 16px; /* Increased from 14px */
+        padding: 8px 14px;
     }
     
     .score-info {
-        font-size: 14px;
-        padding: 6px 12px;
+        font-size: 18px; /* Increased from 16px */
+        padding: 8px 14px;
     }
 }
 
 @media (max-width: 600px) {
     .menu-header {
-        height: 50px;
+        height: 60px; /* Increased from 50px */
         padding: 0 15px;
     }
     
     .logo-text {
-        font-size: 18px;
+        font-size: 22px; /* Increased from 18px */
+        letter-spacing: 0.8px;
+    }
+    
+    .main-title {
+        font-size: 38px; /* Increased from 28px */
+        letter-spacing: 1.5px;
+    }
+    
+    .main-subtitle {
+        font-size: 15px; /* Increased from 12px */
+        margin: 10px 0 0 0;
+    }
+    
+    .user-info {
+        gap: 12px;
+    }
+    
+    .user-welcome {
+        font-size: 14px; /* Increased from 12px */
+        padding: 6px 10px;
+        border-radius: 8px;
+    }
+    
+    .score-info {
+        font-size: 16px; /* Increased from 14px */
+        padding: 6px 10px;
+        border-radius: 8px;
+    }
+    
+    #menuHeaderWelcomeText {
+        font-size: 14px; /* Increased from 12px */
+    }
+}
+
+@media (max-width: 400px) {
+    .menu-header {
+        height: 55px; /* Increased from 45px */
+        padding: 0 12px;
+    }
+    
+    .logo-text {
+        font-size: 20px; /* Increased from 16px */
         letter-spacing: 0.5px;
     }
     
     .main-title {
-        font-size: 28px;
-        letter-spacing: 1px;
+        font-size: 32px; /* Increased from 24px */
+        letter-spacing: 1.2px;
     }
     
     .main-subtitle {
-        font-size: 12px;
+        font-size: 13px; /* Increased from 11px */
         margin: 8px 0 0 0;
     }
     
@@ -207,66 +274,24 @@ body {
     }
     
     .user-welcome {
-        font-size: 12px;
+        font-size: 12px; /* Increased from 10px */
         padding: 4px 8px;
         border-radius: 6px;
     }
     
     .score-info {
-        font-size: 12px;
+        font-size: 14px; /* Increased from 12px */
         padding: 4px 8px;
         border-radius: 6px;
     }
     
     #menuHeaderWelcomeText {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 400px) {
-    .menu-header {
-        height: 45px;
-        padding: 0 10px;
+        font-size: 12px; /* Increased from 10px */
     }
     
-    .logo-text {
-        font-size: 16px;
-        letter-spacing: 0.3px;
-    }
-    
-    .main-title {
-        font-size: 24px;
-        letter-spacing: 0.8px;
-    }
-    
-    .main-subtitle {
-        font-size: 11px;
-        margin: 6px 0 0 0;
-    }
-    
-    .user-info {
-        gap: 8px;
-    }
-    
-    .user-welcome {
-        font-size: 10px;
-        padding: 3px 6px;
-        border-radius: 4px;
-    }
-    
+    /* Show score info on small screens if space allows */
     .score-info {
-        font-size: 10px;
-        padding: 3px 6px;
-        border-radius: 4px;
-    }
-    
-    #menuHeaderWelcomeText {
-        font-size: 10px;
-    }
-    
-    /* Hide score info on very small screens to save space */
-    .score-info {
-        display: none !important;
+        display: block !important;
     }
 }
 
@@ -294,29 +319,29 @@ body {
 
 @media (max-width: 768px) {
     #gameContainer {
-        height: calc(100vh - 50px);
-        margin-top: 50px;
+        height: calc(100vh - 60px); /* Updated for larger header */
+        margin-top: 60px;
         padding: 0.125rem;
-        /* Account for mobile controls */
-        padding-bottom: 180px;
+        /* Account for mobile controls - larger padding */
+        padding-bottom: 140px;
     }
 }
 
 @media (max-width: 600px) {
     #gameContainer {
-        height: calc(100vh - 50px);
-        margin-top: 50px;
+        height: calc(100vh - 60px); /* Updated for larger header */
+        margin-top: 60px;
         padding: 0.1rem;
-        padding-bottom: 160px;
+        padding-bottom: 120px;
     }
 }
 
 @media (max-width: 400px) {
     #gameContainer {
-        height: calc(100vh - 45px);
-        margin-top: 45px;
+        height: calc(100vh - 55px); /* Updated for larger header */
+        margin-top: 55px;
         padding: 0.05rem;
-        padding-bottom: 140px;
+        padding-bottom: 100px;
     }
 }
 
@@ -411,19 +436,20 @@ body {
     line-height: 1.2;
 }
 
-/* Responsive modal header */
+/* Responsive modal header - Larger text for mobile */
 @media (max-width: 600px) {
     .modal h2 {
-        font-size: 1.5rem; /* 24px equivalent */
-        margin-bottom: 1rem;
-        letter-spacing: 0.5px;
+        font-size: 1.75rem; /* Increased from 1.5rem */
+        margin-bottom: 1.25rem;
+        letter-spacing: 0.75px;
     }
 }
 
 @media (max-width: 400px) {
     .modal h2 {
-        font-size: 1.25rem; /* 20px equivalent */
-        margin-bottom: 0.75rem;
+        font-size: 1.5rem; /* Increased from 1.25rem */
+        margin-bottom: 1rem;
+        letter-spacing: 0.5px;
     }
 }
 
@@ -433,20 +459,20 @@ body {
     font-size: 1rem; /* 16px at base */
 }
 
-/* Responsive modal text */
+/* Responsive modal text - Larger for mobile */
 @media (max-width: 600px) {
     .modal p {
-        margin: 0.75rem 0;
-        font-size: 0.9rem;
-        line-height: 1.5;
+        margin: 0.875rem 0;
+        font-size: 1rem; /* Increased from 0.9rem */
+        line-height: 1.6;
     }
 }
 
 @media (max-width: 400px) {
     .modal p {
-        margin: 0.5rem 0;
-        font-size: 0.85rem;
-        line-height: 1.4;
+        margin: 0.75rem 0;
+        font-size: 0.95rem; /* Increased from 0.85rem */
+        line-height: 1.5;
     }
 }
 
@@ -603,9 +629,9 @@ body {
 /* Responsive status panel */
 @media (max-width: 1200px) {
     #status {
-        font-size: 0.75rem; /* 12px */
-        padding: 0.75rem;
-        min-width: 7rem;
+        font-size: 0.6rem; /* 14.4px */
+        padding: 0.875rem;
+        min-width: 8rem;
     }
 }
 
@@ -613,32 +639,35 @@ body {
     #status {
         top: 1rem;
         right: 1rem;
-        font-size: 0.7rem; /* 11.2px */
-        padding: 0.625rem;
-        min-width: 6.5rem;
+        font-size: 0.85rem; /* 13.6px */
+        padding: 0.75rem;
+        min-width: 7.5rem;
     }
 }
 
 @media (max-width: 600px) {
     #status {
-        top: 0.5rem;
-        right: 0.5rem;
-        font-size: 0.6rem; /* 9.6px */
-        padding: 0.375rem;
-        border-radius: 0.375rem;
-        min-width: 5rem;
+        top: 0.25rem;
+        right: 0.25rem;
+        font-size: 0.5rem; /* Smaller text for mobile */
+        padding: 0.2rem 0.3rem;
+        border-radius: 0.3rem;
+        min-width: 3.5rem;
+        max-width: 4.5rem;
         border-width: 1px;
     }
 }
 
 @media (max-width: 400px) {
     #status {
-        top: 0.375rem;
-        right: 0.375rem;
-        font-size: 0.55rem; /* 8.8px */
-        padding: 0.25rem;
-        min-width: 4.5rem;
+        top: 0.2rem;
+        right: 0.2rem;
+        font-size: 0.45rem; /* Smaller text for tiny screens */
+        padding: 0.15rem 0.25rem;
+        min-width: 3rem;
+        max-width: 4rem;
         border-width: 1px;
+        border-radius: 0.25rem;
     }
 }
 
@@ -688,37 +717,45 @@ body {
 
 @media (max-width: 600px) {
     #powerup-notifications {
-        top: 60px;
-        right: 8px;
-        left: 8px;
-        width: auto;
-        max-width: calc(100vw - 16px);
+        top: 35px;
+        right: 5px;
+        left: auto;
+        width: 140px;
+        max-width: 140px;
     }
     
     .powerup-notification {
-        padding: 6px 8px;
-        font-size: 10px;
-        border-radius: 5px;
-        margin-bottom: 5px;
+        padding: 2px 4px;
+        font-size: 7px;
+        border-radius: 3px;
+        margin-bottom: 2px;
         border-width: 1px;
-        animation: slideInDown 0.4s ease-out, fadeOut 0.4s ease-in 2s forwards;
+        animation: slideInDown 0.2s ease-out, fadeOut 0.2s ease-in 1.2s forwards;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
 @media (max-width: 400px) {
     #powerup-notifications {
-        top: 50px;
-        right: 5px;
-        left: 5px;
-        max-width: calc(100vw - 10px);
+        top: 30px;
+        right: 3px;
+        left: auto;
+        width: 120px;
+        max-width: 120px;
     }
     
     .powerup-notification {
-        padding: 4px 6px;
-        font-size: 9px;
+        padding: 2px 3px;
+        font-size: 6px;
         border-width: 1px;
-        margin-bottom: 4px;
-        border-radius: 4px;
+        margin-bottom: 2px;
+        border-radius: 2px;
+        box-shadow: none;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
@@ -767,15 +804,15 @@ body {
 /* Mobile responsive status heading */
 @media (max-width: 600px) {
     #status h4 {
-        font-size: 10px;
-        margin-bottom: 6px;
+        font-size: 7px;
+        margin-bottom: 2px;
     }
 }
 
 @media (max-width: 400px) {
     #status h4 {
-        font-size: 9px;
-        margin-bottom: 4px;
+        font-size: 6px;
+        margin-bottom: 1px;
     }
 }
 
@@ -804,44 +841,49 @@ body {
     white-space: nowrap;
 }
 
-/* Responsive button styles */
+/* Responsive button styles - Significantly larger for mobile */
 @media (max-width: 1200px) {
     .game-button {
-        padding: 0.875rem 1.5rem; /* 14px 24px */
-        font-size: 0.875rem; /* 14px */
-        min-width: 9rem; /* 144px */
+        padding: 1rem 1.75rem; /* 16px 28px */
+        font-size: 1rem; /* 16px */
+        min-width: 10rem; /* 160px */
         letter-spacing: 1px;
     }
 }
 
 @media (max-width: 900px) {
     .game-button {
-        padding: 0.75rem 1.25rem; /* 12px 20px */
-        font-size: 0.8125rem; /* 13px */
-        min-width: 8rem; /* 128px */
-        margin: 0.25rem;
-        border-radius: 0.625rem; /* 10px */
+        padding: 1.25rem 1.75rem; /* 20px 28px */
+        font-size: 1.125rem; /* 18px */
+        min-width: 12rem; /* 192px */
+        margin: 0.5rem;
+        border-radius: 0.75rem; /* 12px */
+        border-width: 3px;
     }
 }
 
 @media (max-width: 600px) {
     .game-button {
-        padding: 0.625rem 1rem; /* 10px 16px */
-        font-size: 0.75rem; /* 12px */
-        min-width: 7rem; /* 112px */
-        letter-spacing: 0.5px;
-        border-radius: 0.5rem; /* 8px */
+        padding: 1.75rem 2.25rem; /* Increased from 1.5rem 2rem */
+        font-size: 1.375rem; /* Increased from 1.25rem */
+        min-width: 15rem; /* Increased from 14rem */
+        letter-spacing: 0.75px;
+        border-radius: 0.875rem; /* 14px */
+        border-width: 3px;
+        font-weight: 700;
     }
 }
 
 @media (max-width: 400px) {
     .game-button {
-        padding: 0.5rem 0.75rem; /* 8px 12px */
-        font-size: 0.7rem; /* 11.2px */
-        min-width: 6rem; /* 96px */
-        letter-spacing: 0.25px;
+        padding: 2rem 2.5rem; /* Increased from 1.75rem 2.25rem */
+        font-size: 1.5rem; /* Increased from 1.375rem */
+        min-width: 17rem; /* Increased from 16rem */
+        letter-spacing: 0.5px;
         width: 100%;
-        margin: 0.125rem 0;
+        margin: 0.25rem 0;
+        border-width: 4px;
+        font-weight: 700;
     }
 }
 
@@ -1318,7 +1360,7 @@ body {
     text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
 }
 
-/* Mobile On-Screen Controls */
+/* Mobile controls with improved touch performance */
 #mobile-controls {
     position: fixed;
     bottom: 20px;
@@ -1328,6 +1370,12 @@ body {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.3s ease, transform 0.3s ease;
+    /* Performance optimizations for mobile */
+    will-change: opacity, transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
 }
 
 #mobile-controls.visible {
@@ -1340,6 +1388,8 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    /* Performance optimization */
+    transform: translateZ(0);
 }
 
 .control-row {
@@ -1358,6 +1408,9 @@ body {
     border-radius: 50%;
     cursor: pointer;
     user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     touch-action: manipulation;
     transition: all 0.1s ease;
     backdrop-filter: blur(10px);
@@ -1367,6 +1420,11 @@ body {
     box-shadow: 0 4px 15px rgba(0, 191, 255, 0.3);
     position: relative;
     overflow: hidden;
+    /* Performance optimizations */
+    will-change: transform, background-color;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 /* Add ripple effect for touch feedback */
@@ -1405,142 +1463,154 @@ body {
     }
 }
 
-/* Mobile responsive adjustments */
+/* Mobile responsive adjustments - Even larger for better usability */
 @media (max-width: 768px) {
     #mobile-controls {
         /* Remove !important to allow JavaScript control */
-        bottom: 120px; /* Above blog panel */
+        bottom: 20px; /* Better positioning */
         right: 20px;
+        left: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     
     .control-btn {
-        width: 60px;
-        height: 60px;
-        font-size: 24px;
-        border-width: 2px;
+        width: 100px;  /* Increased from 90px */
+        height: 100px;  /* Increased from 90px */
+        font-size: 40px;  /* Increased from 36px */
+        border-width: 4px;  /* Increased border */
+        /* Better touch targets for mobile */
+        box-shadow: 0 8px 25px rgba(0, 191, 255, 0.4);
     }
     
     .control-pad {
-        gap: 12px;
+        gap: 25px;  /* Increased gap */
     }
     
     .control-row {
-        gap: 12px;
+        gap: 25px;
     }
 }
 
 /* Tablet landscape */
 @media (max-width: 700px) {
     #mobile-controls {
-        bottom: 100px;
+        bottom: 20px;
         right: 15px;
+        left: 15px;
     }
     
     .control-btn {
-        width: 55px;
-        height: 55px;
-        font-size: 22px;
+        width: 95px;  /* Increased from 85px */
+        height: 95px;  /* Increased from 85px */
+        font-size: 36px;  /* Increased from 32px */
+        border-width: 3px;
     }
     
     .control-pad {
-        gap: 10px;
+        gap: 22px;  /* Increased gap */
     }
     
     .control-row {
-        gap: 10px;
+        gap: 22px;
     }
 }
 
 /* Mobile portrait */
 @media (max-width: 600px) {
     #mobile-controls {
-        bottom: 80px;
+        bottom: 20px;
         right: 10px;
+        left: 10px;
     }
     
     .control-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-        border-width: 1.5px;
+        width: 90px;  /* Increased from 80px */
+        height: 90px;  /* Increased from 80px */
+        font-size: 34px;  /* Increased from 30px */
+        border-width: 3px;
     }
     
     .control-pad {
-        gap: 8px;
+        gap: 20px;  /* Increased gap */
     }
     
     .control-row {
-        gap: 8px;
+        gap: 20px;
     }
 }
 
 /* Small mobile */
 @media (max-width: 480px) {
     #mobile-controls {
-        bottom: 70px;
+        bottom: 20px;
         right: 8px;
+        left: 8px;
     }
     
     .control-btn {
-        width: 48px;
-        height: 48px;
-        font-size: 18px;
-        border-width: 1.5px;
+        width: 85px;  /* Increased from 75px */
+        height: 85px;  /* Increased from 75px */
+        font-size: 32px;  /* Increased from 28px */
+        border-width: 3px;
     }
     
     .control-pad {
-        gap: 6px;
+        gap: 18px;  /* Increased gap */
     }
     
     .control-row {
-        gap: 6px;
+        gap: 18px;
     }
 }
 
 /* Very small mobile */
 @media (max-width: 400px) {
     #mobile-controls {
-        bottom: 60px;
+        bottom: 15px;
         right: 5px;
+        left: 5px;
     }
     
     .control-btn {
-        width: 42px;
-        height: 42px;
-        font-size: 16px;
-        border-width: 1px;
+        width: 80px;  /* Increased from 70px */
+        height: 80px;  /* Increased from 70px */
+        font-size: 30px;  /* Increased from 26px */
+        border-width: 3px;
         padding: 0;
     }
     
     .control-pad {
-        gap: 5px;
+        gap: 16px;  /* Increased gap */
     }
     
     .control-row {
-        gap: 5px;
+        gap: 16px;
     }
 }
 
 /* Extra small screens */
 @media (max-width: 320px) {
     #mobile-controls {
-        bottom: 50px;
+        bottom: 15px;
         right: 3px;
+        left: 3px;
     }
     
     .control-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 14px;
-        border-width: 1px;
+        width: 75px;  /* Increased from 65px */
+        height: 75px;  /* Increased from 65px */
+        font-size: 28px;  /* Increased from 24px */
+        border-width: 3px;
     }
     
     .control-pad {
-        gap: 4px;
+        gap: 14px;  /* Increased gap */
     }
     
     .control-row {
-        gap: 4px;
+        gap: 14px;
     }
 }
 
@@ -1673,11 +1743,24 @@ body {
     }
 }
 
-/* Responsive Canvas Scaling */
+/* Responsive Canvas Scaling with performance optimizations */
 #gameCanvas {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+    /* Performance optimizations for mobile */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Disable image smoothing for crisp pixels and better performance */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: pixelated;
+    /* Better touch handling */
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Blog Panel Styles - Background Overlay */
@@ -1781,8 +1864,8 @@ body {
         left: 0;
         right: 0;
         width: 100vw;
-        height: 40vh;
-        max-height: 300px;
+        height: 30vh;
+        max-height: 200px;
         z-index: 200;
         background: linear-gradient(
             135deg, 
@@ -1793,10 +1876,10 @@ body {
         backdrop-filter: blur(10px);
         border-top: 2px solid rgba(0, 191, 255, 0.4);
         border-radius: 15px 15px 0 0;
-        transform: translateY(calc(100% - 50px));
+        transform: translateY(calc(100% - 40px));
         transition: transform 0.3s ease;
         overflow-y: auto;
-        padding: 1rem 1rem 2rem 1rem;
+        padding: 0.75rem 0.75rem 1.5rem 0.75rem;
     }
     
     .blog-panel.left.expanded {
@@ -1804,18 +1887,18 @@ body {
     }
     
     .blog-panel.left::before {
-        content: '📚 A* Algorithm Guide - Tap to expand';
+        content: '📚 A* Algorithm - Tap to expand';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 50px;
+        height: 40px;
         background: rgba(0, 191, 255, 0.1);
         border-bottom: 1px solid rgba(0, 191, 255, 0.3);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.875rem;
+        font-size: 0.8rem;
         font-weight: 600;
         color: #00BFFF;
         cursor: pointer;
@@ -1823,14 +1906,14 @@ body {
     }
     
     .blog-panel.left.expanded::before {
-        content: '📚 A* Algorithm Guide - Tap to collapse';
+        content: '📚 A* Algorithm - Tap to collapse';
         background: rgba(255, 107, 107, 0.1);
         border-bottom: 1px solid rgba(255, 107, 107, 0.3);
         color: #ff6b6b;
     }
     
     .blog-panel.left.expanded::before {
-        content: '📚 A* Algorithm Guide - Tap to collapse';
+        content: '📚 A* Algorithm - Tap to collapse';
     }
 }
 
