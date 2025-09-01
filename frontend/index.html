@@ -22,8 +22,8 @@
             <div class="user-welcome">
                 <span id="menuHeaderWelcomeText">Welcome, Guest!</span>
             </div>
-            <div class="score-info" id="menuHeaderScoreInfo">
-                <span id="menuHeaderTopScore">Best Score: -- </span>
+            <div class="score-info" id="menuHeaderScoreInfo" style="display: none;">
+                <span id="menuHeaderTopScore">Best: --</span>
             </div>
         </div>
     </div>
@@ -179,10 +179,23 @@
         </div>
         
         <div id="status" style="display: none;">
-            <h4 style="color: #39FF14; margin-bottom: 8px;">ℹ️ GAME INFO</h4>
-            <div id="current-score">Score: <span style="color: #FFD700;">0</span></div>
-            <div id="current-time">Time: <span style="color: #FFD700;">0 Sec</span></div>
-            <div id="current-lives">Lives: <span style="color: #FF6B6B;">2</span></div>
+            <div class="status-header">
+                <h4>ℹ️ GAME INFO</h4>
+            </div>
+            <div class="status-content">
+                <div class="status-item">
+                    <span class="status-label">Score:</span>
+                    <span class="status-value" id="current-score-value">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Time:</span>
+                    <span class="status-value" id="current-time-value">0 Sec</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Lives:</span>
+                    <span class="status-value" id="current-lives-value">2</span>
+                </div>
+            </div>
         </div>
 
         <!-- Powerup Notifications -->
@@ -486,9 +499,9 @@
             
             updateStatus() {
                 const statusPanel = document.getElementById('status');
-                const currentScoreEl = document.getElementById('current-score');
-                const currentTimeEl = document.getElementById('current-time');
-                const currentLivesEl = document.getElementById('current-lives');
+                const currentScoreEl = document.getElementById('current-score-value');
+                const currentTimeEl = document.getElementById('current-time-value');
+                const currentLivesEl = document.getElementById('current-lives-value');
                 
                 // Show panel only during gameplay
                 if (statusPanel) {
@@ -516,7 +529,7 @@
                         // Ensure score is never negative
                         currentScore = Math.max(0, currentScore);
                     }
-                    currentScoreEl.innerHTML = `Score: <span style="color: #FFD700;">${currentScore}</span>`;
+                    currentScoreEl.textContent = currentScore;
                 }
                 
                 if (currentTimeEl) {
@@ -525,13 +538,14 @@
                         const elapsedSeconds = Math.floor((Date.now() / 1000) - game.startTime);
                         timeText = `${elapsedSeconds} Sec`;
                     }
-                    currentTimeEl.innerHTML = `Time: <span style="color: #FFD700;">${timeText}</span>`;
+                    currentTimeEl.textContent = timeText;
                 }
                 
                 if (currentLivesEl) {
                     const lives = game ? game.lives || 0 : 0;
                     const livesColor = lives > 1 ? '#FF6B6B' : lives === 1 ? '#FFA500' : '#FF3333';
-                    currentLivesEl.innerHTML = `Lives: <span style="color: ${livesColor};">${lives}</span>`;
+                    currentLivesEl.textContent = lives;
+                    currentLivesEl.style.color = livesColor;
                 }
                 
                 // Update panels visibility based on game state

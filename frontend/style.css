@@ -626,6 +626,35 @@ body {
     min-width: 8rem; /* 128px */
 }
 
+/* Status panel structure */
+.status-header h4 {
+    color: #39FF14;
+    margin: 0 0 8px 0;
+    font-size: inherit;
+}
+
+.status-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-label {
+    color: #E0E0E0;
+    font-weight: 500;
+}
+
+.status-value {
+    color: #FFD700;
+    font-weight: 600;
+}
+
 /* Responsive status panel */
 @media (max-width: 1200px) {
     #status {
@@ -656,6 +685,19 @@ body {
         max-width: 5.5rem; /* Increased max width */
         border-width: 1px;
         line-height: 1.2;
+    }
+    
+    .status-header h4 {
+        font-size: 10px; /* Increased from 8px for even better visibility */
+        margin-bottom: 4px; /* More spacing */
+    }
+    
+    .status-content {
+        gap: 2px; /* Smaller gap for mobile */
+    }
+    
+    .status-item {
+        font-size: 0.6rem; /* Slightly smaller for mobile */
     }
 }
 
@@ -801,14 +843,6 @@ body {
     font-weight: 600;
     text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
     text-align: center;
-}
-
-/* Mobile responsive status heading */
-@media (max-width: 600px) {
-    #status h4 {
-        font-size: 10px; /* Increased from 8px for even better visibility */
-        margin-bottom: 4px; /* More spacing */
-    }
 }
 
 @media (max-width: 400px) {
@@ -1401,12 +1435,12 @@ body {
 }
 
 .control-btn {
-    width: 60px;
-    height: 60px;
+    width: 50px; /* Reduced from 60px */
+    height: 50px; /* Reduced from 60px */
     background: rgba(26, 26, 46, 0.9);
     border: 2px solid #00BFFF;
     color: #FFFFFF;
-    font-size: 24px;
+    font-size: 20px; /* Reduced from 24px */
     font-weight: bold;
     border-radius: 50%;
     cursor: pointer;
