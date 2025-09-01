@@ -629,7 +629,7 @@ body {
 /* Responsive status panel */
 @media (max-width: 1200px) {
     #status {
-        font-size: 0.6rem; /* 14.4px */
+        font-size: 0.9rem; /* 14.4px */
         padding: 0.875rem;
         min-width: 8rem;
     }
@@ -647,27 +647,29 @@ body {
 
 @media (max-width: 600px) {
     #status {
-        top: 0.25rem;
-        right: 0.25rem;
-        font-size: 0.5rem; /* Smaller text for mobile */
-        padding: 0.2rem 0.3rem;
+        top: 0.1rem;
+        right: 0.1rem;
+        font-size: 0.65rem; /* Increased from 0.55rem for even better visibility */
+        padding: 0.25rem 0.35rem; /* Even more padding for larger appearance */
         border-radius: 0.3rem;
-        min-width: 3.5rem;
-        max-width: 4.5rem;
+        min-width: 4.5rem; /* Increased width */
+        max-width: 5.5rem; /* Increased max width */
         border-width: 1px;
+        line-height: 1.2;
     }
 }
 
 @media (max-width: 400px) {
     #status {
-        top: 0.2rem;
-        right: 0.2rem;
-        font-size: 0.45rem; /* Smaller text for tiny screens */
-        padding: 0.15rem 0.25rem;
-        min-width: 3rem;
-        max-width: 4rem;
+        top: 0.1rem;
+        right: 0.1rem;
+        font-size: 0.5rem; /* Further increased for better visibility */
+        padding: 0.18rem 0.25rem; /* More padding for larger appearance */
+        min-width: 3.5rem; /* Increased width */
+        max-width: 4.5rem; /* Increased max width */
         border-width: 1px;
-        border-radius: 0.25rem;
+        border-radius: 0.2rem;
+        line-height: 1.2;
     }
 }
 
@@ -717,20 +719,20 @@ body {
 
 @media (max-width: 600px) {
     #powerup-notifications {
-        top: 35px;
-        right: 5px;
+        top: 25px;
+        right: 3px;
         left: auto;
-        width: 140px;
-        max-width: 140px;
+        width: 100px;
+        max-width: 100px;
     }
     
     .powerup-notification {
-        padding: 2px 4px;
-        font-size: 7px;
-        border-radius: 3px;
-        margin-bottom: 2px;
+        padding: 1px 3px;
+        font-size: 5px;
+        border-radius: 2px;
+        margin-bottom: 1px;
         border-width: 1px;
-        animation: slideInDown 0.2s ease-out, fadeOut 0.2s ease-in 1.2s forwards;
+        animation: slideInDown 0.15s ease-out, fadeOut 0.15s ease-in 1s forwards;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -804,15 +806,15 @@ body {
 /* Mobile responsive status heading */
 @media (max-width: 600px) {
     #status h4 {
-        font-size: 7px;
-        margin-bottom: 2px;
+        font-size: 10px; /* Increased from 8px for even better visibility */
+        margin-bottom: 4px; /* More spacing */
     }
 }
 
 @media (max-width: 400px) {
     #status h4 {
-        font-size: 6px;
-        margin-bottom: 1px;
+        font-size: 5px; /* Increased from 3px */
+        margin-bottom: 1px; /* Increased margin */
     }
 }
 
@@ -864,26 +866,27 @@ body {
 
 @media (max-width: 600px) {
     .game-button {
-        padding: 1.75rem 2.25rem; /* Increased from 1.5rem 2rem */
-        font-size: 1.375rem; /* Increased from 1.25rem */
-        min-width: 15rem; /* Increased from 14rem */
-        letter-spacing: 0.75px;
-        border-radius: 0.875rem; /* 14px */
-        border-width: 3px;
-        font-weight: 700;
+        padding: 0.8rem 1.2rem; /* Much smaller for mobile */
+        font-size: 0.9rem; /* Smaller text */
+        min-width: 8rem; /* Much narrower */
+        letter-spacing: 0.5px;
+        border-radius: 0.5rem;
+        border-width: 2px;
+        font-weight: 600;
+        margin: 0.3rem;
     }
 }
 
 @media (max-width: 400px) {
     .game-button {
-        padding: 2rem 2.5rem; /* Increased from 1.75rem 2.25rem */
-        font-size: 1.5rem; /* Increased from 1.375rem */
-        min-width: 17rem; /* Increased from 16rem */
-        letter-spacing: 0.5px;
-        width: 100%;
-        margin: 0.25rem 0;
-        border-width: 4px;
-        font-weight: 700;
+        padding: 0.7rem 1rem; /* Much smaller for tiny screens */
+        font-size: 0.8rem; /* Smaller text */
+        min-width: 7rem; /* Much narrower */
+        letter-spacing: 0.3px;
+        width: auto; /* Don't force full width */
+        margin: 0.2rem;
+        border-width: 2px;
+        font-weight: 600;
     }
 }
 
