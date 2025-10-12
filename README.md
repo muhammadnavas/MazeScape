@@ -216,6 +216,6 @@ Please use the GitHub Issues page to report bugs or request features:
 
 ---
 
-**Built with ❤️ by [MrHidey](https://github.com/MrHidey)**
+**Built with ❤️ by [muhammadnavas](https://github.com/muhammadnavas/MazeScape.git)**
 
 *Showcasing modern web development, game programming, and AI algorithms in an engaging, interactive experience.*
