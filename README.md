@@ -2,7 +2,14 @@
 
 A modern, full-stack maze game featuring intelligent AI pathfinding and real-time multiplayer capabilities. Navigate through procedurally generated mazes while evading an AI-powered ghost that uses the A* algorithm to hunt you down.
 
-![MazeScape Banner](https://img.shields.io/badge/Status-Active-brightgreen) ![License](https://img.shields.io/badge/License-MIT-blue) ![Node.js](https://img.shields.io/badge/Node.js-v18+-green) ![MongoDB](https://img.shields.io/badge/Database-MongoDB-green)
+## 🔗 Links
+
+- **GitHub Repository**: [https://github.com/muhammadnavas/MazeScape.git](https://github.com/muhammadnavas/MazeScape.git)
+- **Live Demo**: [Play MazeScape](https://your-domain.com)
+- **Portfolio**: [Your Portfolio](https://your-portfolio.com)
+- **LinkedIn**: [Your LinkedIn Profile](https://linkedin.com/in/yourprofile)
+
+![MazeScape Banner](https://img.shields.io/badge/Status-Active-brightgreen) ![Node.js](https://img.shields.io/badge/Node.js-v18+-green) ![MongoDB](https://img.shields.io/badge/Database-MongoDB-green)
 
 ## 🌟 Features
 
@@ -69,7 +76,7 @@ A modern, full-stack maze game featuring intelligent AI pathfinding and real-tim
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/MrHidey/MazeScape.git
+git clone https://github.com/muhammadnavas/MazeScape.git
 cd MazeScape
 ```
 
@@ -187,25 +194,16 @@ The game features a sophisticated AI enemy powered by the A* (A-star) algorithm:
 
 ## 🤝 Contributing
 
-1. Fork the repository
+1. Fork the repository ([muhammadnavas/MazeScape](https://github.com/muhammadnavas/MazeScape.git))
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 🐛 Bug Reports & Feature Requests
 
-Please use the [GitHub Issues](https://github.com/MrHidey/MazeScape/issues) page to report bugs or request features.
-
-## 🔗 Links
-
-- **Live Demo**: [Play MazeScape](https://your-domain.com)
-- **Portfolio**: [Your Portfolio](https://your-portfolio.com)
-- **LinkedIn**: [Your LinkedIn Profile](https://linkedin.com/in/yourprofile)
+Please use the GitHub Issues page to report bugs or request features:
+- [muhammadnavas/MazeScape Issues](https://github.com/muhammadnavas/MazeScape/issues)
 
 ## 🏆 Achievements
 
