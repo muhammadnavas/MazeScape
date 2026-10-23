@@ -4377,3 +4377,55 @@ body {
   #helpModal .modal { border-radius: 20px !important; }
   #helpModal .modal > div[style*="overflow-y"] { max-height: min(54dvh, 420px) !important; }
 }
+
+
+/* Mobile gameplay layout correction: reserve a dedicated HUD, maze and D-pad zone. */
+@media (max-width: 700px) and (orientation: portrait) {
+  #gameContainer {
+    position: fixed !important; inset: 0 !important;
+    width: 100vw !important; height: 100dvh !important;
+    min-height: 0 !important; margin: 0 !important;
+    padding: calc(74px + env(safe-area-inset-top, 0px)) 8px calc(168px + env(safe-area-inset-bottom, 0px)) !important;
+    box-sizing: border-box !important; display: flex !important;
+    flex-direction: column !important; align-items: center !important;
+    justify-content: flex-start !important; overflow: hidden !important;
+  }
+  #gameCanvas {
+    position: relative !important; flex: 0 1 auto !important;
+    width: auto !important; height: auto !important;
+    max-width: calc(100vw - 16px) !important;
+    max-height: calc(100dvh - 260px - env(safe-area-inset-bottom, 0px)) !important;
+    object-fit: contain !important; margin: 0 auto !important;
+  }
+  #status {
+    position: fixed !important; top: calc(7px + env(safe-area-inset-top, 0px)) !important;
+    left: 10px !important; right: 10px !important; width: auto !important; z-index: 500 !important;
+  }
+  #mobile-controls {
+    position: fixed !important; left: 0 !important; right: 0 !important;
+    bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
+    width: 100% !important; height: auto !important; margin: 0 !important; padding: 0 !important;
+    display: none; align-items: center !important; justify-content: center !important;
+    opacity: 0; transform: none !important; pointer-events: none; z-index: 600 !important;
+  }
+  #mobile-controls.visible { display: flex !important; opacity: 1 !important; pointer-events: auto !important; }
+  #mobile-controls .control-pad, #mobile-controls .control-pad * { box-sizing: border-box !important; }
+  #mobile-controls .control-pad {
+    display: grid !important; grid-template-columns: repeat(3, 42px) !important;
+    grid-template-rows: repeat(3, 42px) !important; gap: 4px !important;
+    width: max-content !important; height: max-content !important; padding: 5px !important;
+    margin: 0 auto !important; align-items: center !important; justify-items: center !important;
+    transform: none !important;
+  }
+  #mobile-controls .control-btn, #mobile-controls .control-pad .control-btn {
+    width: 42px !important; height: 42px !important; min-width: 42px !important;
+    min-height: 42px !important; padding: 0 !important; margin: 0 !important;
+    font-size: 20px !important; line-height: 1 !important; touch-action: none !important;
+  }
+}
+@media (max-width: 380px) and (orientation: portrait) {
+  #gameContainer { padding-top: calc(72px + env(safe-area-inset-top, 0px)) !important; padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px)) !important; }
+  #gameCanvas { max-height: calc(100dvh - 230px - env(safe-area-inset-bottom, 0px)) !important; }
+  #mobile-controls .control-pad { grid-template-columns: repeat(3, 38px) !important; grid-template-rows: repeat(3, 38px) !important; }
+  #mobile-controls .control-btn, #mobile-controls .control-pad .control-btn { width: 38px !important; height: 38px !important; min-width: 38px !important; min-height: 38px !important; }
+}
