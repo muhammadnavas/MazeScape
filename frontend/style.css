@@ -4467,3 +4467,74 @@ body {
     max-height: calc(100dvh - 220px - env(safe-area-inset-bottom, 0px)) !important;
   }
 }
+
+
+/* Final mobile gameplay sizing: maximize maze area, compact HUD/toasts, isolate controls. */
+@media (max-width: 700px) and (orientation: portrait) {
+  #gameContainer {
+    padding: calc(48px + env(safe-area-inset-top, 0px)) 6px calc(112px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 4px !important;
+    justify-content: center !important;
+  }
+  #gameCanvas {
+    width: auto !important;
+    height: auto !important;
+    max-width: calc(100vw - 12px) !important;
+    max-height: calc(100dvh - 190px - env(safe-area-inset-bottom, 0px)) !important;
+    flex: 0 1 auto !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+  }
+  #status {
+    top: calc(5px + env(safe-area-inset-top, 0px)) !important;
+    left: 8px !important;
+    right: 8px !important;
+    padding: 4px 6px !important;
+  }
+  #powerup-notifications {
+    top: calc(46px + env(safe-area-inset-top, 0px)) !important;
+    width: min(250px, calc(100vw - 40px)) !important;
+    max-width: calc(100vw - 40px) !important;
+  }
+  .powerup-notification {
+    gap: 7px !important;
+    padding: 6px 9px !important;
+    border-radius: 10px !important;
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+  }
+  .powerup-notification-icon {
+    width: 23px !important;
+    height: 23px !important;
+    border-radius: 7px !important;
+    font-size: 13px !important;
+  }
+  #mobile-controls {
+    bottom: max(5px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #mobile-controls .control-pad {
+    grid-template-columns: repeat(3, 38px) !important;
+    grid-template-rows: repeat(3, 38px) !important;
+    gap: 3px !important;
+    padding: 4px !important;
+  }
+  #mobile-controls .control-btn,
+  #mobile-controls .control-pad .control-btn {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    font-size: 18px !important;
+  }
+}
+@media (max-width: 380px) and (orientation: portrait) {
+  #gameContainer {
+    padding-top: calc(46px + env(safe-area-inset-top, 0px)) !important;
+    padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #gameCanvas {
+    max-width: calc(100vw - 10px) !important;
+    max-height: calc(100dvh - 176px - env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #powerup-notifications { top: calc(44px + env(safe-area-inset-top, 0px)) !important; }
+}
