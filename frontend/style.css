@@ -2467,3 +2467,118 @@ body {
     background: #6B1715 !important;
 }
 canvas { accent-color: var(--maze-gold); }
+
+
+/* Refined dark-on-dark palette with light borders */
+:root {
+    --maze-sand: #C0B281;
+    --maze-burgundy: #550605;
+    --maze-gold: #D8A93D;
+    --maze-dark: #241715;
+    --maze-dark-raised: #352321;
+    --maze-dark-soft: #44302A;
+    --maze-light-border: #D9CDAE;
+    --maze-light-border-soft: rgba(250, 247, 239, 0.42);
+    --maze-text: #FAF7EF;
+    --maze-muted-text: #D4C8B7;
+}
+body {
+    background: linear-gradient(135deg, #1C1211 0%, #2A1A18 52%, #382421 100%) !important;
+    color: var(--maze-text) !important;
+}
+.menu-header {
+    background: rgba(36, 23, 21, 0.97) !important;
+    border-bottom: 2px solid var(--maze-light-border) !important;
+    box-shadow: 0 5px 20px rgba(0,0,0,.24) !important;
+}
+.logo-text, .main-title, .modal h2, .loading, .primary-color {
+    color: var(--maze-gold) !important;
+    text-shadow: none !important;
+}
+.user-welcome {
+    color: var(--maze-text) !important;
+    background: rgba(192,178,129,.13) !important;
+    border: 1px solid var(--maze-light-border) !important;
+    text-shadow: none !important;
+}
+.score-info { color: var(--maze-gold) !important; border-color: var(--maze-light-border) !important; }
+#gameContainer {
+    background: linear-gradient(135deg, #1C1211 0%, #2A1A18 55%, #382421 100%) !important;
+}
+#menuButtons.menu-buttons {
+    background: linear-gradient(145deg, rgba(36,23,21,.98), rgba(53,35,33,.98)) !important;
+    border: 1px solid var(--maze-light-border) !important;
+    box-shadow: 0 22px 58px rgba(0,0,0,.3) !important;
+}
+#menuButtons .main-title { color: var(--maze-gold) !important; text-shadow: none !important; }
+#menuButtons .main-subtitle { color: var(--maze-muted-text) !important; }
+#menuButtons .game-button {
+    background: #44302A !important;
+    color: var(--maze-text) !important;
+    border: 1px solid var(--maze-light-border-soft) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15) !important;
+}
+#menuButtons .game-button:hover {
+    background: #503631 !important;
+    color: #fffaf0 !important;
+    border-color: var(--maze-light-border) !important;
+    transform: translateY(-1px);
+}
+#menuButtons .game-button.primary {
+    background: var(--maze-burgundy) !important;
+    border: 1px solid var(--maze-light-border) !important;
+    color: var(--maze-text) !important;
+    box-shadow: 0 8px 18px rgba(0,0,0,.22) !important;
+}
+#menuButtons .game-button.primary:hover {
+    background: #6B1715 !important;
+    border-color: var(--maze-light-border) !important;
+    color: #fffaf0 !important;
+}
+#menuButtons .game-button:focus-visible, button:focus-visible {
+    outline: 2px solid var(--maze-light-border) !important;
+    outline-offset: 3px;
+}
+.modal {
+    background: linear-gradient(135deg, #241715, #352321) !important;
+    color: var(--maze-text) !important;
+    border: 1px solid var(--maze-light-border) !important;
+    box-shadow: 0 24px 70px rgba(0,0,0,.32) !important;
+}
+.modal h2 { color: var(--maze-gold) !important; }
+.modal p, .modal label, .modal span { color: var(--maze-text); }
+.modal input, .modal select, .modal textarea {
+    background: #1C1211 !important;
+    color: var(--maze-text) !important;
+    border: 1px solid var(--maze-light-border-soft) !important;
+}
+#instructions, #status, .powerup-notification, .blog-panel,
+.blog-panel.left {
+    background: rgba(36,23,21,.97) !important;
+    color: var(--maze-text) !important;
+    border: 1px solid var(--maze-light-border-soft) !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,.24) !important;
+    text-shadow: none !important;
+}
+#instructions h4, .status-header h4, .blog-panel h4, .blog-panel h5 {
+    color: var(--maze-gold) !important;
+    text-shadow: none !important;
+}
+#instructions, #status, .status-label, .blog-content, .blog-section p, .blog-section li {
+    color: var(--maze-text) !important;
+}
+.status-value, .powerup-notification { color: var(--maze-gold) !important; }
+.blog-panel.left::before {
+    background: #352321 !important;
+    color: var(--maze-text) !important;
+    border-bottom: 1px solid var(--maze-light-border-soft) !important;
+}
+#mobile-controls .control-btn, .control-btn {
+    background: #44302A !important;
+    color: var(--maze-text) !important;
+    border: 1px solid var(--maze-light-border) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,.2) !important;
+}
+#mobile-controls .control-btn:active, .control-btn:active {
+    background: var(--maze-burgundy) !important;
+}
