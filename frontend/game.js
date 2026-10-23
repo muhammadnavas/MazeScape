@@ -247,106 +247,139 @@ class TextureManager {
  }
  
  createPlayerTexture() {
- const canvas = document.createElement('canvas');
- canvas.width = GRID_SIZE;
- canvas.height = GRID_SIZE;
- const ctx = canvas.getContext('2d');
- 
- // Futuristic player design
- const centerX = GRID_SIZE / 2;
- const centerY = GRID_SIZE / 2;
- const radius = GRID_SIZE * 0.4;
- 
- // Outer glow
- const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius * 1.2);
- glowGradient.addColorStop(0, NEON_GREEN);
- glowGradient.addColorStop(0.7, NEON_GREEN + '80');
- glowGradient.addColorStop(1, 'transparent');
- 
- ctx.fillStyle = glowGradient;
- ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
- 
- // Main body
- const bodyGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
- bodyGradient.addColorStop(0, '#4AFF4A');
- bodyGradient.addColorStop(0.6, NEON_GREEN);
- bodyGradient.addColorStop(1, '#20AA20');
- 
- ctx.fillStyle = bodyGradient;
- ctx.beginPath();
- ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
- ctx.fill();
- 
- // Inner core
- ctx.fillStyle = '#FAF7EF';
- ctx.beginPath();
- ctx.arc(centerX, centerY, radius * 0.3, 0, 2 * Math.PI);
- ctx.fill();
- 
- // Direction indicator
- ctx.fillStyle = '#000000';
- ctx.beginPath();
- ctx.arc(centerX, centerY - radius * 0.5, radius * 0.15, 0, 2 * Math.PI);
- ctx.fill();
- 
- this.textures.player = canvas;
+  // Jerry-inspired mouse: brown fur, oversized pink ears and cream muzzle.
+  const canvas = document.createElement('canvas');
+  canvas.width = GRID_SIZE * 3;
+  canvas.height = GRID_SIZE * 3;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(3, 3);
+  const s = GRID_SIZE, cx = s / 2;
+
+  const glow = ctx.createRadialGradient(cx, cx, 2, cx, cx, s * 0.62);
+  glow.addColorStop(0, 'rgba(216,169,61,.28)');
+  glow.addColorStop(1, 'rgba(216,169,61,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, s, s);
+
+  ctx.fillStyle = '#8B542D';
+  ctx.beginPath();
+  ctx.arc(s*.28, s*.25, s*.19, 0, Math.PI*2);
+  ctx.arc(s*.72, s*.25, s*.19, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#E99A9A';
+  ctx.beginPath();
+  ctx.arc(s*.28, s*.25, s*.105, 0, Math.PI*2);
+  ctx.arc(s*.72, s*.25, s*.105, 0, Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle = '#B97535';
+  ctx.beginPath();
+  ctx.ellipse(cx, s*.51, s*.36, s*.34, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#F2D5A0';
+  ctx.beginPath();
+  ctx.ellipse(cx, s*.63, s*.25, s*.17, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle = '#FFF8E9';
+  ctx.beginPath();
+  ctx.ellipse(s*.39, s*.46, s*.085, s*.115, 0, 0, Math.PI*2);
+  ctx.ellipse(s*.61, s*.46, s*.085, s*.115, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#29201B';
+  ctx.beginPath();
+  ctx.arc(s*.405, s*.47, s*.043, 0, Math.PI*2);
+  ctx.arc(s*.625, s*.47, s*.043, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#6B3329';
+  ctx.beginPath();
+  ctx.arc(cx, s*.59, s*.045, 0, Math.PI*2);
+  ctx.fill();
+  ctx.strokeStyle = '#6B3329';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(cx, s*.62); ctx.quadraticCurveTo(s*.43, s*.70, s*.37, s*.65);
+  ctx.moveTo(cx, s*.62); ctx.quadraticCurveTo(s*.57, s*.70, s*.63, s*.65);
+  ctx.stroke();
+
+  ctx.strokeStyle = '#F2D5A0';
+  ctx.lineWidth = .7;
+  ctx.beginPath();
+  ctx.moveTo(s*.34,s*.61); ctx.lineTo(s*.12,s*.57);
+  ctx.moveTo(s*.34,s*.65); ctx.lineTo(s*.13,s*.68);
+  ctx.moveTo(s*.66,s*.61); ctx.lineTo(s*.88,s*.57);
+  ctx.moveTo(s*.66,s*.65); ctx.lineTo(s*.87,s*.68);
+  ctx.stroke();
+
+  this.textures.player = canvas;
  }
  
  createGhostTexture() {
- const canvas = document.createElement('canvas');
- canvas.width = GRID_SIZE;
- canvas.height = GRID_SIZE;
- const ctx = canvas.getContext('2d');
- 
- // Menacing ghost design
- const centerX = GRID_SIZE / 2;
- const centerY = GRID_SIZE / 2;
- 
- // Outer glow
- const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, GRID_SIZE * 0.6);
- glowGradient.addColorStop(0, RED);
- glowGradient.addColorStop(0.7, RED + '60');
- glowGradient.addColorStop(1, 'transparent');
- 
- ctx.fillStyle = glowGradient;
- ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
- 
- // Main ghost body (rounded rectangle)
- const bodyGradient = ctx.createLinearGradient(0, 0, 0, GRID_SIZE);
- bodyGradient.addColorStop(0, '#FF6666');
- bodyGradient.addColorStop(0.5, RED);
- bodyGradient.addColorStop(1, '#CC0000');
- 
- ctx.fillStyle = bodyGradient;
- ctx.fillRect(GRID_SIZE * 0.1, GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8);
- 
- // Ghost bottom wavy edge
- ctx.fillStyle = bodyGradient;
- ctx.beginPath();
- ctx.moveTo(GRID_SIZE * 0.1, GRID_SIZE * 0.7);
- for (let i = 0; i < 4; i++) {
- const x = GRID_SIZE * (0.1 + (i * 0.2));
- const y = GRID_SIZE * (0.8 + (i % 2 === 0 ? 0.1: 0));
- ctx.lineTo(x, y);
- }
- ctx.lineTo(GRID_SIZE * 0.9, GRID_SIZE * 0.7);
- ctx.fill();
- 
- // Eyes
- ctx.fillStyle = '#FAF7EF';
- ctx.beginPath();
- ctx.arc(centerX - GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.08, 0, 2 * Math.PI);
- ctx.arc(centerX + GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.08, 0, 2 * Math.PI);
- ctx.fill();
- 
- // Pupils
- ctx.fillStyle = '#000000';
- ctx.beginPath();
- ctx.arc(centerX - GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.04, 0, 2 * Math.PI);
- ctx.arc(centerX + GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.04, 0, 2 * Math.PI);
- ctx.fill();
- 
- this.textures.ghost = canvas;
+  // Tom-inspired cat: grey pointed ears, yellow eyes and white muzzle.
+  const canvas = document.createElement('canvas');
+  canvas.width = GRID_SIZE * 3;
+  canvas.height = GRID_SIZE * 3;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(3, 3);
+  const s = GRID_SIZE, cx = s / 2;
+
+  const glow = ctx.createRadialGradient(cx, cx, 2, cx, cx, s*.62);
+  glow.addColorStop(0, 'rgba(192,178,129,.28)');
+  glow.addColorStop(1, 'rgba(192,178,129,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, s, s);
+
+  ctx.fillStyle = '#727985';
+  ctx.beginPath();
+  ctx.moveTo(s*.12,s*.42); ctx.lineTo(s*.16,s*.04); ctx.lineTo(s*.43,s*.25);
+  ctx.lineTo(s*.57,s*.25); ctx.lineTo(s*.84,s*.04); ctx.lineTo(s*.88,s*.42);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#D98F9B';
+  ctx.beginPath();
+  ctx.moveTo(s*.20,s*.30); ctx.lineTo(s*.19,s*.13); ctx.lineTo(s*.36,s*.29);
+  ctx.closePath();
+  ctx.moveTo(s*.64,s*.29); ctx.lineTo(s*.81,s*.13); ctx.lineTo(s*.80,s*.30);
+  ctx.closePath(); ctx.fill();
+
+  ctx.fillStyle = '#9299A4';
+  ctx.beginPath();
+  ctx.ellipse(cx,s*.48,s*.38,s*.34,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(s*.17,s*.54); ctx.lineTo(s*.04,s*.61); ctx.lineTo(s*.24,s*.66); ctx.closePath();
+  ctx.moveTo(s*.83,s*.54); ctx.lineTo(s*.96,s*.61); ctx.lineTo(s*.76,s*.66); ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = '#F4F0E8';
+  ctx.beginPath();
+  ctx.ellipse(s*.39,s*.60,s*.19,s*.15,0,0,Math.PI*2);
+  ctx.ellipse(s*.61,s*.60,s*.19,s*.15,0,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle = '#E5C65B';
+  ctx.beginPath();
+  ctx.ellipse(s*.38,s*.43,s*.105,s*.14,0,0,Math.PI*2);
+  ctx.ellipse(s*.62,s*.43,s*.105,s*.14,0,0,Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#22252B';
+  ctx.beginPath();
+  ctx.ellipse(s*.40,s*.44,s*.038,s*.09,0,0,Math.PI*2);
+  ctx.ellipse(s*.64,s*.44,s*.038,s*.09,0,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle = '#D58A98';
+  ctx.beginPath();
+  ctx.moveTo(cx,s*.57); ctx.lineTo(s*.43,s*.53); ctx.lineTo(s*.57,s*.53);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#5C626D';
+  ctx.lineWidth = .7;
+  ctx.beginPath();
+  ctx.moveTo(s*.34,s*.59); ctx.lineTo(s*.10,s*.54);
+  ctx.moveTo(s*.34,s*.63); ctx.lineTo(s*.11,s*.67);
+  ctx.moveTo(s*.66,s*.59); ctx.lineTo(s*.90,s*.54);
+  ctx.moveTo(s*.66,s*.63); ctx.lineTo(s*.89,s*.67);
+  ctx.stroke();
+
+  this.textures.ghost = canvas;
  }
  
  createTargetTexture() {
