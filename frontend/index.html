@@ -216,6 +216,7 @@
  </div>
 
  <!-- Load dependencies -->
+ <script src="https://unpkg.com/lucide@latest"></script>
  <script src="config.js"></script>
  <script src="astar.js"></script>
  <script src="database_mongo.js"></script>
@@ -924,7 +925,7 @@
  }
 
  // Show one readable, accessible booster toast at a time.
- showPowerupNotification(message, icon = "") {
+ showPowerupNotification(message, icon = "zap") {
  const notificationsContainer = document.getElementById('powerup-notifications');
  if (!notificationsContainer || !message) return;
 
@@ -949,7 +950,7 @@
  textNode.className = 'powerup-notification-text';
  textNode.textContent = message;
 
- iconNode.innerHTML = window.lucide?.createElement ? window.lucide.createElement(icon === "❄" ? "snowflake" : icon === "🔨" ? "hammer" : "zap").outerHTML : "";\n                notification.append(iconNode, textNode);
+ iconNode.innerHTML = window.lucide?.createElement ? window.lucide.createElement(icon === "snowflake" ? "snowflake" : icon === "hammer" ? "hammer" : "zap").outerHTML : "";\n                notification.append(iconNode, textNode);
  notificationsContainer.appendChild(notification);
 
  requestAnimationFrame(() => notification.classList.add('show'));
