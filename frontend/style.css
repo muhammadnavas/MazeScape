@@ -2953,3 +2953,164 @@ body {
         min-height: 54px !important;
     }
 }
+
+
+/* Mobile gameplay composition: use the screen as three deliberate zones */
+@media (max-width: 700px) and (orientation: portrait) {
+    #gameContainer {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100dvh !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: max(12px, env(safe-area-inset-top, 0px)) 8px calc(224px + env(safe-area-inset-bottom, 0px)) !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+    }
+
+    /* Maze sits in the main visual zone, centered and never stretched */
+    #gameCanvas {
+        position: relative !important;
+        display: block !important;
+        inset: auto !important;
+        width: auto !important;
+        height: auto !important;
+        max-width: min(calc(100vw - 24px), 460px) !important;
+        max-height: calc(100dvh - 270px - env(safe-area-inset-bottom, 0px)) !important;
+        object-fit: contain !important;
+        margin: 0 auto !important;
+        flex: 0 1 auto !important;
+        z-index: 1 !important;
+    }
+
+    /* Compact floating score card stays clear of the maze edges */
+    #status {
+        position: fixed !important;
+        top: max(10px, env(safe-area-inset-top, 0px)) !important;
+        right: 10px !important;
+        left: auto !important;
+        width: 154px !important;
+        max-width: calc(100vw - 20px) !important;
+        padding: 10px 12px !important;
+        z-index: 180 !important;
+        box-sizing: border-box !important;
+        background: rgba(36,23,21,.84) !important;
+        border: 1px solid rgba(217,205,174,.58) !important;
+        border-radius: 16px !important;
+        -webkit-backdrop-filter: blur(18px) !important;
+        backdrop-filter: blur(18px) !important;
+    }
+    #status .status-header { margin: 0 0 7px !important; }
+    #status .status-header h4 {
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        margin: 0 !important;
+        font-size: 12px !important;
+        line-height: 1.2 !important;
+        letter-spacing: .06em !important;
+    }
+    #status .status-content { display: grid !important; gap: 4px !important; }
+    #status .status-item {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 10px !important;
+        margin: 0 !important;
+        font-size: 12px !important;
+        line-height: 1.25 !important;
+    }
+
+    /* Dedicated bottom control dock — aligned to the center, away from the maze */
+    #mobile-controls {
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: max(14px, env(safe-area-inset-bottom, 0px)) !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: none;
+        justify-content: center !important;
+        align-items: center !important;
+        z-index: 200 !important;
+        opacity: 0;
+        transform: none !important;
+        pointer-events: none;
+        background: transparent !important;
+    }
+    #mobile-controls.visible {
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+    .control-pad {
+        display: grid !important;
+        grid-template-columns: repeat(3, 58px) !important;
+        grid-template-rows: repeat(3, 58px) !important;
+        gap: 7px !important;
+        align-items: center !important;
+        justify-items: center !important;
+        padding: 8px !important;
+        border: 1px solid rgba(217,205,174,.22) !important;
+        border-radius: 22px !important;
+        background: rgba(36,23,21,.34) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        backdrop-filter: blur(10px) !important;
+        box-shadow: 0 12px 34px rgba(0,0,0,.12) !important;
+        transform: none !important;
+    }
+    .control-row { display: contents !important; }
+    #btn-up { grid-column: 2; grid-row: 1; }
+    #btn-left { grid-column: 1; grid-row: 2; }
+    #btn-right { grid-column: 3; grid-row: 2; }
+    #btn-down { grid-column: 2; grid-row: 3; }
+    #mobile-controls .control-btn,
+    .control-btn {
+        width: 58px !important;
+        height: 58px !important;
+        min-width: 58px !important;
+        min-height: 58px !important;
+        padding: 0 !important;
+        border: 1px solid rgba(250,247,239,.64) !important;
+        border-radius: 16px !important;
+        background: linear-gradient(145deg, rgba(68,48,42,.92), rgba(36,23,21,.94)) !important;
+        color: #FAF7EF !important;
+        font-size: 27px !important;
+        line-height: 1 !important;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 5px 14px rgba(0,0,0,.22) !important;
+        touch-action: none !important;
+    }
+    #mobile-controls .control-btn:active,
+    #mobile-controls .control-btn.active {
+        background: #550605 !important;
+        border-color: #D9CDAE !important;
+        color: #FAF7EF !important;
+        transform: scale(.96) !important;
+    }
+}
+@media (max-width: 380px) and (orientation: portrait) {
+    #gameContainer {
+        padding-bottom: calc(210px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    #gameCanvas {
+        max-width: calc(100vw - 18px) !important;
+        max-height: calc(100dvh - 250px - env(safe-area-inset-bottom, 0px)) !important;
+    }
+    .control-pad {
+        grid-template-columns: repeat(3, 52px) !important;
+        grid-template-rows: repeat(3, 52px) !important;
+        gap: 6px !important;
+        padding: 6px !important;
+    }
+    #mobile-controls .control-btn, .control-btn {
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px !important;
+        min-height: 52px !important;
+    }
+}
