@@ -950,7 +950,8 @@
  textNode.className = 'powerup-notification-text';
  textNode.textContent = message;
 
- iconNode.innerHTML = window.lucide?.createElement ? window.lucide.createElement(icon === "snowflake" ? "snowflake" : icon === "hammer" ? "hammer" : "zap").outerHTML : "";\n                notification.append(iconNode, textNode);
+ iconNode.innerHTML = window.lucide?.createElement ? window.lucide.createElement(icon === "snowflake" ? "snowflake" : icon === "hammer" ? "hammer" : "zap").outerHTML : "";
+                notification.append(iconNode, textNode);
  notificationsContainer.appendChild(notification);
 
  requestAnimationFrame(() => notification.classList.add('show'));
