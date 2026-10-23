@@ -1162,6 +1162,7 @@ class MazeGame {
         this.playerPos = [1, 1];
         this.playerPosFloat = [1.0, 1.0];
         this.playerDir = [0, 0];
+        this.stopAfterStep = false;
         this.targetPos = [this.GRID_HEIGHT - 2, this.GRID_WIDTH - 2];
         
         // Initialize game statistics - exact Python implementation
@@ -1294,6 +1295,20 @@ class MazeGame {
     }
     
     movePlayer(dy, dx) {
+        // Finish an in-progress tile before stopping, so short taps still register.
+        if (dy === 0 && dx === 0) {
+            const inTransit = this.playerPosFloat &&
+                (Math.abs(this.playerPosFloat[0] - this.playerPos[0]) > 0.001 ||
+                 Math.abs(this.playerPosFloat[1] - this.playerPos[1]) > 0.001);
+            if (inTransit) {
+                this.stopAfterStep = true;
+                return;
+            }
+            this.stopAfterStep = false;
+            this.playerDir = [0, 0];
+            return;
+        }
+        this.stopAfterStep = false;
         this.playerDir = [dy, dx];
     }
     
@@ -1397,6 +1412,10 @@ class MazeGame {
                 if (Math.abs(this.playerPosFloat[0] - targetY) < 0.05 && 
                     Math.abs(this.playerPosFloat[1] - targetX) < 0.05) {
                     this.playerPos = targetPos;
+                    if (this.stopAfterStep) {
+                        this.playerDir = [0, 0];
+                        this.stopAfterStep = false;
+                    }
                     
                     // Add movement trail particles
                     this.particles.addTrail([this.playerPos[1] * GRID_SIZE + GRID_SIZE/2, this.playerPos[0] * GRID_SIZE + GRID_SIZE/2], NEON_GREEN, [-this.playerDir[1] * 2, -this.playerDir[0] * 2]);
