@@ -1033,8 +1033,8 @@ class MazeGame {
         this.ctx = canvas.getContext('2d');
         
         // Fixed maze dimensions for consistent gameplay across all screen sizes
-        this.GRID_WIDTH = 30;   // Fixed width - always 30 columns
-        this.GRID_HEIGHT = 20;  // Fixed height - always 20 rows
+        this.GRID_WIDTH = 20;   // Portrait layout: 20 columns
+        this.GRID_HEIGHT = 30;  // Portrait layout: 30 rows
         
         this.pathfinder = new AStar();
         
