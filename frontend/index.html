@@ -308,8 +308,8 @@
  const idealCanvasHeight = FIXED_MAZE_HEIGHT * GRID_SIZE;
  
  // Get available space
- const availableWidth = Math.max(240, window.innerWidth - 24);
- const availableHeight = Math.max(360, window.innerHeight - (window.innerWidth <= 700 ? 165 : 150)); // Mobile layout reserves a compact D-pad zone, not 300px
+ const availableWidth = Math.max(240, window.innerWidth - (window.innerWidth <= 700 ? 8 : 24));
+ const availableHeight = Math.max(360, window.innerHeight - (window.innerWidth <= 700 ? 150 : 150)); // Reserve only the compact HUD and controller zone on phones
  
  // Calculate scale to fit while maintaining aspect ratio
  const scaleX = availableWidth / idealCanvasWidth;
