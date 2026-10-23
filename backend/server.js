@@ -2,18 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const mongoose = require('mongoose');
 const path = require('path');
 require('dotenv').config();
 
-const connectDB = require('./config/database');
-const authRoutes = require('./routes/auth');
-const scoresRoutes = require('./routes/scores');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-connectDB();
 
 app.use(helmet({
     contentSecurityPolicy: false,
@@ -49,66 +43,15 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/auth', authRoutes);
-app.use('/api/scores', scoresRoutes);
 
-app.get('/api/health', async (req, res) => {
-    try {
-        const dbState = mongoose.connection.readyState;
-        const states = {
-            0: 'disconnected',
-            1: 'connected',
-            2: 'connecting',
-            3: 'disconnecting'
-        };
-        
-        res.json({
-            success: true,
-            message: 'Maze Chase Backend is running!',
-            service: 'MazeChase Backend',
-            version: '1.0.0',
-            timestamp: new Date().toISOString(),
-            database: {
-                status: states[dbState] || 'unknown',
-                connected: dbState === 1,
-                name: process.env.DB_NAME || 'mazechase'
-            },
-            environment: process.env.NODE_ENV,
-            port: process.env.PORT
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Health check failed',
-            error: error.message
-        });
-    }
-});
-
-app.get('/api/stats', async (req, res) => {
-    try {
-        const User = require('./models/User');
-        const Score = require('./models/Score');
-        
-        const totalUsers = await User.countDocuments();
-        const totalGames = await Score.countDocuments();
-        const totalWins = await Score.countDocuments({ game_result: 'win' });
-        
-        res.json({
-            success: true,
-            stats: {
-                total_users: totalUsers,
-                total_games: totalGames,
-                total_wins: totalWins,
-                win_rate: totalGames > 0 ? ((totalWins / totalGames) * 100).toFixed(2) + '%' : '0%'
-            }
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error getting stats: ' + error.message
-        });
-    }
+app.get('/api/health', (req, res) => {
+    res.json({
+        success: true,
+        message: 'MazeScape server is running.',
+        service: 'MazeScape',
+        version: '1.0.0',
+        timestamp: new Date().toISOString()
+    });
 });
 
 app.use((err, req, res, next) => {
