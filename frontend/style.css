@@ -4429,3 +4429,41 @@ body {
   #mobile-controls .control-pad { grid-template-columns: repeat(3, 38px) !important; grid-template-rows: repeat(3, 38px) !important; }
   #mobile-controls .control-btn, #mobile-controls .control-pad .control-btn { width: 38px !important; height: 38px !important; min-width: 38px !important; min-height: 38px !important; }
 }
+
+
+/* Final mobile fit: enlarge the maze, keep HUD close, and keep D-pad below it. */
+@media (max-width: 700px) and (orientation: portrait) {
+  #gameContainer {
+    padding: calc(48px + env(safe-area-inset-top, 0px)) 8px calc(148px + env(safe-area-inset-bottom, 0px)) !important;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+  #gameCanvas {
+    width: calc(100vw - 32px) !important;
+    height: auto !important;
+    max-width: calc(100vw - 32px) !important;
+    max-height: calc(100dvh - 240px - env(safe-area-inset-bottom, 0px)) !important;
+    flex: 0 1 auto !important;
+    object-fit: contain !important;
+  }
+  #status {
+    top: calc(6px + env(safe-area-inset-top, 0px)) !important;
+    left: 10px !important;
+    right: 10px !important;
+  }
+  #powerup-notifications {
+    top: calc(50px + env(safe-area-inset-top, 0px)) !important;
+    max-width: calc(100vw - 36px) !important;
+  }
+}
+@media (max-width: 380px) and (orientation: portrait) {
+  #gameContainer {
+    padding-top: calc(46px + env(safe-area-inset-top, 0px)) !important;
+    padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #gameCanvas {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100dvh - 220px - env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
