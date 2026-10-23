@@ -4748,3 +4748,45 @@ body {
     max-height: calc(100dvh - 260px - env(safe-area-inset-bottom, 0px)) !important;
   }
 }
+
+
+/* Compact power-up toast: smaller footprint on phones and desktop. */
+#powerup-notifications {
+  width: min(220px, calc(100vw - 40px)) !important;
+  max-width: calc(100vw - 40px) !important;
+}
+.powerup-notification {
+  padding: 5px 8px !important;
+  gap: 6px !important;
+  border-radius: 10px !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+.powerup-notification-icon {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  border-radius: 7px !important;
+  font-size: 12px !important;
+}
+@media (max-width: 700px) {
+  #powerup-notifications {
+    top: calc(42px + env(safe-area-inset-top, 0px)) !important;
+    width: min(190px, calc(100vw - 48px)) !important;
+    max-width: calc(100vw - 48px) !important;
+  }
+  .powerup-notification {
+    padding: 4px 7px !important;
+    gap: 5px !important;
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+  }
+  .powerup-notification-icon {
+    width: 19px !important;
+    height: 19px !important;
+    min-width: 19px !important;
+    min-height: 19px !important;
+    font-size: 11px !important;
+  }
+}
