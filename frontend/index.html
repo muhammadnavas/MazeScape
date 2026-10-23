@@ -592,7 +592,7 @@
  
  modal.innerHTML = `
  <h2 class="glow-text primary-color">${title}</h2>
- <p>${message.replace(/\\n/g, '<br>')}</p>
+ <p>${message.replace(/\n/g, '<br>')}</p>
  ${autoDismiss ? '<p style="margin-top: 20px; color: #888; font-size: 14px;">Returning to menu...</p>': ''}
  `;
  
@@ -749,18 +749,18 @@
  `Playing Bonus: +${scoreBreakdown.playingBonus} pts\n`;
  
  if (scoreBreakdown.powerupPenalty < 0) {
- breakdownText += `Powerup Penalty: ${scoreBreakdown.powerupPenalty} pts\n`;
+ breakdownText += `Power-up cost: ${scoreBreakdown.powerupPenalty} points\n`;
  }
  
  if (scoreBreakdown.livesBonus > 0) {
- breakdownText += `Full Lives Bonus: +${scoreBreakdown.livesBonus} pts\n`;
+ breakdownText += `Full-lives bonus: +${scoreBreakdown.livesBonus} points\n`;
  }
  
  breakdownText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
  `TOTAL: ${finalScore} pts\n` +
  `Time: ${survivalTime} seconds`;
  
- this.showMessage(" VICTORY! ", `Congratulations! You escaped the maze!\n\n${breakdownText}`, true, 4000);
+ this.showMessage("Maze escaped!", `Congratulations! You reached the exit.\n\n${breakdownText}`, true, 5000);
  } else {
  let breakdownText = ` SCORE BREAKDOWN \n` +
  `Lose Penalty: ${scoreBreakdown.losePenalty} pts\n` +
@@ -774,7 +774,7 @@
  `TOTAL: ${finalScore} pts\n` +
  `Survived: ${survivalTime} seconds`;
  
- this.showMessage(" GAME OVER", `You fought bravely!\n\n${breakdownText}\n\nTry again to improve your score!`, true, 4000);
+ this.showMessage("Game over", `The ghost caught you.\n\n${breakdownText}\n\nTry again and see if you can beat your score.`, true, 5000);
  }
  
  // Return to menu and stop game loop
