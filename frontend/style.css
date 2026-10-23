@@ -3812,3 +3812,91 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   }
   #menuButtons .game-button { min-height: 42px !important; }
 }
+
+
+/* Final home menu alignment: full-width primary action and centered, even button grid */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  #menuButtons.menu-buttons {
+    left: 50% !important;
+    right: auto !important;
+    width: min(520px, calc(100vw - 32px)) !important;
+    padding: 22px 16px 18px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    margin: 0 !important;
+  }
+  #menuButtons > div:first-child {
+    flex: 0 0 auto !important;
+    margin: 0 0 8px !important;
+    text-align: center !important;
+  }
+  #menuButtons .button-row {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    gap: 9px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+  #menuButtons .button-row:has(#startGameBtn) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  #menuButtons .button-row:has(#mobileBlogBtn) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  #menuButtons .game-button,
+  #menuButtons .game-button.primary {
+    grid-column: auto !important;
+    justify-self: stretch !important;
+    align-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 48px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 11px 7px !important;
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    text-align: center !important;
+    font-size: clamp(10px, 2.9vw, 12px) !important;
+    line-height: 1.15 !important;
+    box-sizing: border-box !important;
+  }
+  #menuButtons .game-button.primary {
+    min-height: 56px !important;
+    font-size: 14px !important;
+  }
+  #menuButtons .game-button svg,
+  #menuButtons .game-button .ui-icon {
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+    margin: 0 !important;
+  }
+}
+@media screen and (max-width: 380px) and (orientation: portrait) {
+  #menuButtons.menu-buttons {
+    width: calc(100vw - 24px) !important;
+    padding: 18px 11px 14px !important;
+    gap: 8px !important;
+  }
+  #menuButtons .button-row { gap: 7px !important; }
+  #menuButtons .game-button {
+    min-height: 44px !important;
+    padding: 9px 4px !important;
+    gap: 4px !important;
+    font-size: 9px !important;
+  }
+  #menuButtons .game-button.primary { font-size: 13px !important; }
+}
