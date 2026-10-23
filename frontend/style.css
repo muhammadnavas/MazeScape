@@ -4284,3 +4284,96 @@ body {
   background: #C0B281 !important;
   border-radius: 8px !important;
 }
+
+
+/* Help dialog theme correction: target the dynamically-created #helpModal directly. */
+#helpModal.modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 10000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 18px !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  background: rgba(12,8,8,.82) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  backdrop-filter: blur(14px) !important;
+}
+#helpModal .modal {
+  width: min(100%, 600px) !important;
+  max-width: 600px !important;
+  max-height: calc(100dvh - 36px) !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  padding: clamp(18px, 4vw, 30px) !important;
+  color: #F7F0E4 !important;
+  background: linear-gradient(145deg, rgba(42,26,24,.98), rgba(28,18,17,.99)) !important;
+  border: 1px solid rgba(192,178,129,.72) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,.48), inset 0 1px 0 rgba(250,247,239,.06) !important;
+}
+#helpModal .modal h2 {
+  margin: 0 0 18px !important;
+  color: #C0B281 !important;
+  font-size: clamp(20px, 4.8vw, 28px) !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+}
+#helpModal .modal > div[style*="overflow-y"] {
+  max-height: min(56dvh, 460px) !important;
+  margin: 12px 0 20px !important;
+  padding-right: 8px !important;
+  overflow-y: auto !important;
+  scrollbar-color: #C0B281 rgba(192,178,129,.12) !important;
+  scrollbar-width: thin !important;
+}
+#helpModal .modal h4,
+#helpModal .modal h4[style],
+#helpModal .modal h4[style] i,
+#helpModal .modal strong[style],
+#helpModal .modal span[style] {
+  color: #D8A93D !important;
+}
+#helpModal .modal p,
+#helpModal .modal p strong,
+#helpModal .modal p span,
+#helpModal .modal li {
+  color: #F7F0E4 !important;
+  line-height: 1.65 !important;
+}
+#helpModal .modal p strong[style*="color"] {
+  color: #C0B281 !important;
+}
+#helpModal .modal .ui-icon {
+  color: #D8A93D !important;
+  stroke: currentColor !important;
+}
+#helpModal .button-row {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 8px !important;
+}
+#helpModal .button-row .game-button,
+#helpModal .button-row button {
+  width: 100% !important;
+  min-height: 50px !important;
+  padding: 12px 18px !important;
+  border: 1px solid #C0B281 !important;
+  border-radius: 14px !important;
+  color: #F7F0E4 !important;
+  background: linear-gradient(135deg, #550605, #6a1713) !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+}
+#helpModal .button-row .game-button:hover,
+#helpModal .button-row button:hover {
+  background: linear-gradient(135deg, #6a1713, #550605) !important;
+}
+@media (max-width: 420px) {
+  #helpModal.modal-overlay { padding: 12px !important; }
+  #helpModal .modal { border-radius: 20px !important; }
+  #helpModal .modal > div[style*="overflow-y"] { max-height: min(54dvh, 420px) !important; }
+}
