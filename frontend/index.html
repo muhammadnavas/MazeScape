@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MazeScape</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <!-- Top Menu Bar -->
@@ -43,42 +44,42 @@
             
             <div class="button-row">
                 <button class="game-button primary" id="startGameBtn">
-                    🎮 START GAME
+                    <i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> START GAME
                 </button>
             </div>
             <div class="button-row">
                 <button class="game-button" id="loginBtn">
-                    🔑 LOGIN
+                    <i data-lucide="key-round" class="ui-icon" aria-hidden="true"></i> LOGIN
                 </button>
                 <button class="game-button" id="registerBtn">
-                    📝 REGISTER
+                    <i data-lucide="user-round-plus" class="ui-icon" aria-hidden="true"></i> REGISTER
                 </button>
                 <button class="game-button" id="profileBtn" style="display: none;">
-                    👤 PROFILE
+                    <i data-lucide="user-round" class="ui-icon" aria-hidden="true"></i> PROFILE
                 </button>
                 <button class="game-button" id="logoutBtn" style="display: none;">
-                    🚪 LOGOUT
+                    <i data-lucide="log-out" class="ui-icon" aria-hidden="true"></i> LOGOUT
                 </button>
             </div>
             <div class="button-row">
                 <button class="game-button" id="helpBtn">
-                    ❓ HELP
+                    <i data-lucide="circle-help" class="ui-icon" aria-hidden="true"></i> HELP
                 </button>
                 <button class="game-button" id="leaderboardBtn">
-                    🏆 LEADERBOARD
+                    <i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> LEADERBOARD
                 </button>
                 <button class="game-button" id="settingsBtn">
-                    ⚙️ SETTINGS
+                    <i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS
                 </button>
                 <button class="game-button mobile-only" id="mobileBlogBtn">
-                    📚 A* ALGORITHM
+                    <i data-lucide="book-open" class="ui-icon" aria-hidden="true"></i> A* ALGORITHM
                 </button>
             </div>
         </div>
         
         <!-- A* Algorithm Blog Panel (Background Overlay) -->
         <div class="blog-panel left" id="algorithmBlog">
-            <h4>🧠 A* PATHFINDING ALGORITHM</h4>
+            <h4><i data-lucide="brain-circuit" class="ui-icon" aria-hidden="true"></i> A* PATHFINDING ALGORITHM</h4>
             
             <div class="blog-content" style="
                 font-size: 13px;
@@ -86,7 +87,7 @@
                 text-align: left;
             ">
                 <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">🎯 What is A*?</h5>
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="target" class="ui-icon" aria-hidden="true"></i> What is A*?</h5>
                     <p style="margin-bottom: 10px;">
                         A* (A-star) is a best-first search algorithm that finds the least-cost path from a given initial node 
                         to one goal node out of one or more possible goals. It uses both the actual distance from the start 
@@ -95,7 +96,7 @@
                 </div>
                 
                 <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">⚡ How It Works</h5>
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> How It Works</h5>
                     <p style="margin-bottom: 8px;">A* evaluates nodes using the formula:</p>
                     <div style="
                         background: rgba(0, 0, 0, 0.6);
@@ -116,7 +117,7 @@
                 </div>
                 
                 <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">📊 Key Properties</h5>
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="chart-no-axes-combined" class="ui-icon" aria-hidden="true"></i> Key Properties</h5>
                     <p style="margin-bottom: 10px;">
                         A* is both complete and optimal when the heuristic function is admissible (never overestimates 
                         the actual cost). It combines the advantages of Dijkstra's algorithm (guaranteed shortest path) 
@@ -137,7 +138,7 @@
                 </div>
                 
                 <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">🔧 Algorithm Steps</h5>
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="wrench" class="ui-icon" aria-hidden="true"></i> Algorithm Steps</h5>
                     <ol style="margin-left: 15px; font-size: 12px;">
                         <li style="margin-bottom: 4px;">Initialize open list with start node</li>
                         <li style="margin-bottom: 4px;">Select node with lowest f(n) from open list</li>
@@ -148,7 +149,7 @@
                 </div>
                 
                 <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">🌍 Real-World Applications</h5>
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="globe" class="ui-icon" aria-hidden="true"></i> Real-World Applications</h5>
                     <ul style="margin-left: 15px; font-size: 12px;">
                         <li style="margin-bottom: 4px;">GPS navigation and route planning</li>
                         <li style="margin-bottom: 4px;">Video game AI pathfinding</li>
@@ -159,7 +160,7 @@
                 </div>
                 
                 <div class="blog-section">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;">📈 Advantages & Complexity</h5>
+                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="chart-no-axes-column-increasing" class="ui-icon" aria-hidden="true"></i> Advantages & Complexity</h5>
                     <div style="
                         background: rgba(0, 191, 255, 0.2);
                         border: 1px solid rgba(0, 191, 255, 0.4);
@@ -180,7 +181,7 @@
         
         <div id="status" style="display: none;">
             <div class="status-header">
-                <h4>ℹ️ GAME INFO</h4>
+                <h4><i data-lucide="info" class="ui-icon" aria-hidden="true"></i> GAME INFO</h4>
             </div>
             <div class="status-content">
                 <div class="status-item">
@@ -222,6 +223,9 @@
     <script src="game.js"></script>
     
     <script>
+        // Render consistent outline icons for static UI labels.
+        if (window.lucide) window.lucide.createIcons();
+
         // Game initialization and controller
         let game = null;
         let ui = null;
@@ -1345,7 +1349,7 @@
             
             overlay.innerHTML = `
                 <div class="modal" style="max-width: 600px;">
-                    <h2>🏆 LEADERBOARD</h2>
+                    <h2><i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> LEADERBOARD</h2>
                     <div id="leaderboardContent">
                         <p>Loading leaderboard...</p>
                     </div>
@@ -1366,7 +1370,7 @@
             
             overlay.innerHTML = `
                 <div class="modal">
-                    <h2>⚙️ SETTINGS</h2>
+                    <h2><i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS</h2>
                     <div style="text-align: left; margin: 20px 0;">
                         <label style="display: block; margin: 15px 0;">
                             <input type="checkbox" id="texturesEnabled" checked style="margin-right: 10px;">
@@ -1397,7 +1401,7 @@
             
             overlay.innerHTML = `
                 <div class="modal">
-                    <h2>👤 PROFILE</h2>
+                    <h2><i data-lucide="user-round" class="ui-icon" aria-hidden="true"></i> PROFILE</h2>
                     <div style="text-align: left; margin: 20px 0;">
                         <p><strong>Username:</strong> ${currentUser.username || 'Unknown'}</p>
                         <p><strong>Joined:</strong> ${new Date(currentUser.created_at || Date.now()).toLocaleDateString()}</p>
