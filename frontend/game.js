@@ -21,37 +21,37 @@ const POWERUP_SPEED = "speed";
 const POWERUP_FREEZE = "freeze";  
 const POWERUP_WALLBREAKER = "wallbreaker";
 
-// Modern Color Palette - Exact from Python
-const WHITE = '#FFFFFF';
-const BLACK = '#000000';
-const DARK_GRAY = '#282828';
-const LIGHT_GRAY = '#C8C8C8';
-const MEDIUM_GRAY = '#787878';
+// MazeScape visual palette: deep burgundy, warm dark surfaces, sand and gold
+const WHITE = '#FAF7EF';
+const BLACK = '#1C1211';
+const DARK_GRAY = '#352321';
+const LIGHT_GRAY = '#D9CDAE';
+const MEDIUM_GRAY = '#A99A86';
 
-// Primary Colors
-const NEON_GREEN = '#39FF14';
-const ELECTRIC_BLUE = '#00BFFF';
-const CYBER_PURPLE = '#8A2BE2';
-const NEON_PINK = '#FF1493';
+// Theme accents retained as aliases so existing gameplay logic remains unchanged
+const NEON_GREEN = '#D8A93D';
+const ELECTRIC_BLUE = '#D9CDAE';
+const CYBER_PURPLE = '#8B5E53';
+const NEON_PINK = '#C77B68';
 
 // Game Colors
-const GREEN = NEON_GREEN;
-const RED = '#FF3232';
-const YELLOW = '#FFD700';
-const ORANGE = '#FFA500';
+const GREEN = '#D8A93D';
+const RED = '#A8322A';
+const YELLOW = '#D8A93D';
+const ORANGE = '#C08A2E';
 
 // UI Theme Colors
-const PRIMARY_BG = '#0F0F17';      // Dark navy background
-const SECONDARY_BG = '#191923';    // Slightly lighter background
-const ACCENT_COLOR = ELECTRIC_BLUE;  // Main accent color
-const SUCCESS_COLOR = NEON_GREEN;    // Success messages
-const ERROR_COLOR = '#FF453A';       // Error messages
-const WARNING_COLOR = ORANGE;        // Warning messages
+const PRIMARY_BG = '#1C1211';
+const SECONDARY_BG = '#352321';
+const ACCENT_COLOR = '#D8A93D';
+const SUCCESS_COLOR = '#C0B281';
+const ERROR_COLOR = '#C45B50';
+const WARNING_COLOR = '#D8A93D';
 
 // Button Colors
-const BUTTON_NORMAL = '#2D2D3C';
-const BUTTON_HOVER = '#3C3C50';
-const BUTTON_ACTIVE = ACCENT_COLOR;
+const BUTTON_NORMAL = '#352321';
+const BUTTON_HOVER = '#44302A';
+const BUTTON_ACTIVE = '#550605';
 
 // Text Colors
 const TEXT_PRIMARY = WHITE;
