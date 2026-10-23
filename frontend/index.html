@@ -923,32 +923,45 @@
                 }
             }
 
-            // Show powerup notification
+            // Show one readable, accessible booster toast at a time.
             showPowerupNotification(message, icon = "⚡") {
                 const notificationsContainer = document.getElementById('powerup-notifications');
-                if (!notificationsContainer) return;
+                if (!notificationsContainer || !message) return;
 
-                // Create notification element
+                // Replace an older toast instead of stacking over the canvas or controls.
+                if (this.powerupToastTimer) {
+                    clearTimeout(this.powerupToastTimer);
+                    this.powerupToastTimer = null;
+                }
+                notificationsContainer.replaceChildren();
+
                 const notification = document.createElement('div');
                 notification.className = 'powerup-notification';
-                notification.innerHTML = `${icon} ${message}`;
+                notification.setAttribute('role', 'status');
+                notification.setAttribute('aria-live', 'polite');
 
-                // Add to container
+                const iconNode = document.createElement('span');
+                iconNode.className = 'powerup-notification-icon';
+                iconNode.setAttribute('aria-hidden', 'true');
+                iconNode.textContent = icon;
+
+                const textNode = document.createElement('span');
+                textNode.className = 'powerup-notification-text';
+                textNode.textContent = message;
+
+                notification.append(iconNode, textNode);
                 notificationsContainer.appendChild(notification);
 
-                // Trigger animation
-                setTimeout(() => {
-                    notification.classList.add('show');
-                }, 10);
-
-                // Remove after animation completes
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 3500);
-
-                console.log('⚡ Powerup notification shown:', message);
+                requestAnimationFrame(() => notification.classList.add('show'));
+                this.powerupToastTimer = setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentNode === notificationsContainer) {
+                            notification.remove();
+                        }
+                    }, 220);
+                    this.powerupToastTimer = null;
+                }, 2200);
             }
         }
         
@@ -1141,76 +1154,31 @@
             }
         }
         
-        // Mobile control functions
+        // Mobile control functions: direct, single-source movement (no synthetic keyboard events).
         function handleMobileMove(direction) {
-            console.log('🎮 Mobile control pressed:', direction, 'Game state:', gameState);
-            
-            // Add visual feedback
-            const button = event.target;
-            if (button) {
-                button.classList.add('active');
-                setTimeout(() => button.classList.remove('active'), 150);
-            }
-            
-            if (window.gameController && gameState === "playing" && game) {
-                // Map mobile directions to key values that the game expects
-                const directionMap = {
-                    'up': 'w',
-                    'down': 's', 
-                    'left': 'a',
-                    'right': 'd'
-                };
-                
-                const key = directionMap[direction];
-                if (key) {
-                    console.log('🔑 Simulating key press:', key);
-                    
-                    // Create a proper keyboard event with the key property
-                    const event = new KeyboardEvent('keydown', {
-                        key: key,
-                        code: `Key${key.toUpperCase()}`,
-                        bubbles: true,
-                        cancelable: true
-                    });
-                    
-                    // Dispatch the event to trigger the game's handleKeyPress method
-                    document.dispatchEvent(event);
-                    
-                    // Also directly call the game's movement method as backup
-                    try {
-                        switch(direction) {
-                            case 'up':
-                                game.movePlayer(-1, 0);
-                                break;
-                            case 'down':
-                                game.movePlayer(1, 0);
-                                break;
-                            case 'left':
-                                game.movePlayer(0, -1);
-                                break;
-                            case 'right':
-                                game.movePlayer(0, 1);
-                                break;
-                        }
-                        console.log('✅ Direct movement successful');
-                    } catch (error) {
-                        console.log('❌ Direct movement call failed:', error);
-                    }
-                }
-            } else {
-                console.log('⚠️ Mobile control not working - missing requirements:', {
-                    gameController: !!window.gameController,
-                    gameState: gameState,
-                    game: !!game
-                });
-            }
+            if (!window.gameController || gameState !== "playing" || !game) return;
+
+            const vectors = {
+                up: [-1, 0],
+                down: [1, 0],
+                left: [0, -1],
+                right: [0, 1]
+            };
+            const vector = vectors[direction];
+            if (!vector) return;
+
+            game.movePlayer(vector[0], vector[1]);
         }
-        
+
         function handleMobileStop() {
-            // Mobile controls don't need stop action since the game handles discrete moves
-            console.log('🎮 Mobile control released');
+            // Stop movement when the finger/mouse is released so the player doesn't keep drifting.
+            if (game && typeof game.movePlayer === 'function' && gameState === "playing") {
+                game.movePlayer(0, 0);
+            }
+            document.querySelectorAll('#mobile-controls .control-btn.active')
+                .forEach(button => button.classList.remove('active'));
         }
-        
+
         function showHelp() {
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay';
@@ -2059,50 +2027,59 @@
             // Initialize welcome text with current screen size
             updateWelcomeText();
             
-            // Add mobile control event listeners
+            // Pointer events unify touch, pen, and mouse without duplicate moves.
             const mobileControlButtons = {
                 'btn-up': 'up',
-                'btn-down': 'down', 
+                'btn-down': 'down',
                 'btn-left': 'left',
                 'btn-right': 'right'
             };
-            
+
             Object.entries(mobileControlButtons).forEach(([buttonId, direction]) => {
                 const button = document.getElementById(buttonId);
-                if (button) {
-                    // Touch events
-                    button.addEventListener('touchstart', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        this.classList.add('active');
-                        handleMobileMove(direction);
-                    });
-                    
-                    button.addEventListener('touchend', function(e) {
-                        e.preventDefault(); 
-                        e.stopPropagation();
-                        this.classList.remove('active');
-                        handleMobileStop();
-                    });
-                    
-                    // Mouse events for desktop testing
-                    button.addEventListener('mousedown', function(e) {
-                        e.preventDefault();
-                        this.classList.add('active');
-                        handleMobileMove(direction);
-                    });
-                    
-                    button.addEventListener('mouseup', function(e) {
-                        e.preventDefault();
-                        this.classList.remove('active');
-                        handleMobileStop();
-                    });
-                    
-                    // Prevent context menu on mobile
-                    button.addEventListener('contextmenu', function(e) {
-                        e.preventDefault();
-                    });
-                }
+                if (!button) return;
+
+                button.setAttribute('aria-label', `Move ${direction}`);
+                button.setAttribute('type', 'button');
+
+                const release = (event) => {
+                    if (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    button.classList.remove('active');
+                    try {
+                        if (button.hasPointerCapture && event && event.pointerId !== undefined &&
+                            button.hasPointerCapture(event.pointerId)) {
+                            button.releasePointerCapture(event.pointerId);
+                        }
+                    } catch (_) {}
+                    handleMobileStop();
+                };
+
+                button.addEventListener('pointerdown', (event) => {
+                    if (event.pointerType === 'mouse' && event.button !== 0) return;
+                    event.preventDefault();
+                    event.stopPropagation();
+                    button.classList.add('active');
+                    try { button.setPointerCapture(event.pointerId); } catch (_) {}
+                    handleMobileMove(direction);
+                });
+
+                button.addEventListener('pointerup', release);
+                button.addEventListener('pointercancel', release);
+                button.addEventListener('lostpointercapture', () => {
+                    button.classList.remove('active');
+                    handleMobileStop();
+                });
+                button.addEventListener('contextmenu', event => event.preventDefault());
+                button.addEventListener('dragstart', event => event.preventDefault());
+            });
+
+            // Releasing outside the button or switching tabs must never leave movement stuck.
+            window.addEventListener('blur', handleMobileStop);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) handleMobileStop();
             });
         });
     </script>
