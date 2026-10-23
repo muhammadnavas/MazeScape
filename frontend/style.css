@@ -2722,3 +2722,36 @@ body {
         background: #352321 !important;
     }
 }
+
+
+/* Consistent outline icon treatment for the interface */
+.ui-icon, [data-lucide].ui-icon {
+    display: inline-block;
+    width: 1.05em;
+    height: 1.05em;
+    vertical-align: -0.17em;
+    margin-right: .42em;
+    stroke-width: 2;
+    flex: 0 0 auto;
+}
+#menuButtons .game-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+}
+#menuButtons .game-button .ui-icon {
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    color: var(--maze-gold, #D8A93D);
+}
+#menuButtons .game-button.primary .ui-icon {
+    color: #FAF7EF;
+}
+.blog-panel h4 .ui-icon, .blog-panel h5 .ui-icon, #instructions h4 .ui-icon, #status h4 .ui-icon {
+    width: 1em;
+    height: 1em;
+    margin-right: .4em;
+    color: #D8A93D;
+}
