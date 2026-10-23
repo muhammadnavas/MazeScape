@@ -329,8 +329,8 @@
             
             setupCanvas() {
                 // Fixed maze dimensions for consistent gameplay
-                const FIXED_MAZE_WIDTH = 30;  // 30x20 grid for balanced gameplay
-                const FIXED_MAZE_HEIGHT = 20;
+                const FIXED_MAZE_WIDTH = 20;  // Portrait maze: 20 columns
+                const FIXED_MAZE_HEIGHT = 30; // Portrait maze: 30 rows
                 const GRID_SIZE = 40; // Same as game.js
                 
                 // Calculate ideal canvas size based on fixed maze dimensions
@@ -338,21 +338,23 @@
                 const idealCanvasHeight = FIXED_MAZE_HEIGHT * GRID_SIZE;
                 
                 // Get available space
-                const availableWidth = window.innerWidth - 40;
-                const availableHeight = window.innerHeight - 120; // Account for header
+                const availableWidth = Math.max(240, window.innerWidth - 24);
+                const availableHeight = Math.max(360, window.innerHeight - (window.innerWidth <= 700 ? 300 : 150)); // Reserve room for mobile controls
                 
                 // Calculate scale to fit while maintaining aspect ratio
                 const scaleX = availableWidth / idealCanvasWidth;
                 const scaleY = availableHeight / idealCanvasHeight;
-                const scale = Math.min(scaleX, scaleY, 1.5); // Cap at 1.5x for large screens
+                const scale = Math.min(scaleX, scaleY, 1.5); // Fit portrait maze without cropping
                 
                 // Set canvas size to maintain exact maze grid
                 this.canvas.width = idealCanvasWidth;
                 this.canvas.height = idealCanvasHeight;
                 
                 // Apply CSS scaling for responsive display
-                this.canvas.style.width = '100%';
-                this.canvas.style.height = '100%';
+                this.canvas.style.width = `${Math.floor(idealCanvasWidth * scale)}px`;
+                this.canvas.style.height = `${Math.floor(idealCanvasHeight * scale)}px`;
+                this.canvas.style.maxWidth = '100%';
+                this.canvas.style.maxHeight = '100%';
                 
                 // Disable image smoothing for crisp pixel art
                 const ctx = this.canvas.getContext('2d');
