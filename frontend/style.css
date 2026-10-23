@@ -3924,3 +3924,24 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 #menuHeaderWelcomeText, #menuHeaderScoreInfo {
   display: none !important;
 }
+
+
+/* Enforce a single active screen: menu only outside gameplay, controls/toasts only in gameplay. */
+body.game-playing #menuButtons,
+body.game-playing .menu-buttons {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+body:not(.game-playing) #mobile-controls {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+body:not(.game-playing) #powerup-notifications {
+  display: none !important;
+}
+body.game-playing #powerup-notifications {
+  display: flex !important;
+}
