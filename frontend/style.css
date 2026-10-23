@@ -4133,3 +4133,80 @@ body.game-playing #powerup-notifications {
   #settingsModal .settings-option-title { font-size: 13px !important; }
   #settingsModal .settings-option-description { font-size: 10px !important; }
 }
+
+
+/* Palette consistency hotfix: ivory/sand, deep burgundy, muted gold only */
+:root {
+  --maze-sand: #C0B281;
+  --maze-burgundy: #550605;
+  --maze-gold: #D8A93D;
+  --maze-ink: #1C1211;
+  --maze-surface: #2A1A18;
+  --maze-text: #F7F0E4;
+}
+html, body {
+  background: linear-gradient(145deg, #130e0e 0%, #211514 52%, #2a1a18 100%) !important;
+  color: var(--maze-text) !important;
+}
+#settingsModal,
+#settingsModal .modal,
+.modal#settingsModal {
+  color: var(--maze-text) !important;
+  background: linear-gradient(145deg, rgba(42,26,24,.98), rgba(28,18,17,.98)) !important;
+  border: 1px solid rgba(192,178,129,.72) !important;
+  box-shadow: 0 22px 60px rgba(0,0,0,.42), inset 0 1px 0 rgba(250,247,239,.06) !important;
+}
+#settingsModal h2,
+#settingsModal .modal-title {
+  color: var(--maze-sand) !important;
+}
+#settingsModal .settings-option {
+  background: rgba(192,178,129,.055) !important;
+  border-color: rgba(192,178,129,.3) !important;
+}
+#settingsModal .settings-option-title {
+  color: #F7F0E4 !important;
+}
+#settingsModal .settings-option-description {
+  color: rgba(247,240,228,.68) !important;
+}
+#settingsModal .settings-switch {
+  background: rgba(247,240,228,.1) !important;
+  border-color: rgba(192,178,129,.55) !important;
+}
+#settingsModal .settings-option input:checked + .settings-switch {
+  background: rgba(216,169,61,.25) !important;
+  border-color: var(--maze-gold) !important;
+}
+#settingsModal .settings-option input:checked + .settings-switch::after {
+  background: var(--maze-sand) !important;
+}
+#settingsModal .button-row button,
+#settingsModal .button-row .game-button,
+#settingsModal button,
+#settingsModal .game-button {
+  min-height: 48px !important;
+  border-radius: 13px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+  color: #F7F0E4 !important;
+  border: 1px solid rgba(192,178,129,.65) !important;
+  background: linear-gradient(145deg, #352321, #241715) !important;
+}
+#settingsModal .button-row button:first-child,
+#settingsModal .button-row .game-button:first-child {
+  background: linear-gradient(135deg, #550605, #6a1713) !important;
+  border-color: var(--maze-sand) !important;
+  color: #F7F0E4 !important;
+}
+#settingsModal .button-row button:last-child,
+#settingsModal .button-row .game-button:last-child {
+  background: linear-gradient(145deg, #352321, #241715) !important;
+  border-color: rgba(192,178,129,.55) !important;
+  color: #F7F0E4 !important;
+}
+#settingsModal .button-row button:hover,
+#settingsModal .button-row .game-button:hover {
+  filter: brightness(1.08) !important;
+}
