@@ -3900,3 +3900,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   }
   #menuButtons .game-button.primary { font-size: 13px !important; }
 }
+
+
+/* Keep the header clean: hide the guest greeting while preserving signed-in identity updates */
+#menuHeaderWelcome,
+#menuHeaderWelcomeText {
+  display: none !important;
+}
