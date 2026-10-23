@@ -2755,3 +2755,34 @@ body {
     margin-right: .4em;
     color: #D8A93D;
 }
+
+
+/* Mobile menu visibility/layout safeguard */
+#gameContainer { isolation: isolate; }
+#gameCanvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+#ui-container { z-index: 2; }
+#menuButtons.menu-buttons {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 120 !important;
+    pointer-events: auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+}
+#menuButtons .button-row { width: 100% !important; }
+#menuButtons .game-button { min-height: 48px; }
+@media (max-width: 600px) {
+    #menuButtons.menu-buttons {
+        width: min(440px, calc(100vw - 28px)) !important;
+        max-height: calc(100% - 24px) !important;
+        overflow-y: auto !important;
+        padding: 20px 16px !important;
+    }
+}
