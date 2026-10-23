@@ -20,7 +20,6 @@
  gap: 20px;
  ">
  <div class="user-welcome">
- <span id="menuHeaderWelcomeText">Welcome, Guest!</span>
  </div>
  <div class="score-info" id="menuHeaderScoreInfo" style="display: none;">
  <span id="menuHeaderTopScore">Best: --</span>
@@ -47,18 +46,7 @@
  </button>
  </div>
  <div class="button-row">
- <button class="game-button" id="loginBtn">
- <i data-lucide="key-round" class="ui-icon" aria-hidden="true"></i> LOGIN
- </button>
- <button class="game-button" id="registerBtn">
- <i data-lucide="user-round-plus" class="ui-icon" aria-hidden="true"></i> REGISTER
- </button>
- <button class="game-button" id="profileBtn" style="display: none;">
- <i data-lucide="user-round" class="ui-icon" aria-hidden="true"></i> PROFILE
- </button>
- <button class="game-button" id="logoutBtn" style="display: none;">
- <i data-lucide="log-out" class="ui-icon" aria-hidden="true"></i> LOGOUT
- </button>
+
  </div>
  <div class="button-row">
  <button class="game-button" id="helpBtn">
@@ -218,7 +206,6 @@
  <script src="config.js"></script>
  <script src="astar.js"></script>
  <script src="database_mongo.js"></script>
- <script src="user_auth.js"></script>
  <script src="game.js"></script>
  
  <script>
@@ -251,7 +238,6 @@
  let game = null;
  let ui = null;
  let gameDB = null; // Renamed to avoid conflict
- let userAuth = null;
  let currentUser = null;
  let gameState = "menu"; // "menu", "playing", "paused"
  
@@ -301,53 +287,27 @@
  }
  
  updateMenuButtons() {
- const menuButtons = document.getElementById('menuButtons');
- const topMenu = document.getElementById('topMenu');
- const menuKeyboardHint = document.getElementById('menuKeyboardHint');
- const loginBtn = document.getElementById('loginBtn');
- const registerBtn = document.getElementById('registerBtn');
- const profileBtn = document.getElementById('profileBtn');
- const logoutBtn = document.getElementById('logoutBtn');
- 
- console.log(' Updating menu buttons, gameState:', gameState, 'currentUser:', currentUser);
- 
- if (gameState === "menu") {
- if (menuButtons) menuButtons.style.display = 'flex';
- if (topMenu) topMenu.style.display = 'none';
- if (menuKeyboardHint) menuKeyboardHint.style.display = 'block';
- 
- // Initialize blog panel state when returning to menu
- initializeBlogPanel();
- 
- if (currentUser) {
- // User is logged in - show profile/logout, hide login/register
- console.log(' User logged in, showing profile buttons');
- if (loginBtn) loginBtn.style.display = 'none';
- if (registerBtn) registerBtn.style.display = 'none';
- if (profileBtn) profileBtn.style.display = 'inline-block';
- if (logoutBtn) logoutBtn.style.display = 'inline-block';
- } else {
- // User is not logged in - show login/register, hide profile/logout
- console.log(' User not logged in, showing login buttons');
- if (loginBtn) loginBtn.style.display = 'inline-block';
- if (registerBtn) registerBtn.style.display = 'inline-block';
- if (profileBtn) profileBtn.style.display = 'none';
- if (logoutBtn) logoutBtn.style.display = 'none';
+  const menuButtons = document.getElementById('menuButtons');
+  const topMenu = document.getElementById('topMenu');
+  const menuKeyboardHint = document.getElementById('menuKeyboardHint');
+
+  if (gameState === "menu") {
+    if (menuButtons) menuButtons.style.display = 'flex';
+    if (topMenu) topMenu.style.display = 'none';
+    if (menuKeyboardHint) menuKeyboardHint.style.display = 'block';
+    initializeBlogPanel();
+  } else if (gameState === "playing") {
+    if (menuButtons) menuButtons.style.display = 'none';
+    if (topMenu) topMenu.style.display = 'flex';
+    if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
+    this.updateStatus();
+  } else {
+    if (menuButtons) menuButtons.style.display = 'none';
+    if (topMenu) topMenu.style.display = 'none';
+    if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
+  }
  }
- } else if (gameState === "playing") {
- if (menuButtons) menuButtons.style.display = 'none';
- if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
- if (currentUser) {
- if (topMenu) topMenu.style.display = 'flex';
- this.updateStatus(); // Use updateStatus instead of updateScoreDisplay
- }
- } else {
- if (menuButtons) menuButtons.style.display = 'none';
- if (topMenu) topMenu.style.display = 'none';
- if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
- }
- }
- 
+
  setupCanvas() {
  // Fixed maze dimensions for consistent gameplay
  const FIXED_MAZE_WIDTH = 20; // Portrait maze: 20 columns
@@ -678,11 +638,6 @@
  if (gameDB && gameDB.connected) {
  console.log(' MongoDB database connected');
  
- // Initialize user authentication with database
- if (typeof UserAuth !== 'undefined') {
- userAuth = new UserAuth(gameDB);
- console.log(' User authentication initialized with database');
- }
  
  const dbStatusEl = document.getElementById('db-status');
  if (dbStatusEl) {
