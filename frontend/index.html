@@ -281,6 +281,8 @@
   const menuButtons = document.getElementById('menuButtons');
   const topMenu = document.getElementById('topMenu');
   const menuKeyboardHint = document.getElementById('menuKeyboardHint');
+  const isGameplayView = gameState === "playing" || gameState === "paused";
+  document.body.classList.toggle('game-playing', isGameplayView);
 
   if (gameState === "menu") {
     if (menuButtons) menuButtons.style.display = 'flex';
