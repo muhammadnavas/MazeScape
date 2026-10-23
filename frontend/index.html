@@ -1296,19 +1296,6 @@
  });
  }
  
- function logout() {
- showConfirm('Logout', 'Are you sure you want to logout?', () => {
- currentUser = null;
- updateUserDisplay(); // Clear username display
- if (window.gameController) {
- window.gameController.returnToMenu();
- window.gameController.updateStatus();
- window.gameController.updateMenuButtons();
- }
- showMessage('Logged Out', 'You have been successfully logged out.', true, 2000);
- });
- }
- 
  // Function to control mobile controls visibility
  function updateMobileControlsVisibility(gameIsPlaying = false) {
  const mobileControls = document.getElementById('mobile-controls');
