@@ -4538,3 +4538,75 @@ body {
   }
   #powerup-notifications { top: calc(44px + env(safe-area-inset-top, 0px)) !important; }
 }
+
+
+/* Corrected mobile layout: size canvas from the real viewport budget and keep controls clear. */
+@media (max-width: 700px) and (orientation: portrait) {
+  #gameContainer {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    padding: calc(52px + env(safe-area-inset-top, 0px)) 4px calc(112px + env(safe-area-inset-bottom, 0px)) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+  #gameCanvas {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: calc(100vw - 8px) !important;
+    max-height: calc(100dvh - 176px - env(safe-area-inset-bottom, 0px)) !important;
+    flex: 0 1 auto !important;
+    margin: 0 auto !important;
+  }
+  #status {
+    top: calc(4px + env(safe-area-inset-top, 0px)) !important;
+    left: 8px !important;
+    right: 8px !important;
+    width: auto !important;
+    z-index: 700 !important;
+  }
+  #powerup-notifications {
+    top: calc(44px + env(safe-area-inset-top, 0px)) !important;
+    width: min(230px, calc(100vw - 44px)) !important;
+    max-width: calc(100vw - 44px) !important;
+    z-index: 710 !important;
+  }
+  .powerup-notification {
+    padding: 5px 8px !important;
+    gap: 6px !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    border-radius: 9px !important;
+  }
+  .powerup-notification-icon {
+    width: 21px !important;
+    height: 21px !important;
+    font-size: 12px !important;
+  }
+  #mobile-controls {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: max(4px, env(safe-area-inset-bottom, 0px)) !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    z-index: 800 !important;
+    transform: none !important;
+  }
+}
+@media (max-width: 380px) and (orientation: portrait) {
+  #gameContainer {
+    padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #gameCanvas {
+    max-height: calc(100dvh - 166px - env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
