@@ -1091,10 +1091,10 @@ class MazeGame {
  icon = "zap";
  } else if (powerupType === POWERUP_FREEZE) {
  message = "Ghost Freeze Spawned!";
- icon = "";
+ icon = "snowflake";
  } else if (powerupType === POWERUP_WALLBREAKER) {
  message = "Wall Breaker Spawned!";
- icon = "";
+ icon = "hammer";
  }
  window.gameController.showPowerupNotification(message, icon);
  }
@@ -1129,7 +1129,7 @@ class MazeGame {
  }
  // Show powerup notification
  if (window.gameController) {
- window.gameController.showPowerupNotification("Ghost Freeze Activated!", "");
+ window.gameController.showPowerupNotification("Ghost Freeze Activated!", "snowflake");
  }
  } else if (powerup.type === POWERUP_WALLBREAKER) {
  this.activePowerups[POWERUP_WALLBREAKER] = Date.now() / 1000 + POWERUP_DURATION;
@@ -1139,7 +1139,7 @@ class MazeGame {
  }
  // Show powerup notification
  if (window.gameController) {
- window.gameController.showPowerupNotification("Wall Breaker Activated!", "");
+ window.gameController.showPowerupNotification("Wall Breaker Activated!", "hammer");
  }
  }
  
@@ -1353,11 +1353,11 @@ class MazeGame {
  // Show notification when powerup expires
  if (window.gameController) {
  if (effect === POWERUP_SPEED) {
- window.gameController.showPowerupNotification("Speed Boost Ended", "");
+ window.gameController.showPowerupNotification("Speed Boost Ended", "zap");
  } else if (effect === POWERUP_FREEZE) {
- window.gameController.showPowerupNotification("Ghost Freeze Ended", "");
+ window.gameController.showPowerupNotification("Ghost Freeze Ended", "snowflake");
  } else if (effect === POWERUP_WALLBREAKER) {
- window.gameController.showPowerupNotification("Wall Breaker Ended", "");
+ window.gameController.showPowerupNotification("Wall Breaker Ended", "hammer");
  }
  }
  delete this.activePowerups[effect];
