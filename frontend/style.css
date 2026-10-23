@@ -3515,3 +3515,83 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
     font-size: 18px !important;
   }
 }
+
+
+/* Power-up toast: readable on phones, above the maze but away from controls */
+#powerup-notifications {
+    position: fixed !important;
+    top: calc(58px + env(safe-area-inset-top, 0px)) !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: min(320px, calc(100vw - 32px)) !important;
+    max-width: calc(100vw - 32px) !important;
+    transform: translateX(-50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    z-index: 300 !important;
+    pointer-events: none !important;
+}
+.powerup-notification {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 11px 14px !important;
+    margin: 0 !important;
+    border: 1px solid rgba(216,169,61,.72) !important;
+    border-radius: 14px !important;
+    background: rgba(36,23,21,.96) !important;
+    color: #FAF7EF !important;
+    font-family: 'DM Sans', 'Segoe UI', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,.32) !important;
+    opacity: 0 !important;
+    transform: translateY(-8px) !important;
+    transition: opacity .18s ease, transform .18s ease !important;
+    animation: none !important;
+}
+.powerup-notification.show {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+.powerup-notification-icon {
+    flex: 0 0 auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 9px !important;
+    background: rgba(216,169,61,.14) !important;
+    font-size: 17px !important;
+}
+.powerup-notification-text {
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+}
+@media (max-width: 700px) {
+    #powerup-notifications {
+        top: calc(54px + env(safe-area-inset-top, 0px)) !important;
+        width: min(300px, calc(100vw - 28px)) !important;
+        max-width: calc(100vw - 28px) !important;
+    }
+    .powerup-notification {
+        padding: 9px 11px !important;
+        font-size: 12px !important;
+        border-radius: 12px !important;
+    }
+    .powerup-notification-icon {
+        width: 27px !important;
+        height: 27px !important;
+        font-size: 15px !important;
+    }
+}
