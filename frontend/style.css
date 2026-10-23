@@ -4031,3 +4031,105 @@ body.game-playing #powerup-notifications {
   #settingsModal .button-row { gap: 8px !important; }
   #settingsModal .game-button { font-size: 12px !important; padding-inline: 8px !important; }
 }
+
+
+/* Settings redesign: compact rows with readable copy and small switches */
+#settingsModal .settings-options {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  margin: 0 0 22px !important;
+}
+#settingsModal .settings-option {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 44px !important;
+  grid-template-rows: auto !important;
+  align-items: center !important;
+  column-gap: 14px !important;
+  min-height: 76px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 15px 16px !important;
+  border: 1px solid rgba(216,169,61,.28) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.035) !important;
+  text-align: left !important;
+}
+#settingsModal .settings-option-copy {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+}
+#settingsModal .settings-option-title {
+  display: block !important;
+  color: #f7eee2 !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  line-height: 1.3 !important;
+}
+#settingsModal .settings-option-description {
+  display: block !important;
+  color: rgba(245,238,227,.68) !important;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+}
+#settingsModal .settings-option input[type="checkbox"] {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  min-width: 1px !important;
+  min-height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+#settingsModal .settings-switch {
+  position: relative !important;
+  display: block !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  justify-self: end !important;
+  width: 42px !important;
+  height: 24px !important;
+  border: 1px solid rgba(245,238,227,.38) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.12) !important;
+  box-sizing: border-box !important;
+  transition: background .18s ease, border-color .18s ease !important;
+}
+#settingsModal .settings-switch::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 3px !important;
+  left: 3px !important;
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 50% !important;
+  background: #f4ede5 !important;
+  transition: transform .18s ease, background .18s ease !important;
+}
+#settingsModal .settings-option input:checked + .settings-switch {
+  background: rgba(216,169,61,.32) !important;
+  border-color: #d8a93d !important;
+}
+#settingsModal .settings-option input:checked + .settings-switch::after {
+  transform: translateX(18px) !important;
+  background: #f0cf78 !important;
+}
+#settingsModal .settings-option:focus-within {
+  outline: 2px solid rgba(216,169,61,.6) !important;
+  outline-offset: 2px !important;
+}
+#settingsModal .button-row {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+@media (max-width: 380px) {
+  #settingsModal .settings-option { padding: 12px !important; min-height: 70px !important; }
+  #settingsModal .settings-option-title { font-size: 13px !important; }
+  #settingsModal .settings-option-description { font-size: 10px !important; }
+}
