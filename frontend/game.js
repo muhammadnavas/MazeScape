@@ -247,136 +247,120 @@ class TextureManager {
  }
  
  createPlayerTexture() {
-  // Jerry-inspired mouse: brown fur, oversized pink ears and cream muzzle.
+  // Jerry-inspired full-body sprite, drawn at high resolution for crisp rendering.
   const canvas = document.createElement('canvas');
-  canvas.width = GRID_SIZE * 3;
-  canvas.height = GRID_SIZE * 3;
+  canvas.width = GRID_SIZE * 4;
+  canvas.height = GRID_SIZE * 4;
   const ctx = canvas.getContext('2d');
-  ctx.scale(3, 3);
-  const s = GRID_SIZE, cx = s / 2;
+  ctx.scale(4, 4);
+  const s = GRID_SIZE;
+  const stroke = (color = '#663A21', width = 1) => {
+   ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  };
+  const ellipse = (x,y,rx,ry,fill) => {
+   ctx.fillStyle=fill; ctx.beginPath(); ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2); ctx.fill();
+  };
 
-  const glow = ctx.createRadialGradient(cx, cx, 2, cx, cx, s * 0.62);
-  glow.addColorStop(0, 'rgba(216,169,61,.28)');
-  glow.addColorStop(1, 'rgba(216,169,61,0)');
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, s, s);
+  // Soft halo, feet and thin mouse tail.
+  const glow=ctx.createRadialGradient(20,20,3,20,20,26);
+  glow.addColorStop(0,'rgba(216,169,61,.30)'); glow.addColorStop(1,'rgba(216,169,61,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,s,s);
+  stroke('#B97535',1.8);
+  ctx.beginPath(); ctx.moveTo(12,27); ctx.bezierCurveTo(5,29,7,36,2,35); ctx.stroke();
+  ellipse(14,34,5,2.4,'#8B542D'); ellipse(26,34,5,2.4,'#8B542D');
 
-  ctx.fillStyle = '#8B542D';
-  ctx.beginPath();
-  ctx.arc(s*.28, s*.25, s*.19, 0, Math.PI*2);
-  ctx.arc(s*.72, s*.25, s*.19, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#E99A9A';
-  ctx.beginPath();
-  ctx.arc(s*.28, s*.25, s*.105, 0, Math.PI*2);
-  ctx.arc(s*.72, s*.25, s*.105, 0, Math.PI*2);
-  ctx.fill();
+  // Ears and inner ears.
+  ellipse(10.5,11,6.2,7,'#8B542D'); ellipse(29.5,11,6.2,7,'#8B542D');
+  ellipse(10.5,11,3.7,4.6,'#E99A9A'); ellipse(29.5,11,3.7,4.6,'#E99A9A');
 
-  ctx.fillStyle = '#B97535';
-  ctx.beginPath();
-  ctx.ellipse(cx, s*.51, s*.36, s*.34, 0, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#F2D5A0';
-  ctx.beginPath();
-  ctx.ellipse(cx, s*.63, s*.25, s*.17, 0, 0, Math.PI*2);
-  ctx.fill();
+  // Small body and arms behind the oversized head.
+  ellipse(20,27,8.2,8.5,'#A9632E');
+  ellipse(12.7,26,3.2,5.1,'#B97535'); ellipse(27.3,26,3.2,5.1,'#B97535');
+  ellipse(20,29,5.8,5.4,'#D99A53');
 
-  ctx.fillStyle = '#FFF8E9';
-  ctx.beginPath();
-  ctx.ellipse(s*.39, s*.46, s*.085, s*.115, 0, 0, Math.PI*2);
-  ctx.ellipse(s*.61, s*.46, s*.085, s*.115, 0, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#29201B';
-  ctx.beginPath();
-  ctx.arc(s*.405, s*.47, s*.043, 0, Math.PI*2);
-  ctx.arc(s*.625, s*.47, s*.043, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#6B3329';
-  ctx.beginPath();
-  ctx.arc(cx, s*.59, s*.045, 0, Math.PI*2);
-  ctx.fill();
-  ctx.strokeStyle = '#6B3329';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(cx, s*.62); ctx.quadraticCurveTo(s*.43, s*.70, s*.37, s*.65);
-  ctx.moveTo(cx, s*.62); ctx.quadraticCurveTo(s*.57, s*.70, s*.63, s*.65);
-  ctx.stroke();
+  // Head silhouette, cheek shape and muzzle.
+  ellipse(20,17.5,13.1,12.4,'#B97535');
+  ellipse(20,22,8.8,5.8,'#F2D5A0');
+  ellipse(14.3,21,4.8,3.8,'#F2D5A0'); ellipse(25.7,21,4.8,3.8,'#F2D5A0');
 
-  ctx.strokeStyle = '#F2D5A0';
-  ctx.lineWidth = .7;
+  // Big cartoon eyes with highlights.
+  ellipse(15.5,15.5,3.5,4.6,'#FFF8E9'); ellipse(24.5,15.5,3.5,4.6,'#FFF8E9');
+  ellipse(16.5,16.1,1.65,2.8,'#29201B'); ellipse(25.5,16.1,1.65,2.8,'#29201B');
+  ellipse(16,15.2,.65,.8,'#FFFFFF'); ellipse(25,15.2,.65,.8,'#FFFFFF');
+
+  // Nose, smile and whiskers.
+  ellipse(20,21,1.5,1.1,'#6B3329');
+  stroke('#6B3329',.75);
+  ctx.beginPath(); ctx.moveTo(20,21.5); ctx.quadraticCurveTo(18,24,16.4,22.5);
+  ctx.moveTo(20,21.5); ctx.quadraticCurveTo(22,24,23.6,22.5); ctx.stroke();
+  stroke('#F2D5A0',.65);
   ctx.beginPath();
-  ctx.moveTo(s*.34,s*.61); ctx.lineTo(s*.12,s*.57);
-  ctx.moveTo(s*.34,s*.65); ctx.lineTo(s*.13,s*.68);
-  ctx.moveTo(s*.66,s*.61); ctx.lineTo(s*.88,s*.57);
-  ctx.moveTo(s*.66,s*.65); ctx.lineTo(s*.87,s*.68);
-  ctx.stroke();
+  ctx.moveTo(13,21);ctx.lineTo(5,19);ctx.moveTo(13,23);ctx.lineTo(5,24);
+  ctx.moveTo(27,21);ctx.lineTo(35,19);ctx.moveTo(27,23);ctx.lineTo(35,24);ctx.stroke();
 
   this.textures.player = canvas;
  }
  
  createGhostTexture() {
-  // Tom-inspired cat: grey pointed ears, yellow eyes and white muzzle.
+  // Tom-inspired full-body cat sprite with pointed ears, cheek fur and long tail.
   const canvas = document.createElement('canvas');
-  canvas.width = GRID_SIZE * 3;
-  canvas.height = GRID_SIZE * 3;
+  canvas.width = GRID_SIZE * 4;
+  canvas.height = GRID_SIZE * 4;
   const ctx = canvas.getContext('2d');
-  ctx.scale(3, 3);
-  const s = GRID_SIZE, cx = s / 2;
+  ctx.scale(4, 4);
+  const s = GRID_SIZE;
+  const stroke = (color = '#515762', width = 1) => {
+   ctx.strokeStyle=color; ctx.lineWidth=width; ctx.lineJoin='round'; ctx.lineCap='round';
+  };
+  const ellipse = (x,y,rx,ry,fill) => {
+   ctx.fillStyle=fill; ctx.beginPath(); ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2); ctx.fill();
+  };
 
-  const glow = ctx.createRadialGradient(cx, cx, 2, cx, cx, s*.62);
-  glow.addColorStop(0, 'rgba(192,178,129,.28)');
-  glow.addColorStop(1, 'rgba(192,178,129,0)');
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, s, s);
+  const glow=ctx.createRadialGradient(20,20,3,20,20,26);
+  glow.addColorStop(0,'rgba(192,178,129,.28)'); glow.addColorStop(1,'rgba(192,178,129,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,s,s);
 
-  ctx.fillStyle = '#727985';
-  ctx.beginPath();
-  ctx.moveTo(s*.12,s*.42); ctx.lineTo(s*.16,s*.04); ctx.lineTo(s*.43,s*.25);
-  ctx.lineTo(s*.57,s*.25); ctx.lineTo(s*.84,s*.04); ctx.lineTo(s*.88,s*.42);
+  // Curved tail behind the body.
+  stroke('#727985',2.2);
+  ctx.beginPath(); ctx.moveTo(26,29); ctx.bezierCurveTo(36,29,36,36,31,37); ctx.stroke();
+  ellipse(14,34,5,2.2,'#727985'); ellipse(26,34,5,2.2,'#727985');
+
+  // Body, shoulders and arms.
+  ellipse(20,27,8.5,9,'#7B828E');
+  ellipse(12.5,26,3.1,5,'#9299A4'); ellipse(27.5,26,3.1,5,'#9299A4');
+  ellipse(20,29,5.8,5.5,'#AEB3BB');
+
+  // Distinct pointed ears with pink centres.
+  ctx.fillStyle='#727985'; ctx.beginPath();
+  ctx.moveTo(7,16); ctx.lineTo(6,2); ctx.lineTo(17,10);
+  ctx.lineTo(23,10); ctx.lineTo(34,2); ctx.lineTo(33,16);
   ctx.closePath(); ctx.fill();
-  ctx.fillStyle = '#D98F9B';
-  ctx.beginPath();
-  ctx.moveTo(s*.20,s*.30); ctx.lineTo(s*.19,s*.13); ctx.lineTo(s*.36,s*.29);
-  ctx.closePath();
-  ctx.moveTo(s*.64,s*.29); ctx.lineTo(s*.81,s*.13); ctx.lineTo(s*.80,s*.30);
-  ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#D98F9B'; ctx.beginPath();
+  ctx.moveTo(9,12);ctx.lineTo(8.5,5.5);ctx.lineTo(15,10.5);ctx.closePath();
+  ctx.moveTo(25,10.5);ctx.lineTo(31.5,5.5);ctx.lineTo(31,12);ctx.closePath();ctx.fill();
 
-  ctx.fillStyle = '#9299A4';
-  ctx.beginPath();
-  ctx.ellipse(cx,s*.48,s*.38,s*.34,0,0,Math.PI*2); ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(s*.17,s*.54); ctx.lineTo(s*.04,s*.61); ctx.lineTo(s*.24,s*.66); ctx.closePath();
-  ctx.moveTo(s*.83,s*.54); ctx.lineTo(s*.96,s*.61); ctx.lineTo(s*.76,s*.66); ctx.closePath();
-  ctx.fill();
+  // Broad cat head and fluffy cheeks.
+  ellipse(20,17.5,13,11.5,'#9299A4');
+  ctx.fillStyle='#9299A4'; ctx.beginPath();
+  ctx.moveTo(9,18);ctx.lineTo(3.5,22);ctx.lineTo(10,24);ctx.closePath();
+  ctx.moveTo(31,18);ctx.lineTo(36.5,22);ctx.lineTo(30,24);ctx.closePath();ctx.fill();
 
-  ctx.fillStyle = '#F4F0E8';
-  ctx.beginPath();
-  ctx.ellipse(s*.39,s*.60,s*.19,s*.15,0,0,Math.PI*2);
-  ctx.ellipse(s*.61,s*.60,s*.19,s*.15,0,0,Math.PI*2);
-  ctx.fill();
+  // Tom's yellow-green eyes.
+  ellipse(15,15.5,3.7,4.5,'#E5C65B'); ellipse(25,15.5,3.7,4.5,'#E5C65B');
+  ellipse(16,16,1.45,3,'#22252B'); ellipse(26,16,1.45,3,'#22252B');
+  ellipse(15.5,14.8,.6,.8,'#FFFFFF'); ellipse(25.5,14.8,.6,.8,'#FFFFFF');
 
-  ctx.fillStyle = '#E5C65B';
+  // White muzzle, pink nose, mouth and whiskers.
+  ellipse(15.8,21,5.3,4,'#F4F0E8'); ellipse(24.2,21,5.3,4,'#F4F0E8');
+  ctx.fillStyle='#D58A98'; ctx.beginPath();
+  ctx.moveTo(20,19.2);ctx.lineTo(17.9,17.9);ctx.quadraticCurveTo(20,17,22.1,17.9);ctx.closePath();ctx.fill();
+  stroke('#515762',.7);
   ctx.beginPath();
-  ctx.ellipse(s*.38,s*.43,s*.105,s*.14,0,0,Math.PI*2);
-  ctx.ellipse(s*.62,s*.43,s*.105,s*.14,0,0,Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#22252B';
-  ctx.beginPath();
-  ctx.ellipse(s*.40,s*.44,s*.038,s*.09,0,0,Math.PI*2);
-  ctx.ellipse(s*.64,s*.44,s*.038,s*.09,0,0,Math.PI*2);
-  ctx.fill();
-
-  ctx.fillStyle = '#D58A98';
-  ctx.beginPath();
-  ctx.moveTo(cx,s*.57); ctx.lineTo(s*.43,s*.53); ctx.lineTo(s*.57,s*.53);
-  ctx.closePath(); ctx.fill();
-  ctx.strokeStyle = '#5C626D';
-  ctx.lineWidth = .7;
-  ctx.beginPath();
-  ctx.moveTo(s*.34,s*.59); ctx.lineTo(s*.10,s*.54);
-  ctx.moveTo(s*.34,s*.63); ctx.lineTo(s*.11,s*.67);
-  ctx.moveTo(s*.66,s*.59); ctx.lineTo(s*.90,s*.54);
-  ctx.moveTo(s*.66,s*.63); ctx.lineTo(s*.89,s*.67);
+  ctx.moveTo(20,19.3);ctx.lineTo(20,22.2);
+  ctx.moveTo(20,22.2);ctx.quadraticCurveTo(18,24.2,16.5,22.5);
+  ctx.moveTo(20,22.2);ctx.quadraticCurveTo(22,24.2,23.5,22.5);
+  ctx.moveTo(12,20);ctx.lineTo(4.5,18);ctx.moveTo(12,22);ctx.lineTo(4.5,24);
+  ctx.moveTo(28,20);ctx.lineTo(35.5,18);ctx.moveTo(28,22);ctx.lineTo(35.5,24);
   ctx.stroke();
 
   this.textures.ghost = canvas;
