@@ -2786,3 +2786,34 @@ body {
         padding: 20px 16px !important;
     }
 }
+
+
+/* Portrait gameplay canvas: preserve maze proportions and center it above controls */
+#gameContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#gameCanvas {
+    display: block;
+    position: relative;
+    inset: auto;
+    flex: 0 0 auto;
+    width: auto;
+    height: auto;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100% - 12px);
+    object-fit: contain;
+    margin: 0 auto;
+    z-index: 1;
+}
+@media (max-width: 700px) {
+    #gameContainer {
+        padding: 8px 4px 150px !important;
+        box-sizing: border-box;
+    }
+    #gameCanvas {
+        max-width: calc(100vw - 12px);
+        max-height: calc(100% - 160px);
+    }
+}
