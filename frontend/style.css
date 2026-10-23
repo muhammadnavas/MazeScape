@@ -2582,3 +2582,143 @@ body {
 #mobile-controls .control-btn:active, .control-btn:active {
     background: var(--maze-burgundy) !important;
 }
+
+
+/* Glassmorphism polish — warm dark glass, refined typography, restrained highlights */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+    --glass-bg: rgba(53, 35, 33, 0.58);
+    --glass-bg-strong: rgba(36, 23, 21, 0.78);
+    --glass-border: rgba(250, 247, 239, 0.32);
+    --glass-border-bright: rgba(250, 247, 239, 0.55);
+    --glass-highlight: rgba(255, 248, 230, 0.08);
+    --glass-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+html, body, button, input, select, textarea {
+    font-family: 'DM Sans', 'Segoe UI', sans-serif !important;
+}
+.logo-text, .main-title, .modal h2, .blog-panel h4 {
+    font-family: 'Space Grotesk', 'DM Sans', sans-serif !important;
+    letter-spacing: -0.035em;
+}
+body {
+    background:
+        radial-gradient(ellipse at 15% 15%, rgba(216,169,61,.12), transparent 34%),
+        radial-gradient(ellipse at 85% 80%, rgba(85,6,5,.26), transparent 38%),
+        linear-gradient(135deg, #17100F 0%, #241715 52%, #352321 100%) !important;
+}
+.menu-header {
+    background: rgba(28, 18, 17, 0.66) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(140%) !important;
+    backdrop-filter: blur(22px) saturate(140%) !important;
+    border-bottom: 1px solid var(--glass-border-bright) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,.18) !important;
+}
+#gameContainer {
+    background:
+        radial-gradient(ellipse at 50% 5%, rgba(216,169,61,.08), transparent 40%),
+        linear-gradient(135deg, rgba(28,18,17,.76), rgba(53,35,33,.72)) !important;
+}
+#menuButtons.menu-buttons {
+    background: linear-gradient(145deg, rgba(53,35,33,.68), rgba(28,18,17,.72)) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(135%) !important;
+    backdrop-filter: blur(26px) saturate(135%) !important;
+    border: 1px solid var(--glass-border-bright) !important;
+    border-radius: 26px !important;
+    box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,.10) !important;
+    position: relative;
+    overflow: hidden;
+}
+#menuButtons.menu-buttons::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(250,247,239,.7), rgba(216,169,61,.6), transparent);
+}
+#menuButtons .main-title {
+    color: #F5D88B !important;
+    text-shadow: 0 2px 24px rgba(216,169,61,.14) !important;
+    font-weight: 700;
+}
+#menuButtons .main-subtitle {
+    color: rgba(250,247,239,.74) !important;
+    letter-spacing: .13em !important;
+}
+#menuButtons .game-button {
+    background: linear-gradient(145deg, rgba(250,247,239,.075), rgba(250,247,239,.025)) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(250,247,239,.30) !important;
+    border-radius: 14px !important;
+    color: #FAF7EF !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 7px 20px rgba(0,0,0,.12) !important;
+    transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease !important;
+}
+#menuButtons .game-button:hover {
+    background: linear-gradient(145deg, rgba(216,169,61,.18), rgba(250,247,239,.06)) !important;
+    border-color: rgba(250,247,239,.72) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 10px 24px rgba(0,0,0,.18) !important;
+    transform: translateY(-2px);
+}
+#menuButtons .game-button.primary {
+    background: linear-gradient(135deg, rgba(85,6,5,.92), rgba(113,24,18,.88)) !important;
+    border: 1px solid rgba(250,247,239,.62) !important;
+    color: #FFF9EB !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 10px 28px rgba(0,0,0,.24) !important;
+}
+#menuButtons .game-button.primary:hover {
+    background: linear-gradient(135deg, rgba(113,24,18,.98), rgba(85,6,5,.94)) !important;
+    border-color: rgba(250,247,239,.85) !important;
+}
+.user-welcome, .score-info {
+    background: rgba(250,247,239,.07) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    backdrop-filter: blur(14px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 12px !important;
+}
+.modal, #instructions, #status, .powerup-notification, .blog-panel,
+.blog-panel.left {
+    background: linear-gradient(145deg, rgba(53,35,33,.82), rgba(28,18,17,.88)) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(130%) !important;
+    backdrop-filter: blur(24px) saturate(130%) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 18px;
+    box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+.modal h2, .blog-panel h4, .blog-panel h5, #instructions h4, .status-header h4 {
+    color: #F5D88B !important;
+}
+.modal p, .modal label, .modal span, #instructions, #status, .status-label,
+.blog-content, .blog-section p, .blog-section li {
+    color: rgba(250,247,239,.92) !important;
+}
+.modal input, .modal select, .modal textarea {
+    background: rgba(28,18,17,.72) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 10px !important;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
+#mobile-controls .control-btn, .control-btn {
+    background: linear-gradient(145deg, rgba(68,48,42,.82), rgba(36,23,21,.88)) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--glass-border-bright) !important;
+    border-radius: 14px !important;
+}
+@media (max-width: 600px) {
+    #menuButtons.menu-buttons { border-radius: 22px !important; }
+    #menuButtons .game-button { border-radius: 12px !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+    #menuButtons.menu-buttons, .menu-header, .modal, #instructions, #status,
+    .powerup-notification, .blog-panel, .blog-panel.left, #menuButtons .game-button {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        background: #352321 !important;
+    }
+}
