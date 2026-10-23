@@ -4210,3 +4210,77 @@ html, body {
 #settingsModal .button-row .game-button:hover {
   filter: brightness(1.08) !important;
 }
+
+
+/* Apply the selected MazeScape palette consistently to help and all modal screens. */
+:root {
+  color-scheme: dark;
+  --maze-sand: #C0B281;
+  --maze-burgundy: #550605;
+  --maze-gold: #D8A93D;
+  --maze-ink: #1C1211;
+  --maze-surface: #2A1A18;
+  --maze-text: #F7F0E4;
+}
+html, body, body::before, body::after {
+  background-color: #1C1211 !important;
+}
+body {
+  background-image: radial-gradient(ellipse at 50% 0%, #2A1A18 0%, #211514 48%, #130e0e 100%) !important;
+  color: #F7F0E4 !important;
+}
+.modal-overlay {
+  background: rgba(12, 8, 8, .78) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+.modal-overlay .modal {
+  color: #F7F0E4 !important;
+  background: linear-gradient(145deg, rgba(42,26,24,.98), rgba(28,18,17,.98)) !important;
+  border: 1px solid rgba(192,178,129,.68) !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,.44), inset 0 1px 0 rgba(250,247,239,.06) !important;
+}
+.modal-overlay .modal h2,
+.modal-overlay .modal h3,
+.modal-overlay .modal h4 {
+  color: #C0B281 !important;
+}
+.modal-overlay .modal p,
+.modal-overlay .modal li,
+.modal-overlay .modal span,
+.modal-overlay .modal strong,
+.modal-overlay .modal label {
+  color: #F7F0E4 !important;
+}
+.modal-overlay .modal [style*="color"] {
+  color: #D8A93D !important;
+}
+.modal-overlay .modal .ui-icon,
+.modal-overlay .modal svg {
+  color: #D8A93D !important;
+  stroke: currentColor !important;
+}
+.modal-overlay .modal button,
+.modal-overlay .modal .game-button {
+  color: #F7F0E4 !important;
+  background: linear-gradient(135deg, #550605, #6a1713) !important;
+  border: 1px solid #C0B281 !important;
+  border-radius: 13px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+.modal-overlay .modal button:hover,
+.modal-overlay .modal .game-button:hover {
+  background: linear-gradient(135deg, #6a1713, #550605) !important;
+}
+#helpModal .modal > div[style*="overflow-y"] {
+  scrollbar-color: #C0B281 rgba(192,178,129,.12) !important;
+  scrollbar-width: thin !important;
+}
+#helpModal .modal > div[style*="overflow-y"]::-webkit-scrollbar {
+  width: 5px !important;
+}
+#helpModal .modal > div[style*="overflow-y"]::-webkit-scrollbar-thumb {
+  background: #C0B281 !important;
+  border-radius: 8px !important;
+}
