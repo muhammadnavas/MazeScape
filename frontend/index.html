@@ -990,8 +990,7 @@
  // Initialize database
  window.database = new MazeChaseDB();
  
- // Initialize UserAuth with the database
- userAuth = new UserAuth(window.database);
+ // Account-free mode: authentication is intentionally not initialized.
  
  // Initialize mobile controls - ensure they're hidden initially
  const mobileControls = document.getElementById('mobile-controls');
@@ -1872,10 +1871,6 @@
  document.addEventListener('DOMContentLoaded', function() {
  // Main game buttons
  const startGameBtn = document.getElementById('startGameBtn');
- const loginBtn = document.getElementById('loginBtn');
- const registerBtn = document.getElementById('registerBtn');
- const profileBtn = document.getElementById('profileBtn');
- const logoutBtn = document.getElementById('logoutBtn');
  const helpBtn = document.getElementById('helpBtn');
  const leaderboardBtn = document.getElementById('leaderboardBtn');
  const settingsBtn = document.getElementById('settingsBtn');
@@ -1884,30 +1879,6 @@
  startGameBtn.addEventListener('click', function() {
  startGame();
  console.log('Event listener onclick working!');
- });
- }
-
- if (loginBtn) {
- loginBtn.addEventListener('click', function() {
- showLogin();
- });
- }
-
- if (registerBtn) {
- registerBtn.addEventListener('click', function() {
- showRegister();
- });
- }
-
- if (profileBtn) {
- profileBtn.addEventListener('click', function() {
- showProfile();
- });
- }
-
- if (logoutBtn) {
- logoutBtn.addEventListener('click', function() {
- logout();
  });
  }
 
