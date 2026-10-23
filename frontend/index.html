@@ -5,7 +5,6 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>MazeScape</title>
  <link rel="stylesheet" href="style.css">
- <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
  <!-- Top Menu Bar -->
@@ -225,7 +224,29 @@
  
  <script>
  // Render consistent outline icons for static UI labels.
- if (window.lucide) window.lucide.createIcons();
+ // Render icons locally; no external icon runtime is required.
+ const iconPaths = {
+  info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+  'gamepad-2':'<path d="M6 12h4m-2-2v4M15 11h.01M18 13h.01"/><path d="M7 6h10a4 4 0 0 1 3.8 5.2l-1.1 3.7a2 2 0 0 1-3.2 1l-2.2-1.7h-4.6l-2.2 1.7a2 2 0 0 1-3.2-1l-1.1-3.7A4 4 0 0 1 7 6z"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  ghost:'<path d="M9 10h.01M15 10h.01M8 16s1.5-2 4-2 4 2 4 2"/><path d="M5 21V11a7 7 0 0 1 14 0v10l-3-2-4 2-4-2z"/>',
+  zap:'<path d="m13 2-3 9h7l-6 11 2-9H6z"/>',
+  snowflake:'<path d="M12 2v20M4 6l16 12M20 6 4 18"/>',
+  hammer:'<path d="m15 12 4 4M3 21l9-9M8 7l5-5 8 8-5 5z"/>',
+  'arrow-up':'<path d="M12 19V5M5 12l7-7 7 7"/>',
+  'arrow-down':'<path d="M12 5v14m7-7-7 7-7-7"/>',
+  'arrow-left':'<path d="M19 12H5m7 7-7-7 7-7"/>',
+  'arrow-right':'<path d="M5 12h14m-7-7 7 7-7 7"/>'
+ };
+ function iconMarkup(name) {
+  return '<svg class="ui-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (iconPaths[name] || iconPaths.info) + '</svg>';
+ }
+ function renderIcons(root) {
+  (root || document).querySelectorAll('[data-lucide]').forEach(function(node) {
+   node.outerHTML = iconMarkup(node.getAttribute('data-lucide'));
+  });
+ }
+ renderIcons(document);
 
  // Game initialization and controller
  let game = null;
@@ -575,7 +596,7 @@
  
  if (gameState === "playing" || gameState === "paused") {
  // Show game UI panels
- sidePanels.forEach(panel => panel.style.display = 'block');
+ Array.from(sidePanels).forEach(panel => panel.style.display = 'block');
  if (menuButtons) menuButtons.style.display = 'none';
  if (menuHeader) menuHeader.style.display = 'none'; // Hide menu header during game
  if (algorithmBlog) algorithmBlog.classList.add('hidden'); // Hide blog during game
@@ -609,7 +630,7 @@
  showMessage(title, message, autoDismiss = false, dismissTime = 3000) {
  // Remove any existing modal overlays first
  const existingOverlays = document.querySelectorAll('.modal-overlay');
- existingOverlays.forEach(overlay => {
+ Array.from(existingOverlays).forEach(overlay => {
  if (overlay.parentNode) {
  overlay.parentNode.removeChild(overlay);
  }
@@ -950,7 +971,7 @@
  textNode.className = 'powerup-notification-text';
  textNode.textContent = message;
 
- iconNode.innerHTML = window.lucide?.createElement ? window.lucide.createElement(icon === "snowflake" ? "snowflake" : icon === "hammer" ? "hammer" : "zap").outerHTML : "";
+ iconNode.innerHTML = iconMarkup(icon === "snowflake" ? "snowflake" : icon === "hammer" ? "hammer" : "zap");
                 notification.append(iconNode, textNode);
  notificationsContainer.appendChild(notification);
 
@@ -1659,7 +1680,7 @@
  Top Players by Highest Score
  </div>
  `;
- scores.forEach((score, index) => {
+ Array.from(scores).forEach((score, index) => {
  const medal = index === 0 ? '': index === 1 ? '': index === 2 ? '': `${index + 1}.`;
  html += `
  <div style="padding: 8px; border-bottom: 1px solid #444; display: flex; justify-content: space-between; align-items: center;">
