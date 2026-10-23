@@ -115,25 +115,25 @@ class TextureManager {
         
         // Stone-like brick texture with improved depth
         const gradient = ctx.createLinearGradient(0, 0, GRID_SIZE, GRID_SIZE);
-        gradient.addColorStop(0, '#5A5A6A');
-        gradient.addColorStop(0.2, '#4A4A5A');
-        gradient.addColorStop(0.5, '#3A3A4A');
-        gradient.addColorStop(0.8, '#2A2A3A');
-        gradient.addColorStop(1, '#1A1A2A');
+        gradient.addColorStop(0, '#6A4A3C');
+        gradient.addColorStop(0.2, '#56382F');
+        gradient.addColorStop(0.5, '#44302A');
+        gradient.addColorStop(0.8, '#352321');
+        gradient.addColorStop(1, '#241715');
         
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
         
         // Add metallic shine
         const shineGradient = ctx.createLinearGradient(0, 0, GRID_SIZE * 0.3, GRID_SIZE * 0.3);
-        shineGradient.addColorStop(0, 'rgba(135, 206, 250, 0.3)');
+        shineGradient.addColorStop(0, 'rgba(216, 169, 61, 0.22)');
         shineGradient.addColorStop(1, 'transparent');
         
         ctx.fillStyle = shineGradient;
         ctx.fillRect(0, 0, GRID_SIZE * 0.4, GRID_SIZE * 0.4);
         
         // Add brick lines
-        ctx.strokeStyle = '#00BFFF';
+        ctx.strokeStyle = '#D8A93D';
         ctx.lineWidth = 0.5;
         ctx.globalAlpha = 0.3;
         
@@ -157,7 +157,7 @@ class TextureManager {
         // Add some noise/texture
         ctx.globalAlpha = 0.1;
         for (let i = 0; i < 50; i++) {
-            ctx.fillStyle = Math.random() > 0.5 ? '#5A5A6A' : '#2A2A3A';
+            ctx.fillStyle = Math.random() > 0.5 ? '#6A4A3C' : '#352321';
             ctx.fillRect(
                 Math.random() * GRID_SIZE,
                 Math.random() * GRID_SIZE,
@@ -232,7 +232,7 @@ class TextureManager {
         
         // Add subtle blue accent lines
         ctx.globalAlpha = 0.1;
-        ctx.strokeStyle = '#00BFFF';
+        ctx.strokeStyle = '#D8A93D';
         ctx.lineWidth = 0.5;
         for (let i = 0; i < 3; i++) {
             const x = Math.random() * GRID_SIZE;
@@ -278,7 +278,7 @@ class TextureManager {
         ctx.fill();
         
         // Inner core
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = '#FAF7EF';
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius * 0.3, 0, 2 * Math.PI);
         ctx.fill();
@@ -333,7 +333,7 @@ class TextureManager {
         ctx.fill();
         
         // Eyes
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = '#FAF7EF';
         ctx.beginPath();
         ctx.arc(centerX - GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.08, 0, 2 * Math.PI);
         ctx.arc(centerX + GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.1, GRID_SIZE * 0.08, 0, 2 * Math.PI);
@@ -378,7 +378,7 @@ class TextureManager {
         ctx.fillRect(GRID_SIZE * 0.05, GRID_SIZE * 0.05, GRID_SIZE * 0.9, GRID_SIZE * 0.9);
         
         // Target rings
-        ctx.strokeStyle = '#FFFFFF';
+        ctx.strokeStyle = '#FAF7EF';
         ctx.lineWidth = 2;
         for (let i = 1; i <= 3; i++) {
             ctx.beginPath();
@@ -387,7 +387,7 @@ class TextureManager {
         }
         
         // Center dot
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = '#FAF7EF';
         ctx.beginPath();
         ctx.arc(centerX, centerY, GRID_SIZE * 0.08, 0, 2 * Math.PI);
         ctx.fill();
@@ -461,7 +461,7 @@ class TextureManager {
         ctx.fill();
         
         // Center symbol (simplified as circle for now)
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = '#FAF7EF';
         ctx.beginPath();
         ctx.arc(centerX, centerY, GRID_SIZE * 0.15, 0, 2 * Math.PI);
         ctx.fill();
@@ -1626,7 +1626,7 @@ class MazeGame {
                 backdrop-filter: blur(10px);
                 padding: 15px;
                 border-radius: 12px;
-                border: 2px solid #FFD700;
+                border: 2px solid #D8A93D;
                 font-size: 13px;
                 line-height: 1.5;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
@@ -1639,20 +1639,20 @@ class MazeGame {
         }
 
         // Update powerup content
-        let content = '<h4 style="color: #FFD700; margin: 0 0 10px 0; font-size: 14px; text-align: center;">⚡ POWER-UPS</h4>';
+        let content = '<h4 style="color: #D8A93D; margin: 0 0 10px 0; font-size: 14px; text-align: center;">⚡ POWER-UPS</h4>';
         
         for (let [powerupType, endTime] of Object.entries(this.activePowerups)) {
             const remaining = Math.max(0, Math.floor(endTime - currentTime));
             let text, color;
             if (powerupType === 'speed') {
                 text = `⚡ SPEED: ${remaining}s`;
-                color = '#00BFFF';
+                color = '#D8A93D';
             } else if (powerupType === 'wallbreaker') {
                 text = `🔨 BREAK: ${remaining}s`;
-                color = '#FFA500';
+                color = '#C08A2E';
             } else {
                 text = `${powerupType.slice(0, 5)}: ${remaining}s`;
-                color = '#FFFFFF';
+                color = '#FAF7EF';
             }
             content += `<div style="color: ${color}; margin-bottom: 5px;">${text}</div>`;
         }
