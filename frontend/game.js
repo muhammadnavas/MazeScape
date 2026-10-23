@@ -407,13 +407,13 @@ class TextureManager {
  
  createPowerupTextures() {
  // Speed Powerup
- this.textures.powerup_speed = this.createPowerupTexture(ELECTRIC_BLUE, '');
+ this.textures.powerup_speed = this.createPowerupTexture(ELECTRIC_BLUE, '↯');
  
  // Freeze Powerup
- this.textures.powerup_freeze = this.createPowerupTexture('#64C8FF', '');
+ this.textures.powerup_freeze = this.createPowerupTexture('#64C8FF', '❄');
  
  // Wall Breaker Powerup
- this.textures.powerup_wallbreaker = this.createPowerupTexture(ORANGE, '');
+ this.textures.powerup_wallbreaker = this.createPowerupTexture(ORANGE, '✦');
  }
  
  createPowerupTexture(color, symbol) {
@@ -964,13 +964,13 @@ class PowerUp {
  // Type-specific properties - exact match with Python
  if (powerupType === POWERUP_SPEED) {
  this.color = ELECTRIC_BLUE;
- this.symbol = "";
+ this.symbol = "↯";
  } else if (powerupType === POWERUP_FREEZE) {
  this.color = '#64C8FF'; // Light blue for freeze - matching Python
  this.symbol = "";
  } else if (powerupType === POWERUP_WALLBREAKER) {
  this.color = ORANGE;
- this.symbol = "";
+ this.symbol = "✦";
  }
  }
  
@@ -1088,7 +1088,7 @@ class MazeGame {
  let message, icon;
  if (powerupType === POWERUP_SPEED) {
  message = "Speed Boost Spawned!";
- icon = "";
+ icon = "zap";
  } else if (powerupType === POWERUP_FREEZE) {
  message = "Ghost Freeze Spawned!";
  icon = "";
@@ -1116,7 +1116,7 @@ class MazeGame {
  }
  // Show powerup notification
  if (window.gameController) {
- window.gameController.showPowerupNotification("Speed Boost Activated!", "");
+ window.gameController.showPowerupNotification("Speed Boost Activated!", "zap");
  }
  } else if (powerup.type === POWERUP_FREEZE) {
  // Freeze all ghosts - matching Python behavior
