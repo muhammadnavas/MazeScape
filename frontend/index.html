@@ -1261,16 +1261,24 @@
  overlay.innerHTML = `
  <div class="modal">
  <h2><i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS</h2>
- <div style="text-align: left; margin: 20px 0;">
- <label style="display: block; margin: 15px 0;">
- <input type="checkbox" id="texturesEnabled" checked style="margin-right: 10px;">
- Enhanced Textures
+ <div class="settings-options">
+ <label class="settings-option" for="texturesEnabled">
+  <span class="settings-option-copy">
+   <span class="settings-option-title">Enhanced Textures</span>
+   <span class="settings-option-description">Use detailed maze textures and effects.</span>
+  </span>
+  <input type="checkbox" id="texturesEnabled" checked>
+  <span class="settings-switch" aria-hidden="true"></span>
  </label>
- <label style="display: block; margin: 15px 0;">
- <input type="checkbox" id="onScreenControls" style="margin-right: 10px;">
- On-Screen Controls (Mobile)
+ <label class="settings-option" for="onScreenControls">
+  <span class="settings-option-copy">
+   <span class="settings-option-title">On-Screen Controls</span>
+   <span class="settings-option-description">Show touch controls while playing on mobile.</span>
+  </span>
+  <input type="checkbox" id="onScreenControls">
+  <span class="settings-switch" aria-hidden="true"></span>
  </label>
- </div>
+</div>
  <div class="button-row">
  <button class="game-button primary" onclick="saveSettings()">Save</button>
  <button class="game-button secondary" onclick="closeModal('settingsModal')">Cancel</button>
