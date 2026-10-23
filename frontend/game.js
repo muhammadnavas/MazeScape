@@ -247,123 +247,122 @@ class TextureManager {
  }
  
  createPlayerTexture() {
-  // Jerry-inspired full-body sprite, drawn at high resolution for crisp rendering.
+  // 3D-styled Jerry: layered gradients, rim light, soft shadow and glossy eyes.
   const canvas = document.createElement('canvas');
-  canvas.width = GRID_SIZE * 4;
-  canvas.height = GRID_SIZE * 4;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(4, 4);
-  const s = GRID_SIZE;
-  const stroke = (color = '#663A21', width = 1) => {
-   ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  canvas.width = GRID_SIZE * 4; canvas.height = GRID_SIZE * 4;
+  const ctx = canvas.getContext('2d'); ctx.scale(4,4);
+  const s=GRID_SIZE, cx=20;
+  const gradient=(x0,y0,x1,y1,stops)=>{
+   const g=ctx.createLinearGradient(x0,y0,x1,y1);
+   stops.forEach(([p,c])=>g.addColorStop(p,c)); return g;
   };
-  const ellipse = (x,y,rx,ry,fill) => {
-   ctx.fillStyle=fill; ctx.beginPath(); ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2); ctx.fill();
+  const ball=(x,y,rx,ry,stops)=>{
+   const g=ctx.createRadialGradient(x-rx*.35,y-ry*.42,1,x,y,Math.max(rx,ry)*1.35);
+   stops.forEach(([p,c])=>g.addColorStop(p,c));
+   ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2); ctx.fill();
   };
+  const stroke=(color,width)=>{ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';};
 
-  // Soft halo, feet and thin mouse tail.
-  const glow=ctx.createRadialGradient(20,20,3,20,20,26);
-  glow.addColorStop(0,'rgba(216,169,61,.30)'); glow.addColorStop(1,'rgba(216,169,61,0)');
-  ctx.fillStyle=glow; ctx.fillRect(0,0,s,s);
-  stroke('#B97535',1.8);
-  ctx.beginPath(); ctx.moveTo(12,27); ctx.bezierCurveTo(5,29,7,36,2,35); ctx.stroke();
-  ellipse(14,34,5,2.4,'#8B542D'); ellipse(26,34,5,2.4,'#8B542D');
+  const aura=ctx.createRadialGradient(20,20,3,20,20,25);
+  aura.addColorStop(0,'rgba(216,169,61,.22)');aura.addColorStop(1,'rgba(216,169,61,0)');
+  ctx.fillStyle=aura;ctx.fillRect(0,0,s,s);
 
-  // Ears and inner ears.
-  ellipse(10.5,11,6.2,7,'#8B542D'); ellipse(29.5,11,6.2,7,'#8B542D');
-  ellipse(10.5,11,3.7,4.6,'#E99A9A'); ellipse(29.5,11,3.7,4.6,'#E99A9A');
+  // Ground shadow adds a lifted, toy-like 3D appearance.
+  ctx.fillStyle='rgba(0,0,0,.42)';ctx.beginPath();ctx.ellipse(21,34,12,3,0,0,Math.PI*2);ctx.fill();
+  stroke('#75401F',1.2);ctx.beginPath();ctx.moveTo(12,27);ctx.bezierCurveTo(5,29,7,36,2,35);ctx.stroke();
+  ball(14,33,5,2.5,[[0,'#E0A15D'],[.55,'#A9632E'],[1,'#62351F']]);
+  ball(26,33,5,2.5,[[0,'#E0A15D'],[.55,'#A9632E'],[1,'#62351F']]);
 
-  // Small body and arms behind the oversized head.
-  ellipse(20,27,8.2,8.5,'#A9632E');
-  ellipse(12.7,26,3.2,5.1,'#B97535'); ellipse(27.3,26,3.2,5.1,'#B97535');
-  ellipse(20,29,5.8,5.4,'#D99A53');
+  // Ears with shaded rims and inset pink surfaces.
+  ball(10.5,11,6.2,7,[[0,'#D99A53'],[.5,'#A9632E'],[1,'#63351F']]);
+  ball(29.5,11,6.2,7,[[0,'#D99A53'],[.5,'#A9632E'],[1,'#63351F']]);
+  ball(10.5,11,3.8,4.6,[[0,'#F5B4B6'],[.65,'#E99A9A'],[1,'#A85E66']]);
+  ball(29.5,11,3.8,4.6,[[0,'#F5B4B6'],[.65,'#E99A9A'],[1,'#A85E66']]);
 
-  // Head silhouette, cheek shape and muzzle.
-  ellipse(20,17.5,13.1,12.4,'#B97535');
-  ellipse(20,22,8.8,5.8,'#F2D5A0');
-  ellipse(14.3,21,4.8,3.8,'#F2D5A0'); ellipse(25.7,21,4.8,3.8,'#F2D5A0');
+  ball(20,27,8.2,8.5,[[0,'#E3A45B'],[.42,'#B97535'],[.8,'#8B542D'],[1,'#5B321E']]);
+  ball(12.7,26,3.2,5.1,[[0,'#D99A53'],[.65,'#A9632E'],[1,'#63351F']]);
+  ball(27.3,26,3.2,5.1,[[0,'#D99A53'],[.65,'#A9632E'],[1,'#63351F']]);
+  ball(20,29,5.8,5.4,[[0,'#F4D5A0'],[.65,'#D99A53'],[1,'#8B542D']]);
 
-  // Big cartoon eyes with highlights.
-  ellipse(15.5,15.5,3.5,4.6,'#FFF8E9'); ellipse(24.5,15.5,3.5,4.6,'#FFF8E9');
-  ellipse(16.5,16.1,1.65,2.8,'#29201B'); ellipse(25.5,16.1,1.65,2.8,'#29201B');
-  ellipse(16,15.2,.65,.8,'#FFFFFF'); ellipse(25,15.2,.65,.8,'#FFFFFF');
+  // Head has a warm highlight on the upper-left and deeper shading below.
+  ball(20,17.5,13.1,12.4,[[0,'#F0B96F'],[.22,'#D9954B'],[.58,'#B97535'],[.86,'#8B542D'],[1,'#5C321E']]);
+  ball(20,22,8.8,5.8,[[0,'#FFF0C9'],[.55,'#F2D5A0'],[1,'#C58C50']]);
+  ball(14.3,21,4.8,3.8,[[0,'#FFF0C9'],[.7,'#F2D5A0'],[1,'#C58C50']]);
+  ball(25.7,21,4.8,3.8,[[0,'#FFF0C9'],[.7,'#F2D5A0'],[1,'#C58C50']]);
 
-  // Nose, smile and whiskers.
-  ellipse(20,21,1.5,1.1,'#6B3329');
-  stroke('#6B3329',.75);
-  ctx.beginPath(); ctx.moveTo(20,21.5); ctx.quadraticCurveTo(18,24,16.4,22.5);
-  ctx.moveTo(20,21.5); ctx.quadraticCurveTo(22,24,23.6,22.5); ctx.stroke();
-  stroke('#F2D5A0',.65);
-  ctx.beginPath();
+  // Glossy eyes with soft dark rims and bright catchlights.
+  ball(15.5,15.5,3.6,4.7,[[0,'#FFFFFF'],[.75,'#FFF8E9'],[1,'#C8B99F']]);
+  ball(24.5,15.5,3.6,4.7,[[0,'#FFFFFF'],[.75,'#FFF8E9'],[1,'#C8B99F']]);
+  ball(16.5,16.1,1.7,2.8,[[0,'#55504A'],[.35,'#29201B'],[1,'#090807']]);
+  ball(25.5,16.1,1.7,2.8,[[0,'#55504A'],[.35,'#29201B'],[1,'#090807']]);
+  ball(16,15.1,.75,.85,[[0,'#FFFFFF'],[1,'#DDE6F0']]);
+  ball(25,15.1,.75,.85,[[0,'#FFFFFF'],[1,'#DDE6F0']]);
+
+  ball(20,21,1.5,1.1,[[0,'#F08A91'],[.6,'#9D4C45'],[1,'#51251F']]);
+  stroke('#6B3329',.75);ctx.beginPath();
+  ctx.moveTo(20,21.5);ctx.quadraticCurveTo(18,24,16.4,22.5);
+  ctx.moveTo(20,21.5);ctx.quadraticCurveTo(22,24,23.6,22.5);ctx.stroke();
+  stroke('#F2D5A0',.65);ctx.beginPath();
   ctx.moveTo(13,21);ctx.lineTo(5,19);ctx.moveTo(13,23);ctx.lineTo(5,24);
   ctx.moveTo(27,21);ctx.lineTo(35,19);ctx.moveTo(27,23);ctx.lineTo(35,24);ctx.stroke();
 
-  this.textures.player = canvas;
+  this.textures.player=canvas;
  }
  
  createGhostTexture() {
-  // Tom-inspired full-body cat sprite with pointed ears, cheek fur and long tail.
+  // 3D-styled Tom: cool grey fur, sculpted ears, specular highlights and glossy eyes.
   const canvas = document.createElement('canvas');
-  canvas.width = GRID_SIZE * 4;
-  canvas.height = GRID_SIZE * 4;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(4, 4);
-  const s = GRID_SIZE;
-  const stroke = (color = '#515762', width = 1) => {
-   ctx.strokeStyle=color; ctx.lineWidth=width; ctx.lineJoin='round'; ctx.lineCap='round';
+  canvas.width=GRID_SIZE*4;canvas.height=GRID_SIZE*4;
+  const ctx=canvas.getContext('2d');ctx.scale(4,4);
+  const s=GRID_SIZE,cx=20;
+  const ball=(x,y,rx,ry,stops)=>{
+   const g=ctx.createRadialGradient(x-rx*.35,y-ry*.42,1,x,y,Math.max(rx,ry)*1.35);
+   stops.forEach(([p,c])=>g.addColorStop(p,c));
+   ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();
   };
-  const ellipse = (x,y,rx,ry,fill) => {
-   ctx.fillStyle=fill; ctx.beginPath(); ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2); ctx.fill();
-  };
+  const stroke=(color,width)=>{ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';};
+  const aura=ctx.createRadialGradient(20,20,3,20,20,25);
+  aura.addColorStop(0,'rgba(192,178,129,.22)');aura.addColorStop(1,'rgba(192,178,129,0)');
+  ctx.fillStyle=aura;ctx.fillRect(0,0,s,s);
+  ctx.fillStyle='rgba(0,0,0,.42)';ctx.beginPath();ctx.ellipse(21,34,12,3,0,0,Math.PI*2);ctx.fill();
 
-  const glow=ctx.createRadialGradient(20,20,3,20,20,26);
-  glow.addColorStop(0,'rgba(192,178,129,.28)'); glow.addColorStop(1,'rgba(192,178,129,0)');
-  ctx.fillStyle=glow; ctx.fillRect(0,0,s,s);
+  // Tail, paws and torso are shaded separately to imply rounded volume.
+  stroke('#626975',2.2);ctx.beginPath();ctx.moveTo(26,29);ctx.bezierCurveTo(36,29,36,36,31,37);ctx.stroke();
+  ball(14,33,5,2.5,[[0,'#B5BBC4'],[.55,'#7B828E'],[1,'#454B55']]);
+  ball(26,33,5,2.5,[[0,'#B5BBC4'],[.55,'#7B828E'],[1,'#454B55']]);
+  ball(20,27,8.5,9,[[0,'#C5CAD1'],[.35,'#9299A4'],[.78,'#727985'],[1,'#444A54']]);
+  ball(12.5,26,3.1,5,[[0,'#B9BEC6'],[.6,'#858C97'],[1,'#4B515B']]);
+  ball(27.5,26,3.1,5,[[0,'#B9BEC6'],[.6,'#858C97'],[1,'#4B515B']]);
+  ball(20,29,5.8,5.5,[[0,'#F4F1EB'],[.7,'#B7BBC1'],[1,'#6F7580']]);
 
-  // Curved tail behind the body.
-  stroke('#727985',2.2);
-  ctx.beginPath(); ctx.moveTo(26,29); ctx.bezierCurveTo(36,29,36,36,31,37); ctx.stroke();
-  ellipse(14,34,5,2.2,'#727985'); ellipse(26,34,5,2.2,'#727985');
-
-  // Body, shoulders and arms.
-  ellipse(20,27,8.5,9,'#7B828E');
-  ellipse(12.5,26,3.1,5,'#9299A4'); ellipse(27.5,26,3.1,5,'#9299A4');
-  ellipse(20,29,5.8,5.5,'#AEB3BB');
-
-  // Distinct pointed ears with pink centres.
-  ctx.fillStyle='#727985'; ctx.beginPath();
-  ctx.moveTo(7,16); ctx.lineTo(6,2); ctx.lineTo(17,10);
-  ctx.lineTo(23,10); ctx.lineTo(34,2); ctx.lineTo(33,16);
-  ctx.closePath(); ctx.fill();
-  ctx.fillStyle='#D98F9B'; ctx.beginPath();
+  // Pointed ears with shaded outer edges and pink inner surfaces.
+  const ear=ctx.createLinearGradient(7,2,33,17);
+  ear.addColorStop(0,'#C3C8D0');ear.addColorStop(.38,'#9299A4');ear.addColorStop(1,'#515762');
+  ctx.fillStyle=ear;ctx.beginPath();
+  ctx.moveTo(7,16);ctx.lineTo(6,2);ctx.lineTo(17,10);ctx.lineTo(23,10);ctx.lineTo(34,2);ctx.lineTo(33,16);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#D98F9B';ctx.beginPath();
   ctx.moveTo(9,12);ctx.lineTo(8.5,5.5);ctx.lineTo(15,10.5);ctx.closePath();
   ctx.moveTo(25,10.5);ctx.lineTo(31.5,5.5);ctx.lineTo(31,12);ctx.closePath();ctx.fill();
 
-  // Broad cat head and fluffy cheeks.
-  ellipse(20,17.5,13,11.5,'#9299A4');
-  ctx.fillStyle='#9299A4'; ctx.beginPath();
-  ctx.moveTo(9,18);ctx.lineTo(3.5,22);ctx.lineTo(10,24);ctx.closePath();
-  ctx.moveTo(31,18);ctx.lineTo(36.5,22);ctx.lineTo(30,24);ctx.closePath();ctx.fill();
+  ball(20,17.5,13,11.5,[[0,'#D4D8DE'],[.25,'#AEB4BE'],[.6,'#9299A4'],[.88,'#727985'],[1,'#4A505A']]);
+  ball(15,15.5,3.8,4.6,[[0,'#FFF0A0'],[.45,'#E5C65B'],[1,'#8D7A32']]);
+  ball(25,15.5,3.8,4.6,[[0,'#FFF0A0'],[.45,'#E5C65B'],[1,'#8D7A32']]);
+  ball(16,16,1.5,3,[[0,'#54565A'],[.5,'#22252B'],[1,'#08090B']]);
+  ball(26,16,1.5,3,[[0,'#54565A'],[.5,'#22252B'],[1,'#08090B']]);
+  ball(15.5,14.8,.7,.8,[[0,'#FFFFFF'],[1,'#DDE6F0']]);
+  ball(25.5,14.8,.7,.8,[[0,'#FFFFFF'],[1,'#DDE6F0']]);
 
-  // Tom's yellow-green eyes.
-  ellipse(15,15.5,3.7,4.5,'#E5C65B'); ellipse(25,15.5,3.7,4.5,'#E5C65B');
-  ellipse(16,16,1.45,3,'#22252B'); ellipse(26,16,1.45,3,'#22252B');
-  ellipse(15.5,14.8,.6,.8,'#FFFFFF'); ellipse(25.5,14.8,.6,.8,'#FFFFFF');
-
-  // White muzzle, pink nose, mouth and whiskers.
-  ellipse(15.8,21,5.3,4,'#F4F0E8'); ellipse(24.2,21,5.3,4,'#F4F0E8');
-  ctx.fillStyle='#D58A98'; ctx.beginPath();
-  ctx.moveTo(20,19.2);ctx.lineTo(17.9,17.9);ctx.quadraticCurveTo(20,17,22.1,17.9);ctx.closePath();ctx.fill();
-  stroke('#515762',.7);
-  ctx.beginPath();
-  ctx.moveTo(20,19.3);ctx.lineTo(20,22.2);
+  ball(15.8,21,5.3,4,[[0,'#FFFFFF'],[.7,'#F4F0E8'],[1,'#AEB3BB']]);
+  ball(24.2,21,5.3,4,[[0,'#FFFFFF'],[.7,'#F4F0E8'],[1,'#AEB3BB']]);
+  ball(20,18.6,2.1,1.4,[[0,'#F8B2BC'],[.65,'#D58A98'],[1,'#884D5B']]);
+  stroke('#515762',.7);ctx.beginPath();
+  ctx.moveTo(20,19.5);ctx.lineTo(20,22.2);
   ctx.moveTo(20,22.2);ctx.quadraticCurveTo(18,24.2,16.5,22.5);
   ctx.moveTo(20,22.2);ctx.quadraticCurveTo(22,24.2,23.5,22.5);
   ctx.moveTo(12,20);ctx.lineTo(4.5,18);ctx.moveTo(12,22);ctx.lineTo(4.5,24);
-  ctx.moveTo(28,20);ctx.lineTo(35.5,18);ctx.moveTo(28,22);ctx.lineTo(35.5,24);
-  ctx.stroke();
+  ctx.moveTo(28,20);ctx.lineTo(35.5,18);ctx.moveTo(28,22);ctx.lineTo(35.5,24);ctx.stroke();
 
-  this.textures.ghost = canvas;
+  this.textures.ghost=canvas;
  }
  
  createTargetTexture() {
