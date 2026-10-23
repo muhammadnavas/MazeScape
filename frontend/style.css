@@ -4720,3 +4720,31 @@ body {
     max-height: calc(100dvh - 288px - env(safe-area-inset-bottom, 0px)) !important;
   }
 }
+
+
+/* Final overlap fix: reserve the entire touch-controller footprint below the canvas. */
+@media (max-width: 700px) and (orientation: portrait) {
+  #gameContainer {
+    padding-bottom: calc(188px + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 2px !important;
+  }
+  #gameCanvas {
+    max-height: calc(100dvh - 270px - env(safe-area-inset-bottom, 0px)) !important;
+    max-width: calc(100vw - 8px) !important;
+    width: auto !important;
+    flex: 0 1 auto !important;
+  }
+  #mobile-controls {
+    position: fixed !important;
+    bottom: max(4px, env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 800 !important;
+  }
+}
+@media (max-width: 380px) and (orientation: portrait) {
+  #gameContainer {
+    padding-bottom: calc(184px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #gameCanvas {
+    max-height: calc(100dvh - 260px - env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
