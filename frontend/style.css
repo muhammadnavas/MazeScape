@@ -3515,3 +3515,59 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
         font-size: 21px !important;
     }
 }
+
+
+/* Compact mobile HUD; keep the portrait canvas fitted to the remaining viewport */
+@media (max-width: 700px) and (orientation: portrait) {
+    #status {
+        top: calc(68px + env(safe-area-inset-top, 0px)) !important;
+        left: 12px !important;
+        right: 12px !important;
+        width: auto !important;
+        padding: 5px 8px !important;
+        border-radius: 11px !important;
+        gap: 3px !important;
+    }
+    #status .status-content {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 3px !important;
+    }
+    #status .status-item {
+        padding: 1px 3px !important;
+        gap: 0 !important;
+        line-height: 1.15 !important;
+    }
+    #status .status-label {
+        font-size: 9px !important;
+        line-height: 1.1 !important;
+    }
+    #status .status-value {
+        font-size: 11px !important;
+        line-height: 1.15 !important;
+    }
+    #gameContainer {
+        padding-top: calc(62px + env(safe-area-inset-top, 0px)) !important;
+        padding-bottom: calc(144px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    #gameCanvas {
+        max-width: calc(100vw - 16px) !important;
+        max-height: calc(100dvh - 218px - env(safe-area-inset-bottom, 0px)) !important;
+    }
+}
+@media (max-width: 380px) and (orientation: portrait) {
+    #status {
+        top: calc(62px + env(safe-area-inset-top, 0px)) !important;
+        left: 8px !important;
+        right: 8px !important;
+        padding: 4px 6px !important;
+    }
+    #status .status-label { font-size: 8px !important; }
+    #status .status-value { font-size: 10px !important; }
+    #gameContainer {
+        padding-top: calc(58px + env(safe-area-inset-top, 0px)) !important;
+        padding-bottom: calc(136px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    #gameCanvas {
+        max-height: calc(100dvh - 204px - env(safe-area-inset-bottom, 0px)) !important;
+    }
+}
