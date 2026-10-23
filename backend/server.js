@@ -28,7 +28,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // CORS configuration for single frontend URL
-const frontendUrl = process.env.FRONTEND_URL || `http://localhost:3000`;
+const frontendUrl = process.env.FRONTEND_URL || `https://maze-scape.vercel.app`;
 const corsOptions = {
     origin: frontendUrl,
     credentials: true,
