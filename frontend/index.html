@@ -237,7 +237,8 @@
  // Game initialization and controller
  let game = null;
  let ui = null;
- let gameDB = null; // Renamed to avoid conflict
+ let gameDB = null;
+ let userAuth = null; // Retained as a null compatibility guard for legacy stats helpers. // Renamed to avoid conflict
  let currentUser = null;
  let gameState = "menu"; // "menu", "playing", "paused"
  
