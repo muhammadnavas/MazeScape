@@ -3907,3 +3907,13 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 #menuHeaderWelcomeText {
   display: none !important;
 }
+
+
+/* Hide the guest greeting in the top navigation */
+#menuHeaderWelcomeText,
+#menuHeaderWelcomeText:empty {
+  display: none !important;
+}
+#menuHeaderWelcomeText {
+  visibility: hidden !important;
+}
