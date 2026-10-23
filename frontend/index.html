@@ -309,7 +309,7 @@
  
  // Get available space
  const availableWidth = Math.max(240, window.innerWidth - 24);
- const availableHeight = Math.max(360, window.innerHeight - (window.innerWidth <= 700 ? 300: 150)); // Reserve room for mobile controls
+ const availableHeight = Math.max(360, window.innerHeight - (window.innerWidth <= 700 ? 165 : 150)); // Mobile layout reserves a compact D-pad zone, not 300px
  
  // Calculate scale to fit while maintaining aspect ratio
  const scaleX = availableWidth / idealCanvasWidth;
