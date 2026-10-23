@@ -42,9 +42,6 @@
  <button class="game-button" id="helpBtn">
  <i data-lucide="circle-help" class="ui-icon" aria-hidden="true"></i> HELP
  </button>
- <button class="game-button" id="leaderboardBtn">
- <i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> LEADERBOARD
- </button>
  <button class="game-button" id="settingsBtn">
  <i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS
  </button>
@@ -195,7 +192,6 @@
  <!-- Load dependencies -->
  <script src="config.js"></script>
  <script src="astar.js"></script>
- <script src="database_mongo.js"></script>
  <script src="game.js"></script>
  
  <script>
@@ -620,43 +616,8 @@
  try {
  console.log(' Initializing Maze Chase...');
  
- // Initialize database (optional - don't fail if it doesn't work)
- try {
- if (typeof MazeChaseDB !== 'undefined') {
- gameDB = new MazeChaseDB();
- console.log(' MongoDB database initializing...');
- 
- // Wait a moment for database connection
- setTimeout(() => {
- if (gameDB && gameDB.connected) {
- console.log(' MongoDB database connected');
- 
- 
- const dbStatusEl = document.getElementById('db-status');
- if (dbStatusEl) {
- dbStatusEl.innerHTML = 'Database: <span style="color: #39FF14;">Connected</span>';
- }
- } else {
- console.log(' Database connection failed');
- const dbStatusEl = document.getElementById('db-status');
- if (dbStatusEl) {
- dbStatusEl.innerHTML = 'Database: <span style="color: #FF453A;">Offline</span>';
- }
- }
- }, 1000); // Give 1 second for connection
- 
- } else {
- console.log(' MazeChaseDB class not available');
- }
- } catch (dbError) {
- console.log(' Database initialization failed (non-fatal):', dbError);
- const dbStatusEl = document.getElementById('db-status');
- if (dbStatusEl) {
- dbStatusEl.innerHTML = 'Database: <span style="color: #FF453A;">Offline</span>';
- }
- }
- 
- this.updateStatus();
+ // No account or database setup is required to play.
+  this.updateStatus();
  this.initialized = true; // Mark as initialized
  console.log(' Game controller fully initialized');
  // Don't start game loop here - wait for user to start game
@@ -778,41 +739,9 @@
  // Ensure score is never negative (show zero if negative)
  finalScore = Math.max(0, finalScore);
  
- // Save score to database
- if (gameDB && gameDB.connected && currentUser) {
- try {
- const userId = currentUser.user_id || currentUser.id;
- const username = currentUser.username || String(currentUser);
- 
- console.log(` Saving ${result.toUpperCase()} score: ${username} (ID: ${userId}) - ${finalScore} points, ${survivalTime}s`);
- 
- const scoreSaved = await gameDB.saveScore(userId, username, finalScore, result, survivalTime, "classic");
- console.log(`Score save result: ${scoreSaved ? ' SUCCESS': ' FAILED'}`);
- 
- // Update best score display if user is logged in
- if (currentUser) {
- // First, immediately show the current score if it's likely a new best
- const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
- if (menuHeaderTopScore) {
- const currentDisplayedScore = menuHeaderTopScore.textContent.match(/\d+/);
- const currentBestScore = currentDisplayedScore ? parseInt(currentDisplayedScore[0]): 0;
- 
- // If this score is higher than displayed score, update immediately
- if (finalScore > currentBestScore) {
- menuHeaderTopScore.textContent = `Best: ${finalScore} Pts`;
- console.log(' Immediately updated best score display with new record:', finalScore, 'points');
- }
- }
- 
- // Then refresh from database to ensure accuracy
- await this.updateBestScore();
- }
- } catch (error) {
- console.error(`Error saving ${result} result:`, error);
- }
- }
- 
- // Show result message with detailed score breakdown
+ // Scores are kept for the current game only; no database is required.
+
+  // Show result message with detailed score breakdown
  if (result === "win") {
  let breakdownText = ` SCORE BREAKDOWN \n` +
  `Win Bonus: +${scoreBreakdown.winBonus} pts\n` +
@@ -979,9 +908,6 @@
  console.error(' Start button not found');
  }
  
- // Initialize database
- window.database = new MazeChaseDB();
- 
  // Account-free mode: authentication is intentionally not initialized.
  
  // Initialize mobile controls - ensure they're hidden initially
@@ -994,43 +920,8 @@
  // Initialize algorithm blog panel
  initializeBlogPanel();
  
- // Check if user is already logged in and update best score
- setTimeout(async () => {
- if (currentUser && userAuth) {
- console.log(' User already logged in, updating best score...');
- await gameController.updateBestScore();
- }
- }, 1000);
- 
  }, 500); // Wait 500ms for controller to initialize
  });
- 
- function updateDatabaseStatus(connected) {
- const dbStatus = document.getElementById('dbStatus');
- const dbStatusText = document.getElementById('dbStatusText');
- const staticDbStatus = document.getElementById('db-status');
- 
- if (dbStatus && dbStatusText) {
- if (connected) {
- dbStatus.className = 'db-status connected';
- dbStatusText.textContent = 'Database: Online';
- } else {
- dbStatus.className = 'db-status disconnected';
- dbStatusText.textContent = 'Database: Offline';
- }
- }
- 
- // Update static status panel
- if (staticDbStatus) {
- const statusColor = connected ? '#39FF14': '#FF6B6B';
- const statusText = connected ? 'Online': 'Offline';
- staticDbStatus.innerHTML = `Database: <span style="color: ${statusColor};">${statusText}</span>`;
- }
- 
- console.log(' Database status updated:', connected ? 'Online': 'Offline');
- console.log(' window.database exists:', !!window.database);
- console.log(' window.database.connected:', window.database?.connected);
- }
  
  // Global Button Functions
  function startGame() {
@@ -1232,27 +1123,6 @@
  document.body.appendChild(overlay);
  }
  
- function showLeaderboard() {
- const overlay = document.createElement('div');
- overlay.className = 'modal-overlay';
- overlay.id = 'leaderboardModal';
- 
- overlay.innerHTML = `
- <div class="modal" style="max-width: 600px;">
- <h2><i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> LEADERBOARD</h2>
- <div id="leaderboardContent">
- <p>Loading leaderboard...</p>
- </div>
- <div class="button-row">
- <button class="game-button" onclick="closeModal('leaderboardModal')">Close</button>
- </div>
- </div>
- `;
- 
- document.body.appendChild(overlay);
- loadLeaderboard();
- }
- 
  function showSettings() {
  const overlay = document.createElement('div');
  overlay.className = 'modal-overlay';
@@ -1419,70 +1289,6 @@
  const modal = document.getElementById(modalId);
  if (modal) {
  modal.remove();
- }
- }
- 
- async function loadLeaderboard() {
- try {
- // Wait for database connection if not ready
- let retries = 0;
- while (!window.database?.connected && retries < 10) {
- console.log(` Waiting for database connection... (attempt ${retries + 1})`);
- await new Promise(resolve => setTimeout(resolve, 500));
- retries++;
- }
- 
- if (window.database && window.database.connected) {
- console.log(' Loading leaderboard from database...');
- const [scores, error] = await window.database.getLeaderboard();
- const content = document.getElementById('leaderboardContent');
- 
- if (error) {
- console.error('Error fetching leaderboard:', error);
- content.innerHTML = '<p>Error loading leaderboard: ' + error + '</p>';
- } else if (scores && scores.length > 0) {
- console.log(' Loaded', scores.length, 'scores');
- console.log(' Sample score data:', scores[0]);
- let html = `
- <div style="text-align: left;">
- <div style="padding: 10px; background: rgba(0, 191, 255, 0.1); border-radius: 5px; margin-bottom: 10px; text-align: center; font-size: 12px; color: #00BFFF;">
- Top Players by Highest Score
- </div>
- `;
- Array.from(scores).forEach((score, index) => {
- const medal = index === 0 ? '': index === 1 ? '': index === 2 ? '': `${index + 1}.`;
- html += `
- <div style="padding: 8px; border-bottom: 1px solid #444; display: flex; justify-content: space-between; align-items: center;">
- <span>${medal} ${score.username || 'Anonymous'}</span>
- <span style="color: #FFD700; font-weight: bold;">
- ${score.score} pts
- </span>
- </div>
- `;
- });
- html += '</div>';
- content.innerHTML = html;
- } else {
- content.innerHTML = '<p>No scores yet. Be the first to play!</p>';
- }
- } else {
- console.log(' Database not connected after waiting, showing offline message');
- const content = document.getElementById('leaderboardContent');
- if (content) {
- content.innerHTML = `
- <p>Leaderboard not available (database offline)</p>
- <button onclick="loadLeaderboard()" style="margin-top: 10px; padding: 8px 16px; background: #00BFFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
- Retry
- </button>
- `;
- }
- }
- } catch (error) {
- console.error('Error loading leaderboard:', error);
- const content = document.getElementById('leaderboardContent');
- if (content) {
- content.innerHTML = '<p>Error loading leaderboard</p>';
- }
  }
  }
  
@@ -1687,7 +1493,6 @@
  // Main game buttons
  const startGameBtn = document.getElementById('startGameBtn');
  const helpBtn = document.getElementById('helpBtn');
- const leaderboardBtn = document.getElementById('leaderboardBtn');
  const settingsBtn = document.getElementById('settingsBtn');
 
  if (startGameBtn) {
@@ -1703,11 +1508,7 @@
  });
  }
 
- if (leaderboardBtn) {
- leaderboardBtn.addEventListener('click', function() {
- showLeaderboard();
- });
- }
+ 
 
  if (settingsBtn) {
  settingsBtn.addEventListener('click', function() {
