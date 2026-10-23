@@ -238,7 +238,7 @@
  let game = null;
  let ui = null;
  let gameDB = null;
- let userAuth = null; // Retained as a null compatibility guard for legacy stats helpers. // Renamed to avoid conflict
+ let userAuth = null; // Accounts are disabled; retained only for legacy compatibility.
  let currentUser = null;
  let gameState = "menu"; // "menu", "playing", "paused"
  
@@ -1240,55 +1240,6 @@
  document.body.appendChild(overlay);
  }
  
- function showLogin() {
- const overlay = document.createElement('div');
- overlay.className = 'modal-overlay';
- overlay.id = 'loginModal';
- 
- overlay.innerHTML = `
- <div class="auth-form">
- <h3> Login</h3>
- <input type="text" class="game-input" id="loginUsername" placeholder="Username" maxlength="50">
- <input type="password" class="game-input" id="loginPassword" placeholder="Password" maxlength="100">
- <div class="button-row">
- <button class="game-button primary" onclick="performLogin()">Login</button>
- <button class="game-button secondary" onclick="closeModal('loginModal')">Cancel</button>
- </div>
- <p style="color: #888; font-size: 12px; margin-top: 15px;">
- Don't have an account? <a href="#" onclick="closeModal('loginModal'); showRegister();" style="color: #00BFFF;">Register here</a>
- </p>
- </div>
- `;
- 
- document.body.appendChild(overlay);
- document.getElementById('loginUsername').focus();
- }
- 
- function showRegister() {
- const overlay = document.createElement('div');
- overlay.className = 'modal-overlay';
- overlay.id = 'registerModal';
- 
- overlay.innerHTML = `
- <div class="auth-form">
- <h3> Register</h3>
- <input type="text" class="game-input" id="registerUsername" placeholder="Username" maxlength="50">
- <input type="password" class="game-input" id="registerPassword" placeholder="Password" maxlength="100">
- <input type="password" class="game-input" id="registerConfirmPassword" placeholder="Confirm Password" maxlength="100">
- <div class="button-row">
- <button class="game-button primary" onclick="performRegister()">Register</button>
- <button class="game-button secondary" onclick="closeModal('registerModal')">Cancel</button>
- </div>
- <p style="color: #888; font-size: 12px; margin-top: 15px;">
- Already have an account? <a href="#" onclick="closeModal('registerModal'); showLogin();" style="color: #00BFFF;">Login here</a>
- </p>
- </div>
- `;
- 
- document.body.appendChild(overlay);
- document.getElementById('registerUsername').focus();
- }
- 
  function showLeaderboard() {
  const overlay = document.createElement('div');
  overlay.className = 'modal-overlay';
@@ -1337,32 +1288,6 @@
  
  document.body.appendChild(overlay);
  loadSettings();
- }
- 
- function showProfile() {
- if (!currentUser) return;
- 
- const overlay = document.createElement('div');
- overlay.className = 'modal-overlay';
- overlay.id = 'profileModal';
- 
- overlay.innerHTML = `
- <div class="modal">
- <h2><i data-lucide="user-round" class="ui-icon" aria-hidden="true"></i> PROFILE</h2>
- <div style="text-align: left; margin: 20px 0;">
- <p><strong>Username:</strong> ${currentUser.username || 'Unknown'}</p>
- <p><strong>Joined:</strong> ${new Date(currentUser.created_at || Date.now()).toLocaleDateString()}</p>
- <p><strong>Games Played:</strong> <span id="gamesPlayed">Loading...</span></p>
- <p><strong>Best Score:</strong> <span id="bestScore">Loading...</span></p>
- </div>
- <div class="button-row">
- <button class="game-button" onclick="closeModal('profileModal')">Close</button>
- </div>
- </div>
- `;
- 
- document.body.appendChild(overlay);
- loadUserStats();
  }
  
  function exitGame() {
@@ -1507,103 +1432,6 @@
  const modal = document.getElementById(modalId);
  if (modal) {
  modal.remove();
- }
- }
- 
- async function performLogin() {
- const username = document.getElementById('loginUsername').value.trim();
- const password = document.getElementById('loginPassword').value;
- 
- if (!username || !password) {
- showAlert('Login Error', 'Please enter both username and password.');
- return;
- }
- 
- try {
- if (window.database && window.database.connected) {
- console.log(` Attempting login for: ${username}`);
- currentUser = await userAuth.login(username, password);
- if (currentUser) {
- closeModal('loginModal');
- updateUserDisplay(); // Update username display
- if (window.gameController) {
- window.gameController.updateStatus();
- window.gameController.updateMenuButtons();
- }
- showMessage('Login Successful', `Welcome back, ${username}!`, true, 2000);
- } else {
- showAlert('Login Failed', 'Invalid username or password.');
- }
- } else {
- showAlert('Connection Error', 'Database not connected. Please try again later.');
- }
- } catch (error) {
- console.error('Login error:', error);
- showAlert('Login Error', 'Login failed. Please try again.');
- }
- }
- 
- async function performRegister() {
- const username = document.getElementById('registerUsername').value.trim();
- const password = document.getElementById('registerPassword').value;
- const confirmPassword = document.getElementById('registerConfirmPassword').value;
- 
- if (!username || !password || !confirmPassword) {
- showAlert('Registration Error', 'Please fill in all fields.');
- return;
- }
- 
- if (password !== confirmPassword) {
- showAlert('Registration Error', 'Passwords do not match.');
- return;
- }
- 
- if (username.length < 3) {
- showAlert('Registration Error', 'Username must be at least 3 characters long.');
- return;
- }
- 
- if (password.length < 6) {
- showAlert('Registration Error', 'Password must be at least 6 characters long.');
- return;
- }
- 
- try {
- if (window.database && window.database.connected) {
- console.log(` Attempting registration for: ${username}`);
- const [success, message] = await userAuth.register(username, password);
- if (success) {
- closeModal('registerModal');
- 
- // Automatically log in the user after successful registration
- console.log(` Auto-logging in new user: ${username}`);
- try {
- currentUser = await userAuth.login(username, password);
- if (currentUser) {
- updateUserDisplay(); // Update username display
- // Update UI to reflect logged-in state
- if (window.gameController) {
- window.gameController.updateStatus();
- window.gameController.updateMenuButtons();
- }
- showMessage('Welcome to MazeScape!', `Registration successful! Welcome ${username}, you are now logged in and ready to play!`, true, 3000);
- } else {
- // Registration succeeded but auto-login failed
- showMessage('Registration Successful', `Welcome to Maze Chase, ${username}! Please login to continue.`, true, 3000);
- }
- } catch (loginError) {
- console.error('Auto-login after registration failed:', loginError);
- showMessage('Registration Successful', `Welcome to Maze Chase, ${username}! Please login to continue.`, true, 3000);
- }
- } else {
- showAlert('Registration Failed', message || 'Registration failed. Username might already exist.');
- }
- } else {
- showAlert('Connection Error', 'Database not connected. Please try again later.');
- }
- } catch (error) {
- console.error('Registration error:', error);
- showAlert('Registration Error', 'Registration failed. Please try again.');
  }
  }
  
