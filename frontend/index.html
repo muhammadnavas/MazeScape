@@ -1,2087 +1,2087 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MazeScape</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>MazeScape</title>
+ <link rel="stylesheet" href="style.css">
+ <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <!-- Top Menu Bar -->
+ <!-- Top Menu Bar -->
 
-    <!-- Menu Header for User Status -->
-    <div class="menu-header" id="menuHeader">
-        <div class="logo">
-            <span class="logo-text">MazeScape</span>
-        </div>
-        <div class="user-info" style="
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        ">
-            <div class="user-welcome">
-                <span id="menuHeaderWelcomeText">Welcome, Guest!</span>
-            </div>
-            <div class="score-info" id="menuHeaderScoreInfo" style="display: none;">
-                <span id="menuHeaderTopScore">Best: --</span>
-            </div>
-        </div>
-    </div>
+ <!-- Menu Header for User Status -->
+ <div class="menu-header" id="menuHeader">
+ <div class="logo">
+ <span class="logo-text">MazeScape</span>
+ </div>
+ <div class="user-info" style="
+ display: flex;
+ align-items: center;
+ gap: 20px;
+ ">
+ <div class="user-welcome">
+ <span id="menuHeaderWelcomeText">Welcome, Guest!</span>
+ </div>
+ <div class="score-info" id="menuHeaderScoreInfo" style="display: none;">
+ <span id="menuHeaderTopScore">Best: --</span>
+ </div>
+ </div>
+ </div>
 
-    <div id="gameContainer">
-        <canvas id="gameCanvas"></canvas>
-        <div id="ui-container">
-        </div>
-        
-        <!-- Menu Buttons Container -->
-        <div class="menu-buttons" id="menuButtons">
-            <!-- Game Title -->
-            <div style="text-align: center; margin-bottom: 40px;">
-                <h1 class="main-title">MAZESCAPE</h1>
-                <p class="main-subtitle">Navigate • Survive • Escape</p>
-            </div>
-            
-            <div class="button-row">
-                <button class="game-button primary" id="startGameBtn">
-                    <i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> START GAME
-                </button>
-            </div>
-            <div class="button-row">
-                <button class="game-button" id="loginBtn">
-                    <i data-lucide="key-round" class="ui-icon" aria-hidden="true"></i> LOGIN
-                </button>
-                <button class="game-button" id="registerBtn">
-                    <i data-lucide="user-round-plus" class="ui-icon" aria-hidden="true"></i> REGISTER
-                </button>
-                <button class="game-button" id="profileBtn" style="display: none;">
-                    <i data-lucide="user-round" class="ui-icon" aria-hidden="true"></i> PROFILE
-                </button>
-                <button class="game-button" id="logoutBtn" style="display: none;">
-                    <i data-lucide="log-out" class="ui-icon" aria-hidden="true"></i> LOGOUT
-                </button>
-            </div>
-            <div class="button-row">
-                <button class="game-button" id="helpBtn">
-                    <i data-lucide="circle-help" class="ui-icon" aria-hidden="true"></i> HELP
-                </button>
-                <button class="game-button" id="leaderboardBtn">
-                    <i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> LEADERBOARD
-                </button>
-                <button class="game-button" id="settingsBtn">
-                    <i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS
-                </button>
-                <button class="game-button mobile-only" id="mobileBlogBtn">
-                    <i data-lucide="book-open" class="ui-icon" aria-hidden="true"></i> A* ALGORITHM
-                </button>
-            </div>
-        </div>
-        
-        <!-- A* Algorithm Blog Panel (Background Overlay) -->
-        <div class="blog-panel left" id="algorithmBlog">
-            <h4><i data-lucide="brain-circuit" class="ui-icon" aria-hidden="true"></i> A* PATHFINDING ALGORITHM</h4>
-            
-            <div class="blog-content" style="
-                font-size: 13px;
-                line-height: 1.6;
-                text-align: left;
-            ">
-                <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="target" class="ui-icon" aria-hidden="true"></i> What is A*?</h5>
-                    <p style="margin-bottom: 10px;">
-                        A* (A-star) is a best-first search algorithm that finds the least-cost path from a given initial node 
-                        to one goal node out of one or more possible goals. It uses both the actual distance from the start 
-                        and a heuristic estimate to guide its search.
-                    </p>
-                </div>
-                
-                <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> How It Works</h5>
-                    <p style="margin-bottom: 8px;">A* evaluates nodes using the formula:</p>
-                    <div style="
-                        background: rgba(0, 0, 0, 0.6);
-                        padding: 12px;
-                        border-radius: 8px;
-                        font-family: 'Courier New', monospace;
-                        font-size: 14px;
-                        color: #00BFFF;
-                        margin-bottom: 15px;
-                        border: 1px solid rgba(0, 191, 255, 0.3);
-                        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-                    ">f(n) = g(n) + h(n)</div>
-                    <ul style="margin-left: 15px; margin-bottom: 10px;">
-                        <li><strong style="color: #E0E0E0;">g(n):</strong> Exact cost from start node to node n</li>
-                        <li><strong style="color: #E0E0E0;">h(n):</strong> Heuristic estimate from node n to goal</li>
-                        <li><strong style="color: #E0E0E0;">f(n):</strong> Estimated total cost of path through n</li>
-                    </ul>
-                </div>
-                
-                <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="chart-no-axes-combined" class="ui-icon" aria-hidden="true"></i> Key Properties</h5>
-                    <p style="margin-bottom: 10px;">
-                        A* is both complete and optimal when the heuristic function is admissible (never overestimates 
-                        the actual cost). It combines the advantages of Dijkstra's algorithm (guaranteed shortest path) 
-                        with the efficiency of greedy best-first search.
-                    </p>
-                    <div style="
-                        background: rgba(0, 191, 255, 0.2);
-                        border-left: 4px solid #00BFFF;
-                        padding: 12px;
-                        border-radius: 6px;
-                        font-size: 13px;
-                        margin-bottom: 15px;
-                        backdrop-filter: blur(5px);
-                        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-                    ">
-                        <strong>Optimality:</strong> Guaranteed to find the shortest path if one exists
-                    </div>
-                </div>
-                
-                <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="wrench" class="ui-icon" aria-hidden="true"></i> Algorithm Steps</h5>
-                    <ol style="margin-left: 15px; font-size: 12px;">
-                        <li style="margin-bottom: 4px;">Initialize open list with start node</li>
-                        <li style="margin-bottom: 4px;">Select node with lowest f(n) from open list</li>
-                        <li style="margin-bottom: 4px;">Move selected node to closed list</li>
-                        <li style="margin-bottom: 4px;">Examine each neighbor of current node</li>
-                        <li style="margin-bottom: 4px;">Update costs and continue until goal is reached</li>
-                    </ol>
-                </div>
-                
-                <div class="blog-section" style="margin-bottom: 20px;">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="globe" class="ui-icon" aria-hidden="true"></i> Real-World Applications</h5>
-                    <ul style="margin-left: 15px; font-size: 12px;">
-                        <li style="margin-bottom: 4px;">GPS navigation and route planning</li>
-                        <li style="margin-bottom: 4px;">Video game AI pathfinding</li>
-                        <li style="margin-bottom: 4px;">Robotics and autonomous vehicles</li>
-                        <li style="margin-bottom: 4px;">Network routing protocols</li>
-                        <li style="margin-bottom: 4px;">Puzzle solving and optimization problems</li>
-                    </ul>
-                </div>
-                
-                <div class="blog-section">
-                    <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="chart-no-axes-column-increasing" class="ui-icon" aria-hidden="true"></i> Advantages & Complexity</h5>
-                    <div style="
-                        background: rgba(0, 191, 255, 0.2);
-                        border: 1px solid rgba(0, 191, 255, 0.4);
-                        padding: 12px;
-                        border-radius: 8px;
-                        font-size: 13px;
-                        backdrop-filter: blur(5px);
-                        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-                    ">
-                        <p style="margin-bottom: 8px;"><strong>Time Complexity:</strong> O(b^d) where b is branching factor</p>
-                        <p style="margin-bottom: 8px;"><strong>Space Complexity:</strong> O(b^d) stores all generated nodes</p>
-                        <p style="margin-bottom: 8px;"><strong>Advantages:</strong> Optimal, complete, and efficient</p>
-                        <p><strong>Invented:</strong> 1968 by Peter Hart, Nils Nilsson, Bertram Raphael</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="status" style="display: none;">
-            <div class="status-header">
-                <h4><i data-lucide="info" class="ui-icon" aria-hidden="true"></i> GAME INFO</h4>
-            </div>
-            <div class="status-content">
-                <div class="status-item">
-                    <span class="status-label">Score:</span>
-                    <span class="status-value" id="current-score-value">0</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Time:</span>
-                    <span class="status-value" id="current-time-value">0 Sec</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Lives:</span>
-                    <span class="status-value" id="current-lives-value">2</span>
-                </div>
-            </div>
-        </div>
+ <div id="gameContainer">
+ <canvas id="gameCanvas"></canvas>
+ <div id="ui-container">
+ </div>
+ 
+ <!-- Menu Buttons Container -->
+ <div class="menu-buttons" id="menuButtons">
+ <!-- Game Title -->
+ <div style="text-align: center; margin-bottom: 40px;">
+ <h1 class="main-title">MAZESCAPE</h1>
+ <p class="main-subtitle">Navigate • Survive • Escape</p>
+ </div>
+ 
+ <div class="button-row">
+ <button class="game-button primary" id="startGameBtn">
+ <i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> START GAME
+ </button>
+ </div>
+ <div class="button-row">
+ <button class="game-button" id="loginBtn">
+ <i data-lucide="key-round" class="ui-icon" aria-hidden="true"></i> LOGIN
+ </button>
+ <button class="game-button" id="registerBtn">
+ <i data-lucide="user-round-plus" class="ui-icon" aria-hidden="true"></i> REGISTER
+ </button>
+ <button class="game-button" id="profileBtn" style="display: none;">
+ <i data-lucide="user-round" class="ui-icon" aria-hidden="true"></i> PROFILE
+ </button>
+ <button class="game-button" id="logoutBtn" style="display: none;">
+ <i data-lucide="log-out" class="ui-icon" aria-hidden="true"></i> LOGOUT
+ </button>
+ </div>
+ <div class="button-row">
+ <button class="game-button" id="helpBtn">
+ <i data-lucide="circle-help" class="ui-icon" aria-hidden="true"></i> HELP
+ </button>
+ <button class="game-button" id="leaderboardBtn">
+ <i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> LEADERBOARD
+ </button>
+ <button class="game-button" id="settingsBtn">
+ <i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS
+ </button>
+ <button class="game-button mobile-only" id="mobileBlogBtn">
+ <i data-lucide="book-open" class="ui-icon" aria-hidden="true"></i> A* ALGORITHM
+ </button>
+ </div>
+ </div>
+ 
+ <!-- A* Algorithm Blog Panel (Background Overlay) -->
+ <div class="blog-panel left" id="algorithmBlog">
+ <h4><i data-lucide="brain-circuit" class="ui-icon" aria-hidden="true"></i> A* PATHFINDING ALGORITHM</h4>
+ 
+ <div class="blog-content" style="
+ font-size: 13px;
+ line-height: 1.6;
+ text-align: left;
+ ">
+ <div class="blog-section" style="margin-bottom: 20px;">
+ <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="target" class="ui-icon" aria-hidden="true"></i> What is A*?</h5>
+ <p style="margin-bottom: 10px;">
+ A* (A-star) is a best-first search algorithm that finds the least-cost path from a given initial node 
+ to one goal node out of one or more possible goals. It uses both the actual distance from the start 
+ and a heuristic estimate to guide its search.
+ </p>
+ </div>
+ 
+ <div class="blog-section" style="margin-bottom: 20px;">
+ <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> How It Works</h5>
+ <p style="margin-bottom: 8px;">A* evaluates nodes using the formula:</p>
+ <div style="
+ background: rgba(0, 0, 0, 0.6);
+ padding: 12px;
+ border-radius: 8px;
+ font-family: 'Courier New', monospace;
+ font-size: 14px;
+ color: #00BFFF;
+ margin-bottom: 15px;
+ border: 1px solid rgba(0, 191, 255, 0.3);
+ text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+ ">f(n) = g(n) + h(n)</div>
+ <ul style="margin-left: 15px; margin-bottom: 10px;">
+ <li><strong style="color: #E0E0E0;">g(n):</strong> Exact cost from start node to node n</li>
+ <li><strong style="color: #E0E0E0;">h(n):</strong> Heuristic estimate from node n to goal</li>
+ <li><strong style="color: #E0E0E0;">f(n):</strong> Estimated total cost of path through n</li>
+ </ul>
+ </div>
+ 
+ <div class="blog-section" style="margin-bottom: 20px;">
+ <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="chart-no-axes-combined" class="ui-icon" aria-hidden="true"></i> Key Properties</h5>
+ <p style="margin-bottom: 10px;">
+ A* is both complete and optimal when the heuristic function is admissible (never overestimates 
+ the actual cost). It combines the advantages of Dijkstra's algorithm (guaranteed shortest path) 
+ with the efficiency of greedy best-first search.
+ </p>
+ <div style="
+ background: rgba(0, 191, 255, 0.2);
+ border-left: 4px solid #00BFFF;
+ padding: 12px;
+ border-radius: 6px;
+ font-size: 13px;
+ margin-bottom: 15px;
+ backdrop-filter: blur(5px);
+ text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+ ">
+ <strong>Optimality:</strong> Guaranteed to find the shortest path if one exists
+ </div>
+ </div>
+ 
+ <div class="blog-section" style="margin-bottom: 20px;">
+ <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="wrench" class="ui-icon" aria-hidden="true"></i> Algorithm Steps</h5>
+ <ol style="margin-left: 15px; font-size: 12px;">
+ <li style="margin-bottom: 4px;">Initialize open list with start node</li>
+ <li style="margin-bottom: 4px;">Select node with lowest f(n) from open list</li>
+ <li style="margin-bottom: 4px;">Move selected node to closed list</li>
+ <li style="margin-bottom: 4px;">Examine each neighbor of current node</li>
+ <li style="margin-bottom: 4px;">Update costs and continue until goal is reached</li>
+ </ol>
+ </div>
+ 
+ <div class="blog-section" style="margin-bottom: 20px;">
+ <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="globe" class="ui-icon" aria-hidden="true"></i> Real-World Applications</h5>
+ <ul style="margin-left: 15px; font-size: 12px;">
+ <li style="margin-bottom: 4px;">GPS navigation and route planning</li>
+ <li style="margin-bottom: 4px;">Video game AI pathfinding</li>
+ <li style="margin-bottom: 4px;">Robotics and autonomous vehicles</li>
+ <li style="margin-bottom: 4px;">Network routing protocols</li>
+ <li style="margin-bottom: 4px;">Puzzle solving and optimization problems</li>
+ </ul>
+ </div>
+ 
+ <div class="blog-section">
+ <h5 style="color: #00BFFF; font-size: 14px; margin-bottom: 8px; font-weight: 600;"><i data-lucide="chart-no-axes-column-increasing" class="ui-icon" aria-hidden="true"></i> Advantages & Complexity</h5>
+ <div style="
+ background: rgba(0, 191, 255, 0.2);
+ border: 1px solid rgba(0, 191, 255, 0.4);
+ padding: 12px;
+ border-radius: 8px;
+ font-size: 13px;
+ backdrop-filter: blur(5px);
+ text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+ ">
+ <p style="margin-bottom: 8px;"><strong>Time Complexity:</strong> O(b^d) where b is branching factor</p>
+ <p style="margin-bottom: 8px;"><strong>Space Complexity:</strong> O(b^d) stores all generated nodes</p>
+ <p style="margin-bottom: 8px;"><strong>Advantages:</strong> Optimal, complete, and efficient</p>
+ <p><strong>Invented:</strong> 1968 by Peter Hart, Nils Nilsson, Bertram Raphael</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ 
+ <div id="status" style="display: none;">
+ <div class="status-header">
+ <h4><i data-lucide="info" class="ui-icon" aria-hidden="true"></i> GAME INFO</h4>
+ </div>
+ <div class="status-content">
+ <div class="status-item">
+ <span class="status-label">Score:</span>
+ <span class="status-value" id="current-score-value">0</span>
+ </div>
+ <div class="status-item">
+ <span class="status-label">Time:</span>
+ <span class="status-value" id="current-time-value">0 Sec</span>
+ </div>
+ <div class="status-item">
+ <span class="status-label">Lives:</span>
+ <span class="status-value" id="current-lives-value">2</span>
+ </div>
+ </div>
+ </div>
 
-        <!-- Powerup Notifications -->
-        <div id="powerup-notifications"></div>
-        
-        <!-- Mobile On-Screen Controls -->
-        <div id="mobile-controls">
-            <div class="control-pad">
-                <button class="control-btn" id="btn-up">↑</button>
-                <div class="control-row">
-                    <button class="control-btn" id="btn-left">←</button>
-                    <button class="control-btn" id="btn-right">→</button>
-                </div>
-                <button class="control-btn" id="btn-down">↓</button>
-            </div>
-        </div>
-    </div>
+ <!-- Powerup Notifications -->
+ <div id="powerup-notifications"></div>
+ 
+ <!-- Mobile On-Screen Controls -->
+ <div id="mobile-controls">
+ <div class="control-pad">
+ <button class="control-btn" id="btn-up">↑</button>
+ <div class="control-row">
+ <button class="control-btn" id="btn-left">←</button>
+ <button class="control-btn" id="btn-right">→</button>
+ </div>
+ <button class="control-btn" id="btn-down">↓</button>
+ </div>
+ </div>
+ </div>
 
-    <!-- Load dependencies -->
-     <script src="config.js"></script>
-    <script src="astar.js"></script>
-    <script src="database_mongo.js"></script>
-    <script src="user_auth.js"></script>
-    <script src="game.js"></script>
-    
-    <script>
-        // Render consistent outline icons for static UI labels.
-        if (window.lucide) window.lucide.createIcons();
+ <!-- Load dependencies -->
+ <script src="config.js"></script>
+ <script src="astar.js"></script>
+ <script src="database_mongo.js"></script>
+ <script src="user_auth.js"></script>
+ <script src="game.js"></script>
+ 
+ <script>
+ // Render consistent outline icons for static UI labels.
+ if (window.lucide) window.lucide.createIcons();
 
-        // Game initialization and controller
-        let game = null;
-        let ui = null;
-        let gameDB = null;  // Renamed to avoid conflict
-        let userAuth = null;
-        let currentUser = null;
-        let gameState = "menu"; // "menu", "playing", "paused"
-        
-        // Canvas and context
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        // Game controller class
-        class MazeChaseController {
-            constructor() {
-                try {
-                    console.log('🎮 Starting MazeChaseController construction...');
-                    this.canvas = canvas;
-                    this.ctx = ctx;
-                    this.gameLoopRunning = false;
-                    this.initialized = false; // Track initialization status
-                    console.log('✅ Canvas and context assigned');
-                    
-                    this.setupCanvas();
-                    console.log('✅ Canvas setup complete');
-                    
-                    this.setupEventListeners();
-                    console.log('✅ Event listeners setup complete');
-                    
-                    // Don't call initializeGame() here - do it after constructor
-                    this.setupUI();
-                    console.log('✅ UI setup complete');
-                    
-                    console.log('🎮 MazeChaseController construction finished successfully');
-                    
-                    // Initialize game asynchronously after construction
-                    setTimeout(() => {
-                        this.initializeGame().catch(error => {
-                            console.error('❌ Async initialization failed:', error);
-                        });
-                    }, 100);
-                    
-                } catch (error) {
-                    console.error('❌ Error in MazeChaseController constructor:', error);
-                    throw error;
-                }
-            }
-            
-            setupUI() {
-                // Update UI based on login status
-                this.updateMenuButtons();
-            }
-            
-            updateMenuButtons() {
-                const menuButtons = document.getElementById('menuButtons');
-                const topMenu = document.getElementById('topMenu');
-                const menuKeyboardHint = document.getElementById('menuKeyboardHint');
-                const loginBtn = document.getElementById('loginBtn');
-                const registerBtn = document.getElementById('registerBtn');
-                const profileBtn = document.getElementById('profileBtn');
-                const logoutBtn = document.getElementById('logoutBtn');
-                
-                console.log('🔄 Updating menu buttons, gameState:', gameState, 'currentUser:', currentUser);
-                
-                if (gameState === "menu") {
-                    if (menuButtons) menuButtons.style.display = 'flex';
-                    if (topMenu) topMenu.style.display = 'none';
-                    if (menuKeyboardHint) menuKeyboardHint.style.display = 'block';
-                    
-                    // Initialize blog panel state when returning to menu
-                    initializeBlogPanel();
-                    
-                    if (currentUser) {
-                        // User is logged in - show profile/logout, hide login/register
-                        console.log('👤 User logged in, showing profile buttons');
-                        if (loginBtn) loginBtn.style.display = 'none';
-                        if (registerBtn) registerBtn.style.display = 'none';
-                        if (profileBtn) profileBtn.style.display = 'inline-block';
-                        if (logoutBtn) logoutBtn.style.display = 'inline-block';
-                    } else {
-                        // User is not logged in - show login/register, hide profile/logout
-                        console.log('🔐 User not logged in, showing login buttons');
-                        if (loginBtn) loginBtn.style.display = 'inline-block';
-                        if (registerBtn) registerBtn.style.display = 'inline-block';
-                        if (profileBtn) profileBtn.style.display = 'none';
-                        if (logoutBtn) logoutBtn.style.display = 'none';
-                    }
-                } else if (gameState === "playing") {
-                    if (menuButtons) menuButtons.style.display = 'none';
-                    if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
-                    if (currentUser) {
-                        if (topMenu) topMenu.style.display = 'flex';
-                        this.updateStatus(); // Use updateStatus instead of updateScoreDisplay
-                    }
-                } else {
-                    if (menuButtons) menuButtons.style.display = 'none';
-                    if (topMenu) topMenu.style.display = 'none';
-                    if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
-                }
-            }
-            
-            setupCanvas() {
-                // Fixed maze dimensions for consistent gameplay
-                const FIXED_MAZE_WIDTH = 20;  // Portrait maze: 20 columns
-                const FIXED_MAZE_HEIGHT = 30; // Portrait maze: 30 rows
-                const GRID_SIZE = 40; // Same as game.js
-                
-                // Calculate ideal canvas size based on fixed maze dimensions
-                const idealCanvasWidth = FIXED_MAZE_WIDTH * GRID_SIZE;
-                const idealCanvasHeight = FIXED_MAZE_HEIGHT * GRID_SIZE;
-                
-                // Get available space
-                const availableWidth = Math.max(240, window.innerWidth - 24);
-                const availableHeight = Math.max(360, window.innerHeight - (window.innerWidth <= 700 ? 300 : 150)); // Reserve room for mobile controls
-                
-                // Calculate scale to fit while maintaining aspect ratio
-                const scaleX = availableWidth / idealCanvasWidth;
-                const scaleY = availableHeight / idealCanvasHeight;
-                const scale = Math.min(scaleX, scaleY, 1.5); // Fit portrait maze without cropping
-                
-                // Set canvas size to maintain exact maze grid
-                this.canvas.width = idealCanvasWidth;
-                this.canvas.height = idealCanvasHeight;
-                
-                // Apply CSS scaling for responsive display
-                this.canvas.style.width = `${Math.floor(idealCanvasWidth * scale)}px`;
-                this.canvas.style.height = `${Math.floor(idealCanvasHeight * scale)}px`;
-                this.canvas.style.maxWidth = '100%';
-                this.canvas.style.maxHeight = '100%';
-                
-                // Disable image smoothing for crisp pixel art
-                const ctx = this.canvas.getContext('2d');
-                ctx.imageSmoothingEnabled = false;
-                ctx.mozImageSmoothingEnabled = false;
-                ctx.webkitImageSmoothingEnabled = false;
-                ctx.msImageSmoothingEnabled = false;
-                
-                console.log(`Canvas setup: ${this.canvas.width}x${this.canvas.height} (scaled to ${this.canvas.style.width} x ${this.canvas.style.height})`);
-                console.log(`Maze will be: ${FIXED_MAZE_WIDTH}x${FIXED_MAZE_HEIGHT} grid`);
-            }
-            
-            setupEventListeners() {
-                // Keyboard controls
-                document.addEventListener('keydown', (e) => {
-                    this.handleKeyPress(e);
-                });
-                
-                // Canvas click events for UI
-                this.canvas.addEventListener('click', (e) => {
-                    if (gameState !== "playing") {
-                        // Handle UI clicks here if needed
-                        console.log('UI click at:', e.offsetX, e.offsetY);
-                    }
-                });
-                
-                // Window resize
-                window.addEventListener('resize', () => {
-                    this.setupCanvas();
-                    if (game) {
-                        game.updateForScreenChange();
-                    }
-                });
-            }
-            
-            handleKeyPress(e) {
-                console.log('🔑 Key pressed:', e.key, 'Game state:', gameState);
-                
-                if (e.key === 'F11') {
-                    e.preventDefault();
-                    this.toggleFullscreen();
-                } else if (e.key === ' ' && gameState === "menu") {
-                    console.log('🚀 Spacebar pressed - Starting game!');
-                    this.startGame();
-                    e.preventDefault();
-                } else if (gameState === "playing" && game) {
-                    // Game controls - exact implementation from Python
-                    switch (e.key.toLowerCase()) {
-                        case 'w':
-                        case 'arrowup':
-                            game.movePlayer(-1, 0);
-                            e.preventDefault();
-                            break;
-                        case 's':
-                        case 'arrowdown':
-                            game.movePlayer(1, 0);
-                            e.preventDefault();
-                            break;
-                        case 'a':
-                        case 'arrowleft':
-                            game.movePlayer(0, -1);
-                            e.preventDefault();
-                            break;
-                        case 'd':
-                        case 'arrowright':
-                            game.movePlayer(0, 1);
-                            e.preventDefault();
-                            break;
-                    }
-                }
-            }
-            
-            toggleFullscreen() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen();
-                } else {
-                    document.exitFullscreen();
-                }
-            }
-            
-            startGame() {
-                console.log('🎮 GameController.startGame() called');
-                console.log('Current gameState:', gameState);
-                console.log('gameLoopRunning:', this.gameLoopRunning);
-                console.log('Canvas element:', this.canvas);
-                console.log('Canvas dimensions:', this.canvas.width, 'x', this.canvas.height);
-                
-                try {
-                    console.log('🔧 Creating new MazeGame...');
-                    console.log('🔍 Checking if MazeGame is available:', typeof MazeGame, typeof window.MazeGame);
-                    console.log('🔍 Available window properties:', Object.keys(window).filter(k => k.toLowerCase().includes('maze')));
-                    
-                    if (typeof MazeGame === 'undefined' && typeof window.MazeGame !== 'undefined') {
-                        console.log('🔄 Using window.MazeGame instead');
-                        game = new window.MazeGame(this.canvas);
-                    } else if (typeof MazeGame !== 'undefined') {
-                        game = new MazeGame(this.canvas);
-                    } else {
-                        throw new Error('MazeGame class is not defined. Check if game.js loaded properly.');
-                    }
-                    
-                    console.log('✅ MazeGame created successfully:', game);
-                    
-                    gameState = "playing";
-                    this.updateStatus();
-                    this.updateMenuButtons();
-                    console.log('🎮 Starting game');
-                    
-                    // Update mobile controls visibility for gameplay
-                    updateMobileControlsVisibility(true);
-                    
-                    // Start the game loop
-                    if (!this.gameLoopRunning) {
-                        console.log('🔄 Starting game loop');
-                        this.gameLoopRunning = true;
-                        this.gameLoop();
-                    } else {
-                        console.log('⚠️ Game loop already running');
-                    }
-                } catch (error) {
-                    console.error('❌ Error creating game:', error);
-                    console.error('Error stack:', error.stack);
-                    showAlert('Game Error', 'Failed to start game: ' + error.message);
-                }
-            }
-            
-            returnToMenu() {
-                game = null;
-                gameState = "menu";
-                this.gameLoopRunning = false;
-                
-                // Hide mobile controls when returning to menu
-                updateMobileControlsVisibility(false);
-                
-                // Clear the canvas completely - let page background show through
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                // Hide powerup panel when returning to menu
-                const powerupPanel = document.getElementById('powerup-status');
-                if (powerupPanel) {
-                    powerupPanel.style.display = 'none';
-                }
-                
-                this.updateStatus();
-                this.updateMenuButtons();
-                console.log('Returned to menu');
-            }
-            
-            updateStatus() {
-                const statusPanel = document.getElementById('status');
-                const currentScoreEl = document.getElementById('current-score-value');
-                const currentTimeEl = document.getElementById('current-time-value');
-                const currentLivesEl = document.getElementById('current-lives-value');
-                
-                // Show panel only during gameplay
-                if (statusPanel) {
-                    if (gameState === "playing") {
-                        statusPanel.style.display = 'block';
-                    } else {
-                        statusPanel.style.display = 'none';
-                    }
-                }
-                
-                if (currentScoreEl) {
-                    // Calculate real-time increasing score during gameplay starting from 0
-                    let currentScore = 0;
-                    if (game && game.startTime) {
-                        const elapsedSeconds = Math.floor((Date.now() / 1000) - game.startTime);
-                        
-                        // Start from 0 and add points for survival/playing time (increase as playing)
-                        const survivalPoints = Math.floor(elapsedSeconds * 2); // 2 points per second
-                        currentScore += survivalPoints;
-                        
-                        // Subtract powerup penalty if any powerups used
-                        const powerupsUsed = game.powerupsUsed || 0;
-                        currentScore += (powerupsUsed * -10);
-                        
-                        // Ensure score is never negative
-                        currentScore = Math.max(0, currentScore);
-                    }
-                    currentScoreEl.textContent = currentScore;
-                }
-                
-                if (currentTimeEl) {
-                    let timeText = '0 Sec';
-                    if (game && game.startTime) {
-                        const elapsedSeconds = Math.floor((Date.now() / 1000) - game.startTime);
-                        timeText = `${elapsedSeconds} Sec`;
-                    }
-                    currentTimeEl.textContent = timeText;
-                }
-                
-                if (currentLivesEl) {
-                    const lives = game ? game.lives || 0 : 0;
-                    const livesColor = lives > 1 ? '#FF6B6B' : lives === 1 ? '#FFA500' : '#FF3333';
-                    currentLivesEl.textContent = lives;
-                    currentLivesEl.style.color = livesColor;
-                }
-                
-                // Update panels visibility based on game state
-                this.updatePanelVisibility();
-            }
-            
-            updateScoreDisplay() {
-                // This function updates score and time in real-time during gameplay
-                // Use the same logic as updateStatus for consistency
-                this.updateStatus();
-            }
-            
-            updatePanelVisibility() {
-                const sidePanels = document.querySelectorAll('.side-panel');
-                const menuButtons = document.getElementById('menuButtons');
-                const menuHeader = document.getElementById('menuHeader');
-                const mobileControls = document.getElementById('mobile-controls');
-                const gameContainer = document.getElementById('gameContainer');
-                const algorithmBlog = document.getElementById('algorithmBlog');
-                
-                if (gameState === "playing" || gameState === "paused") {
-                    // Show game UI panels
-                    sidePanels.forEach(panel => panel.style.display = 'block');
-                    if (menuButtons) menuButtons.style.display = 'none';
-                    if (menuHeader) menuHeader.style.display = 'none'; // Hide menu header during game
-                    if (algorithmBlog) algorithmBlog.classList.add('hidden'); // Hide blog during game
-                    
-                    // Adjust game container for gameplay (no header)
-                    if (gameContainer) {
-                        gameContainer.style.marginTop = '0px';
-                        gameContainer.style.height = '100vh';
-                    }
-                    
-                    // Show mobile controls during gameplay - strict control
-                    updateMobileControlsVisibility(true);
-                } else {
-                    // Hide game UI panels
-                    sidePanels.forEach(panel => panel.style.display = 'none');
-                    if (menuButtons) menuButtons.style.display = 'flex';
-                    if (menuHeader) menuHeader.style.display = 'flex'; // Show menu header in menu
-                    if (algorithmBlog) algorithmBlog.classList.remove('hidden'); // Show blog in menu
-                    
-                    // Adjust game container for menu (with header)
-                    if (gameContainer) {
-                        gameContainer.style.marginTop = '80px';
-                        gameContainer.style.height = 'calc(100vh - 80px)';
-                    }
-                    
-                    // Always hide mobile controls when not playing
-                    updateMobileControlsVisibility(false);
-                }
-            }
-            
-            showMessage(title, message, autoDismiss = false, dismissTime = 3000) {
-                // Remove any existing modal overlays first
-                const existingOverlays = document.querySelectorAll('.modal-overlay');
-                existingOverlays.forEach(overlay => {
-                    if (overlay.parentNode) {
-                        overlay.parentNode.removeChild(overlay);
-                    }
-                });
-                
-                const overlay = document.createElement('div');
-                overlay.className = 'modal-overlay';
-                
-                const modal = document.createElement('div');
-                modal.className = 'modal';
-                
-                modal.innerHTML = `
-                    <h2 class="glow-text primary-color">${title}</h2>
-                    <p>${message.replace(/\\n/g, '<br>')}</p>
-                    ${autoDismiss ? '<p style="margin-top: 20px; color: #888; font-size: 14px;">Returning to menu...</p>' : ''}
-                `;
-                
-                overlay.appendChild(modal);
-                document.body.appendChild(overlay);
-                
-                const removeModal = () => {
-                    if (overlay.parentNode) {
-                        overlay.parentNode.removeChild(overlay);
-                    }
-                };
-                
-                if (autoDismiss) {
-                    setTimeout(removeModal, dismissTime);
-                } else {
-                    overlay.addEventListener('click', removeModal);
-                }
-            }
-            
-            async initializeGame() {
-                try {
-                    console.log('🔄 Initializing Maze Chase...');
-                    
-                    // Initialize database (optional - don't fail if it doesn't work)
-                    try {
-                        if (typeof MazeChaseDB !== 'undefined') {
-                            gameDB = new MazeChaseDB();
-                            console.log('✅ MongoDB database initializing...');
-                            
-                            // Wait a moment for database connection
-                            setTimeout(() => {
-                                if (gameDB && gameDB.connected) {
-                                    console.log('✅ MongoDB database connected');
-                                    
-                                    // Initialize user authentication with database
-                                    if (typeof UserAuth !== 'undefined') {
-                                        userAuth = new UserAuth(gameDB);
-                                        console.log('✅ User authentication initialized with database');
-                                    }
-                                    
-                                    const dbStatusEl = document.getElementById('db-status');
-                                    if (dbStatusEl) {
-                                        dbStatusEl.innerHTML = 'Database: <span style="color: #39FF14;">Connected</span>';
-                                    }
-                                } else {
-                                    console.log('⚠️  Database connection failed');
-                                    const dbStatusEl = document.getElementById('db-status');
-                                    if (dbStatusEl) {
-                                        dbStatusEl.innerHTML = 'Database: <span style="color: #FF453A;">Offline</span>';
-                                    }
-                                }
-                            }, 1000); // Give 1 second for connection
-                            
-                        } else {
-                            console.log('⚠️  MazeChaseDB class not available');
-                        }
-                    } catch (dbError) {
-                        console.log('⚠️  Database initialization failed (non-fatal):', dbError);
-                        const dbStatusEl = document.getElementById('db-status');
-                        if (dbStatusEl) {
-                            dbStatusEl.innerHTML = 'Database: <span style="color: #FF453A;">Offline</span>';
-                        }
-                    }
-                    
-                    this.updateStatus();
-                    this.initialized = true; // Mark as initialized
-                    console.log('🎮 Game controller fully initialized');
-                    // Don't start game loop here - wait for user to start game
-                    
-                } catch (error) {
-                    console.error('Initialization error:', error);
-                    throw error; // Re-throw to be caught by constructor
-                }
-            }
-            
-            gameLoop() {
-                // Always clear canvas first
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                if (gameState === "playing" && game) {
-                    try {
-                        // Update and draw game
-                        const result = game.update();
-                        
-                        // Update score display during gameplay
-                        this.updateStatus();
-                        
-                        // Check for game end conditions BEFORE drawing
-                        if (result === "win") {
-                            game.draw(); // Draw final frame
-                            this.handleGameEnd("win");
-                            return; // Exit early to prevent further drawing
-                        } else if (result === "lose") {
-                            game.draw(); // Draw final frame
-                            this.handleGameEnd("lose");
-                            return; // Exit early to prevent further drawing
-                        }
-                        
-                        // Only draw if game is still active
-                        if (game) {
-                            game.draw();
-                        }
-                        console.log('🎮 Game loop iteration completed - gameState:', gameState, 'game exists:', !!game);
-                    } catch (error) {
-                        console.error('❌ Error in game loop:', error);
-                        console.error('Error stack:', error.stack);
-                        // Return to menu on error
-                        this.returnToMenu();
-                        showAlert('Game Error', 'Game error: ' + error.message);
-                        return;
-                    }
-                } else {
-                    // Clear canvas when not playing - let page background show through
-                    // No need to fill with dark color
-                }
-                
-                // Continue game loop only if it should be running
-                if (this.gameLoopRunning) {
-                    requestAnimationFrame(() => this.gameLoop());
-                }
-            }
-            
-            async handleGameEnd(result) {
-                if (!game) return;
-                
-                const survivalTime = Math.floor((Date.now() / 1000) - game.startTime);
-                
-                // Calculate score using new comprehensive system
-                let finalScore = 0;
-                let scoreBreakdown = {};
-                
-                if (result === "win") {
-                    // WIN SCORING
-                    
-                    // Base Score: 100 points for winning
-                    scoreBreakdown.winBonus = 100;
-                    finalScore += scoreBreakdown.winBonus;
-                    
-                    // Time-based bonus/penalty
-                    if (survivalTime <= 15) {
-                        scoreBreakdown.timeBonus = 100;
-                    } else if (survivalTime > 15 && survivalTime <= 25) {
-                        scoreBreakdown.timeBonus = 50;
-                    } else {
-                        scoreBreakdown.timeBonus = 5;
-                    }
-                    finalScore += scoreBreakdown.timeBonus;
-                    
-                    // Playing time bonus (increases score as you play)
-                    scoreBreakdown.playingBonus = Math.floor(survivalTime * 2); // 2 points per second
-                    finalScore += scoreBreakdown.playingBonus;
-                    
-                    // Power-up penalty (count how many power-ups were used)
-                    const powerupsUsed = game.powerupsUsed || 0;
-                    scoreBreakdown.powerupPenalty = powerupsUsed * -10;
-                    finalScore += scoreBreakdown.powerupPenalty;
-                    
-                    // Lives bonus: 20 points if full lives (2 lives remaining)
-                    const livesRemaining = game.lives || 0;
-                    if (livesRemaining >= 2) {
-                        scoreBreakdown.livesBonus = 20;
-                        finalScore += scoreBreakdown.livesBonus;
-                    } else {
-                        scoreBreakdown.livesBonus = 0;
-                    }
-                    
-                } else {
-                    // LOSE SCORING
-                    
-                    // Lose penalty: -50 points
-                    scoreBreakdown.losePenalty = -50;
-                    finalScore += scoreBreakdown.losePenalty;
-                    
-                    // Playing time bonus (still get points for time played when losing)
-                    scoreBreakdown.playingBonus = Math.floor(survivalTime * 1); // 1 point per second when losing
-                    finalScore += scoreBreakdown.playingBonus;
-                    
-                    // Power-up penalty still applies when losing
-                    const powerupsUsed = game.powerupsUsed || 0;
-                    scoreBreakdown.powerupPenalty = powerupsUsed * -10;
-                    finalScore += scoreBreakdown.powerupPenalty;
-                }
-                
-                // Ensure score is never negative (show zero if negative)
-                finalScore = Math.max(0, finalScore);
-                
-                // Save score to database
-                if (gameDB && gameDB.connected && currentUser) {
-                    try {
-                        const userId = currentUser.user_id || currentUser.id;
-                        const username = currentUser.username || String(currentUser);
-                        
-                        console.log(`💾 Saving ${result.toUpperCase()} score: ${username} (ID: ${userId}) - ${finalScore} points, ${survivalTime}s`);
-                        
-                        const scoreSaved = await gameDB.saveScore(userId, username, finalScore, result, survivalTime, "classic");
-                        console.log(`Score save result: ${scoreSaved ? '✅ SUCCESS' : '❌ FAILED'}`);
-                        
-                        // Update best score display if user is logged in
-                        if (currentUser) {
-                            // First, immediately show the current score if it's likely a new best
-                            const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
-                            if (menuHeaderTopScore) {
-                                const currentDisplayedScore = menuHeaderTopScore.textContent.match(/\d+/);
-                                const currentBestScore = currentDisplayedScore ? parseInt(currentDisplayedScore[0]) : 0;
-                                
-                                // If this score is higher than displayed score, update immediately
-                                if (finalScore > currentBestScore) {
-                                    menuHeaderTopScore.textContent = `Best: ${finalScore} Pts`;
-                                    console.log('⚡ Immediately updated best score display with new record:', finalScore, 'points');
-                                }
-                            }
-                            
-                            // Then refresh from database to ensure accuracy
-                            await this.updateBestScore();
-                        }
-                    } catch (error) {
-                        console.error(`Error saving ${result} result:`, error);
-                    }
-                }
-                
-                // Show result message with detailed score breakdown
-                if (result === "win") {
-                    let breakdownText = `🏆 SCORE BREAKDOWN 🏆\n` +
-                        `Win Bonus: +${scoreBreakdown.winBonus} pts\n` +
-                        `Time Bonus: +${scoreBreakdown.timeBonus} pts\n` +
-                        `Playing Bonus: +${scoreBreakdown.playingBonus} pts\n`;
-                    
-                    if (scoreBreakdown.powerupPenalty < 0) {
-                        breakdownText += `Powerup Penalty: ${scoreBreakdown.powerupPenalty} pts\n`;
-                    }
-                    
-                    if (scoreBreakdown.livesBonus > 0) {
-                        breakdownText += `Full Lives Bonus: +${scoreBreakdown.livesBonus} pts\n`;
-                    }
-                    
-                    breakdownText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-                        `TOTAL: ${finalScore} pts\n` +
-                        `Time: ${survivalTime} seconds`;
-                    
-                    this.showMessage("🏆 VICTORY! 🏆", `Congratulations! You escaped the maze!\n\n${breakdownText}`, true, 4000);
-                } else {
-                    let breakdownText = `💀 SCORE BREAKDOWN 💀\n` +
-                        `Lose Penalty: ${scoreBreakdown.losePenalty} pts\n` +
-                        `Playing Bonus: +${scoreBreakdown.playingBonus} pts\n`;
-                    
-                    if (scoreBreakdown.powerupPenalty < 0) {
-                        breakdownText += `Powerup Penalty: ${scoreBreakdown.powerupPenalty} pts\n`;
-                    }
-                    
-                    breakdownText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-                        `TOTAL: ${finalScore} pts\n` +
-                        `Survived: ${survivalTime} seconds`;
-                    
-                    this.showMessage("💀 GAME OVER", `You fought bravely!\n\n${breakdownText}\n\nTry again to improve your score!`, true, 4000);
-                }
-                
-                // Return to menu and stop game loop
-                game = null;
-                gameState = "menu";
-                this.gameLoopRunning = false; // Stop the game loop
-                
-                // Clear the canvas completely - let page background show through
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                this.updateStatus();
-                this.updateMenuButtons();
-            }
-            
-            // Update best score display in menu header
-            async updateBestScore() {
-                if (currentUser && userAuth) {
-                    try {
-                        console.log('🔄 Refreshing best score display...');
-                        
-                        // Add a small delay to ensure the database has processed the new score
-                        await new Promise(resolve => setTimeout(resolve, 500));
-                        
-                        // Get user's best completion time (fastest win)
-                        const bestScore = await userAuth.getBestScore();
-                        const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
-                        
-                        console.log('📊 Best score data received:', bestScore);
-                        
-                        if (bestScore && bestScore.score !== undefined && menuHeaderTopScore) {
-                            menuHeaderTopScore.textContent = `Best: ${bestScore.score} Pts`;
-                            console.log('🏆 Updated best score display:', bestScore.score, 'points');
-                        } else if (menuHeaderTopScore) {
-                            console.log('⚠️ No best score found, setting to default');
-                            menuHeaderTopScore.textContent = 'Best: -- Pts';
-                        }
-                    } catch (error) {
-                        console.error('❌ Error updating best score:', error);
-                        const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
-                        if (menuHeaderTopScore) {
-                            menuHeaderTopScore.textContent = 'Best: -- Pts';
-                        }
-                    }
-                }
-            }
+ // Game initialization and controller
+ let game = null;
+ let ui = null;
+ let gameDB = null; // Renamed to avoid conflict
+ let userAuth = null;
+ let currentUser = null;
+ let gameState = "menu"; // "menu", "playing", "paused"
+ 
+ // Canvas and context
+ const canvas = document.getElementById('gameCanvas');
+ const ctx = canvas.getContext('2d');
+ 
+ // Game controller class
+ class MazeChaseController {
+ constructor() {
+ try {
+ console.log(' Starting MazeChaseController construction...');
+ this.canvas = canvas;
+ this.ctx = ctx;
+ this.gameLoopRunning = false;
+ this.initialized = false; // Track initialization status
+ console.log(' Canvas and context assigned');
+ 
+ this.setupCanvas();
+ console.log(' Canvas setup complete');
+ 
+ this.setupEventListeners();
+ console.log(' Event listeners setup complete');
+ 
+ // Don't call initializeGame() here - do it after constructor
+ this.setupUI();
+ console.log(' UI setup complete');
+ 
+ console.log(' MazeChaseController construction finished successfully');
+ 
+ // Initialize game asynchronously after construction
+ setTimeout(() => {
+ this.initializeGame().catch(error => {
+ console.error(' Async initialization failed:', error);
+ });
+ }, 100);
+ 
+ } catch (error) {
+ console.error(' Error in MazeChaseController constructor:', error);
+ throw error;
+ }
+ }
+ 
+ setupUI() {
+ // Update UI based on login status
+ this.updateMenuButtons();
+ }
+ 
+ updateMenuButtons() {
+ const menuButtons = document.getElementById('menuButtons');
+ const topMenu = document.getElementById('topMenu');
+ const menuKeyboardHint = document.getElementById('menuKeyboardHint');
+ const loginBtn = document.getElementById('loginBtn');
+ const registerBtn = document.getElementById('registerBtn');
+ const profileBtn = document.getElementById('profileBtn');
+ const logoutBtn = document.getElementById('logoutBtn');
+ 
+ console.log(' Updating menu buttons, gameState:', gameState, 'currentUser:', currentUser);
+ 
+ if (gameState === "menu") {
+ if (menuButtons) menuButtons.style.display = 'flex';
+ if (topMenu) topMenu.style.display = 'none';
+ if (menuKeyboardHint) menuKeyboardHint.style.display = 'block';
+ 
+ // Initialize blog panel state when returning to menu
+ initializeBlogPanel();
+ 
+ if (currentUser) {
+ // User is logged in - show profile/logout, hide login/register
+ console.log(' User logged in, showing profile buttons');
+ if (loginBtn) loginBtn.style.display = 'none';
+ if (registerBtn) registerBtn.style.display = 'none';
+ if (profileBtn) profileBtn.style.display = 'inline-block';
+ if (logoutBtn) logoutBtn.style.display = 'inline-block';
+ } else {
+ // User is not logged in - show login/register, hide profile/logout
+ console.log(' User not logged in, showing login buttons');
+ if (loginBtn) loginBtn.style.display = 'inline-block';
+ if (registerBtn) registerBtn.style.display = 'inline-block';
+ if (profileBtn) profileBtn.style.display = 'none';
+ if (logoutBtn) logoutBtn.style.display = 'none';
+ }
+ } else if (gameState === "playing") {
+ if (menuButtons) menuButtons.style.display = 'none';
+ if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
+ if (currentUser) {
+ if (topMenu) topMenu.style.display = 'flex';
+ this.updateStatus(); // Use updateStatus instead of updateScoreDisplay
+ }
+ } else {
+ if (menuButtons) menuButtons.style.display = 'none';
+ if (topMenu) topMenu.style.display = 'none';
+ if (menuKeyboardHint) menuKeyboardHint.style.display = 'none';
+ }
+ }
+ 
+ setupCanvas() {
+ // Fixed maze dimensions for consistent gameplay
+ const FIXED_MAZE_WIDTH = 20; // Portrait maze: 20 columns
+ const FIXED_MAZE_HEIGHT = 30; // Portrait maze: 30 rows
+ const GRID_SIZE = 40; // Same as game.js
+ 
+ // Calculate ideal canvas size based on fixed maze dimensions
+ const idealCanvasWidth = FIXED_MAZE_WIDTH * GRID_SIZE;
+ const idealCanvasHeight = FIXED_MAZE_HEIGHT * GRID_SIZE;
+ 
+ // Get available space
+ const availableWidth = Math.max(240, window.innerWidth - 24);
+ const availableHeight = Math.max(360, window.innerHeight - (window.innerWidth <= 700 ? 300: 150)); // Reserve room for mobile controls
+ 
+ // Calculate scale to fit while maintaining aspect ratio
+ const scaleX = availableWidth / idealCanvasWidth;
+ const scaleY = availableHeight / idealCanvasHeight;
+ const scale = Math.min(scaleX, scaleY, 1.5); // Fit portrait maze without cropping
+ 
+ // Set canvas size to maintain exact maze grid
+ this.canvas.width = idealCanvasWidth;
+ this.canvas.height = idealCanvasHeight;
+ 
+ // Apply CSS scaling for responsive display
+ this.canvas.style.width = `${Math.floor(idealCanvasWidth * scale)}px`;
+ this.canvas.style.height = `${Math.floor(idealCanvasHeight * scale)}px`;
+ this.canvas.style.maxWidth = '100%';
+ this.canvas.style.maxHeight = '100%';
+ 
+ // Disable image smoothing for crisp pixel art
+ const ctx = this.canvas.getContext('2d');
+ ctx.imageSmoothingEnabled = false;
+ ctx.mozImageSmoothingEnabled = false;
+ ctx.webkitImageSmoothingEnabled = false;
+ ctx.msImageSmoothingEnabled = false;
+ 
+ console.log(`Canvas setup: ${this.canvas.width}x${this.canvas.height} (scaled to ${this.canvas.style.width} x ${this.canvas.style.height})`);
+ console.log(`Maze will be: ${FIXED_MAZE_WIDTH}x${FIXED_MAZE_HEIGHT} grid`);
+ }
+ 
+ setupEventListeners() {
+ // Keyboard controls
+ document.addEventListener('keydown', (e) => {
+ this.handleKeyPress(e);
+ });
+ 
+ // Canvas click events for UI
+ this.canvas.addEventListener('click', (e) => {
+ if (gameState !== "playing") {
+ // Handle UI clicks here if needed
+ console.log('UI click at:', e.offsetX, e.offsetY);
+ }
+ });
+ 
+ // Window resize
+ window.addEventListener('resize', () => {
+ this.setupCanvas();
+ if (game) {
+ game.updateForScreenChange();
+ }
+ });
+ }
+ 
+ handleKeyPress(e) {
+ console.log(' Key pressed:', e.key, 'Game state:', gameState);
+ 
+ if (e.key === 'F11') {
+ e.preventDefault();
+ this.toggleFullscreen();
+ } else if (e.key === ' ' && gameState === "menu") {
+ console.log(' Spacebar pressed - Starting game!');
+ this.startGame();
+ e.preventDefault();
+ } else if (gameState === "playing" && game) {
+ // Game controls - exact implementation from Python
+ switch (e.key.toLowerCase()) {
+ case 'w':
+ case 'arrowup':
+ game.movePlayer(-1, 0);
+ e.preventDefault();
+ break;
+ case 's':
+ case 'arrowdown':
+ game.movePlayer(1, 0);
+ e.preventDefault();
+ break;
+ case 'a':
+ case 'arrowleft':
+ game.movePlayer(0, -1);
+ e.preventDefault();
+ break;
+ case 'd':
+ case 'arrowright':
+ game.movePlayer(0, 1);
+ e.preventDefault();
+ break;
+ }
+ }
+ }
+ 
+ toggleFullscreen() {
+ if (!document.fullscreenElement) {
+ document.documentElement.requestFullscreen();
+ } else {
+ document.exitFullscreen();
+ }
+ }
+ 
+ startGame() {
+ console.log(' GameController.startGame() called');
+ console.log('Current gameState:', gameState);
+ console.log('gameLoopRunning:', this.gameLoopRunning);
+ console.log('Canvas element:', this.canvas);
+ console.log('Canvas dimensions:', this.canvas.width, 'x', this.canvas.height);
+ 
+ try {
+ console.log(' Creating new MazeGame...');
+ console.log(' Checking if MazeGame is available:', typeof MazeGame, typeof window.MazeGame);
+ console.log(' Available window properties:', Object.keys(window).filter(k => k.toLowerCase().includes('maze')));
+ 
+ if (typeof MazeGame === 'undefined' && typeof window.MazeGame !== 'undefined') {
+ console.log(' Using window.MazeGame instead');
+ game = new window.MazeGame(this.canvas);
+ } else if (typeof MazeGame !== 'undefined') {
+ game = new MazeGame(this.canvas);
+ } else {
+ throw new Error('MazeGame class is not defined. Check if game.js loaded properly.');
+ }
+ 
+ console.log(' MazeGame created successfully:', game);
+ 
+ gameState = "playing";
+ this.updateStatus();
+ this.updateMenuButtons();
+ console.log(' Starting game');
+ 
+ // Update mobile controls visibility for gameplay
+ updateMobileControlsVisibility(true);
+ 
+ // Start the game loop
+ if (!this.gameLoopRunning) {
+ console.log(' Starting game loop');
+ this.gameLoopRunning = true;
+ this.gameLoop();
+ } else {
+ console.log(' Game loop already running');
+ }
+ } catch (error) {
+ console.error(' Error creating game:', error);
+ console.error('Error stack:', error.stack);
+ showAlert('Game Error', 'Failed to start game: ' + error.message);
+ }
+ }
+ 
+ returnToMenu() {
+ game = null;
+ gameState = "menu";
+ this.gameLoopRunning = false;
+ 
+ // Hide mobile controls when returning to menu
+ updateMobileControlsVisibility(false);
+ 
+ // Clear the canvas completely - let page background show through
+ this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+ 
+ // Hide powerup panel when returning to menu
+ const powerupPanel = document.getElementById('powerup-status');
+ if (powerupPanel) {
+ powerupPanel.style.display = 'none';
+ }
+ 
+ this.updateStatus();
+ this.updateMenuButtons();
+ console.log('Returned to menu');
+ }
+ 
+ updateStatus() {
+ const statusPanel = document.getElementById('status');
+ const currentScoreEl = document.getElementById('current-score-value');
+ const currentTimeEl = document.getElementById('current-time-value');
+ const currentLivesEl = document.getElementById('current-lives-value');
+ 
+ // Show panel only during gameplay
+ if (statusPanel) {
+ if (gameState === "playing") {
+ statusPanel.style.display = 'block';
+ } else {
+ statusPanel.style.display = 'none';
+ }
+ }
+ 
+ if (currentScoreEl) {
+ // Calculate real-time increasing score during gameplay starting from 0
+ let currentScore = 0;
+ if (game && game.startTime) {
+ const elapsedSeconds = Math.floor((Date.now() / 1000) - game.startTime);
+ 
+ // Start from 0 and add points for survival/playing time (increase as playing)
+ const survivalPoints = Math.floor(elapsedSeconds * 2); // 2 points per second
+ currentScore += survivalPoints;
+ 
+ // Subtract powerup penalty if any powerups used
+ const powerupsUsed = game.powerupsUsed || 0;
+ currentScore += (powerupsUsed * -10);
+ 
+ // Ensure score is never negative
+ currentScore = Math.max(0, currentScore);
+ }
+ currentScoreEl.textContent = currentScore;
+ }
+ 
+ if (currentTimeEl) {
+ let timeText = '0 Sec';
+ if (game && game.startTime) {
+ const elapsedSeconds = Math.floor((Date.now() / 1000) - game.startTime);
+ timeText = `${elapsedSeconds} Sec`;
+ }
+ currentTimeEl.textContent = timeText;
+ }
+ 
+ if (currentLivesEl) {
+ const lives = game ? game.lives || 0: 0;
+ const livesColor = lives > 1 ? '#FF6B6B': lives === 1 ? '#FFA500': '#FF3333';
+ currentLivesEl.textContent = lives;
+ currentLivesEl.style.color = livesColor;
+ }
+ 
+ // Update panels visibility based on game state
+ this.updatePanelVisibility();
+ }
+ 
+ updateScoreDisplay() {
+ // This function updates score and time in real-time during gameplay
+ // Use the same logic as updateStatus for consistency
+ this.updateStatus();
+ }
+ 
+ updatePanelVisibility() {
+ const sidePanels = document.querySelectorAll('.side-panel');
+ const menuButtons = document.getElementById('menuButtons');
+ const menuHeader = document.getElementById('menuHeader');
+ const mobileControls = document.getElementById('mobile-controls');
+ const gameContainer = document.getElementById('gameContainer');
+ const algorithmBlog = document.getElementById('algorithmBlog');
+ 
+ if (gameState === "playing" || gameState === "paused") {
+ // Show game UI panels
+ sidePanels.forEach(panel => panel.style.display = 'block');
+ if (menuButtons) menuButtons.style.display = 'none';
+ if (menuHeader) menuHeader.style.display = 'none'; // Hide menu header during game
+ if (algorithmBlog) algorithmBlog.classList.add('hidden'); // Hide blog during game
+ 
+ // Adjust game container for gameplay (no header)
+ if (gameContainer) {
+ gameContainer.style.marginTop = '0px';
+ gameContainer.style.height = '100vh';
+ }
+ 
+ // Show mobile controls during gameplay - strict control
+ updateMobileControlsVisibility(true);
+ } else {
+ // Hide game UI panels
+ sidePanels.forEach(panel => panel.style.display = 'none');
+ if (menuButtons) menuButtons.style.display = 'flex';
+ if (menuHeader) menuHeader.style.display = 'flex'; // Show menu header in menu
+ if (algorithmBlog) algorithmBlog.classList.remove('hidden'); // Show blog in menu
+ 
+ // Adjust game container for menu (with header)
+ if (gameContainer) {
+ gameContainer.style.marginTop = '80px';
+ gameContainer.style.height = 'calc(100vh - 80px)';
+ }
+ 
+ // Always hide mobile controls when not playing
+ updateMobileControlsVisibility(false);
+ }
+ }
+ 
+ showMessage(title, message, autoDismiss = false, dismissTime = 3000) {
+ // Remove any existing modal overlays first
+ const existingOverlays = document.querySelectorAll('.modal-overlay');
+ existingOverlays.forEach(overlay => {
+ if (overlay.parentNode) {
+ overlay.parentNode.removeChild(overlay);
+ }
+ });
+ 
+ const overlay = document.createElement('div');
+ overlay.className = 'modal-overlay';
+ 
+ const modal = document.createElement('div');
+ modal.className = 'modal';
+ 
+ modal.innerHTML = `
+ <h2 class="glow-text primary-color">${title}</h2>
+ <p>${message.replace(/\\n/g, '<br>')}</p>
+ ${autoDismiss ? '<p style="margin-top: 20px; color: #888; font-size: 14px;">Returning to menu...</p>': ''}
+ `;
+ 
+ overlay.appendChild(modal);
+ document.body.appendChild(overlay);
+ 
+ const removeModal = () => {
+ if (overlay.parentNode) {
+ overlay.parentNode.removeChild(overlay);
+ }
+ };
+ 
+ if (autoDismiss) {
+ setTimeout(removeModal, dismissTime);
+ } else {
+ overlay.addEventListener('click', removeModal);
+ }
+ }
+ 
+ async initializeGame() {
+ try {
+ console.log(' Initializing Maze Chase...');
+ 
+ // Initialize database (optional - don't fail if it doesn't work)
+ try {
+ if (typeof MazeChaseDB !== 'undefined') {
+ gameDB = new MazeChaseDB();
+ console.log(' MongoDB database initializing...');
+ 
+ // Wait a moment for database connection
+ setTimeout(() => {
+ if (gameDB && gameDB.connected) {
+ console.log(' MongoDB database connected');
+ 
+ // Initialize user authentication with database
+ if (typeof UserAuth !== 'undefined') {
+ userAuth = new UserAuth(gameDB);
+ console.log(' User authentication initialized with database');
+ }
+ 
+ const dbStatusEl = document.getElementById('db-status');
+ if (dbStatusEl) {
+ dbStatusEl.innerHTML = 'Database: <span style="color: #39FF14;">Connected</span>';
+ }
+ } else {
+ console.log(' Database connection failed');
+ const dbStatusEl = document.getElementById('db-status');
+ if (dbStatusEl) {
+ dbStatusEl.innerHTML = 'Database: <span style="color: #FF453A;">Offline</span>';
+ }
+ }
+ }, 1000); // Give 1 second for connection
+ 
+ } else {
+ console.log(' MazeChaseDB class not available');
+ }
+ } catch (dbError) {
+ console.log(' Database initialization failed (non-fatal):', dbError);
+ const dbStatusEl = document.getElementById('db-status');
+ if (dbStatusEl) {
+ dbStatusEl.innerHTML = 'Database: <span style="color: #FF453A;">Offline</span>';
+ }
+ }
+ 
+ this.updateStatus();
+ this.initialized = true; // Mark as initialized
+ console.log(' Game controller fully initialized');
+ // Don't start game loop here - wait for user to start game
+ 
+ } catch (error) {
+ console.error('Initialization error:', error);
+ throw error; // Re-throw to be caught by constructor
+ }
+ }
+ 
+ gameLoop() {
+ // Always clear canvas first
+ this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+ 
+ if (gameState === "playing" && game) {
+ try {
+ // Update and draw game
+ const result = game.update();
+ 
+ // Update score display during gameplay
+ this.updateStatus();
+ 
+ // Check for game end conditions BEFORE drawing
+ if (result === "win") {
+ game.draw(); // Draw final frame
+ this.handleGameEnd("win");
+ return; // Exit early to prevent further drawing
+ } else if (result === "lose") {
+ game.draw(); // Draw final frame
+ this.handleGameEnd("lose");
+ return; // Exit early to prevent further drawing
+ }
+ 
+ // Only draw if game is still active
+ if (game) {
+ game.draw();
+ }
+ console.log(' Game loop iteration completed - gameState:', gameState, 'game exists:', !!game);
+ } catch (error) {
+ console.error(' Error in game loop:', error);
+ console.error('Error stack:', error.stack);
+ // Return to menu on error
+ this.returnToMenu();
+ showAlert('Game Error', 'Game error: ' + error.message);
+ return;
+ }
+ } else {
+ // Clear canvas when not playing - let page background show through
+ // No need to fill with dark color
+ }
+ 
+ // Continue game loop only if it should be running
+ if (this.gameLoopRunning) {
+ requestAnimationFrame(() => this.gameLoop());
+ }
+ }
+ 
+ async handleGameEnd(result) {
+ if (!game) return;
+ 
+ const survivalTime = Math.floor((Date.now() / 1000) - game.startTime);
+ 
+ // Calculate score using new comprehensive system
+ let finalScore = 0;
+ let scoreBreakdown = {};
+ 
+ if (result === "win") {
+ // WIN SCORING
+ 
+ // Base Score: 100 points for winning
+ scoreBreakdown.winBonus = 100;
+ finalScore += scoreBreakdown.winBonus;
+ 
+ // Time-based bonus/penalty
+ if (survivalTime <= 15) {
+ scoreBreakdown.timeBonus = 100;
+ } else if (survivalTime > 15 && survivalTime <= 25) {
+ scoreBreakdown.timeBonus = 50;
+ } else {
+ scoreBreakdown.timeBonus = 5;
+ }
+ finalScore += scoreBreakdown.timeBonus;
+ 
+ // Playing time bonus (increases score as you play)
+ scoreBreakdown.playingBonus = Math.floor(survivalTime * 2); // 2 points per second
+ finalScore += scoreBreakdown.playingBonus;
+ 
+ // Power-up penalty (count how many power-ups were used)
+ const powerupsUsed = game.powerupsUsed || 0;
+ scoreBreakdown.powerupPenalty = powerupsUsed * -10;
+ finalScore += scoreBreakdown.powerupPenalty;
+ 
+ // Lives bonus: 20 points if full lives (2 lives remaining)
+ const livesRemaining = game.lives || 0;
+ if (livesRemaining >= 2) {
+ scoreBreakdown.livesBonus = 20;
+ finalScore += scoreBreakdown.livesBonus;
+ } else {
+ scoreBreakdown.livesBonus = 0;
+ }
+ 
+ } else {
+ // LOSE SCORING
+ 
+ // Lose penalty: -50 points
+ scoreBreakdown.losePenalty = -50;
+ finalScore += scoreBreakdown.losePenalty;
+ 
+ // Playing time bonus (still get points for time played when losing)
+ scoreBreakdown.playingBonus = Math.floor(survivalTime * 1); // 1 point per second when losing
+ finalScore += scoreBreakdown.playingBonus;
+ 
+ // Power-up penalty still applies when losing
+ const powerupsUsed = game.powerupsUsed || 0;
+ scoreBreakdown.powerupPenalty = powerupsUsed * -10;
+ finalScore += scoreBreakdown.powerupPenalty;
+ }
+ 
+ // Ensure score is never negative (show zero if negative)
+ finalScore = Math.max(0, finalScore);
+ 
+ // Save score to database
+ if (gameDB && gameDB.connected && currentUser) {
+ try {
+ const userId = currentUser.user_id || currentUser.id;
+ const username = currentUser.username || String(currentUser);
+ 
+ console.log(` Saving ${result.toUpperCase()} score: ${username} (ID: ${userId}) - ${finalScore} points, ${survivalTime}s`);
+ 
+ const scoreSaved = await gameDB.saveScore(userId, username, finalScore, result, survivalTime, "classic");
+ console.log(`Score save result: ${scoreSaved ? ' SUCCESS': ' FAILED'}`);
+ 
+ // Update best score display if user is logged in
+ if (currentUser) {
+ // First, immediately show the current score if it's likely a new best
+ const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
+ if (menuHeaderTopScore) {
+ const currentDisplayedScore = menuHeaderTopScore.textContent.match(/\d+/);
+ const currentBestScore = currentDisplayedScore ? parseInt(currentDisplayedScore[0]): 0;
+ 
+ // If this score is higher than displayed score, update immediately
+ if (finalScore > currentBestScore) {
+ menuHeaderTopScore.textContent = `Best: ${finalScore} Pts`;
+ console.log(' Immediately updated best score display with new record:', finalScore, 'points');
+ }
+ }
+ 
+ // Then refresh from database to ensure accuracy
+ await this.updateBestScore();
+ }
+ } catch (error) {
+ console.error(`Error saving ${result} result:`, error);
+ }
+ }
+ 
+ // Show result message with detailed score breakdown
+ if (result === "win") {
+ let breakdownText = ` SCORE BREAKDOWN \n` +
+ `Win Bonus: +${scoreBreakdown.winBonus} pts\n` +
+ `Time Bonus: +${scoreBreakdown.timeBonus} pts\n` +
+ `Playing Bonus: +${scoreBreakdown.playingBonus} pts\n`;
+ 
+ if (scoreBreakdown.powerupPenalty < 0) {
+ breakdownText += `Powerup Penalty: ${scoreBreakdown.powerupPenalty} pts\n`;
+ }
+ 
+ if (scoreBreakdown.livesBonus > 0) {
+ breakdownText += `Full Lives Bonus: +${scoreBreakdown.livesBonus} pts\n`;
+ }
+ 
+ breakdownText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+ `TOTAL: ${finalScore} pts\n` +
+ `Time: ${survivalTime} seconds`;
+ 
+ this.showMessage(" VICTORY! ", `Congratulations! You escaped the maze!\n\n${breakdownText}`, true, 4000);
+ } else {
+ let breakdownText = ` SCORE BREAKDOWN \n` +
+ `Lose Penalty: ${scoreBreakdown.losePenalty} pts\n` +
+ `Playing Bonus: +${scoreBreakdown.playingBonus} pts\n`;
+ 
+ if (scoreBreakdown.powerupPenalty < 0) {
+ breakdownText += `Powerup Penalty: ${scoreBreakdown.powerupPenalty} pts\n`;
+ }
+ 
+ breakdownText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+ `TOTAL: ${finalScore} pts\n` +
+ `Survived: ${survivalTime} seconds`;
+ 
+ this.showMessage(" GAME OVER", `You fought bravely!\n\n${breakdownText}\n\nTry again to improve your score!`, true, 4000);
+ }
+ 
+ // Return to menu and stop game loop
+ game = null;
+ gameState = "menu";
+ this.gameLoopRunning = false; // Stop the game loop
+ 
+ // Clear the canvas completely - let page background show through
+ this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+ 
+ this.updateStatus();
+ this.updateMenuButtons();
+ }
+ 
+ // Update best score display in menu header
+ async updateBestScore() {
+ if (currentUser && userAuth) {
+ try {
+ console.log(' Refreshing best score display...');
+ 
+ // Add a small delay to ensure the database has processed the new score
+ await new Promise(resolve => setTimeout(resolve, 500));
+ 
+ // Get user's best completion time (fastest win)
+ const bestScore = await userAuth.getBestScore();
+ const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
+ 
+ console.log(' Best score data received:', bestScore);
+ 
+ if (bestScore && bestScore.score !== undefined && menuHeaderTopScore) {
+ menuHeaderTopScore.textContent = `Best: ${bestScore.score} Pts`;
+ console.log(' Updated best score display:', bestScore.score, 'points');
+ } else if (menuHeaderTopScore) {
+ console.log(' No best score found, setting to default');
+ menuHeaderTopScore.textContent = 'Best: -- Pts';
+ }
+ } catch (error) {
+ console.error(' Error updating best score:', error);
+ const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
+ if (menuHeaderTopScore) {
+ menuHeaderTopScore.textContent = 'Best: -- Pts';
+ }
+ }
+ }
+ }
 
-            // Show one readable, accessible booster toast at a time.
-            showPowerupNotification(message, icon = "⚡") {
-                const notificationsContainer = document.getElementById('powerup-notifications');
-                if (!notificationsContainer || !message) return;
+ // Show one readable, accessible booster toast at a time.
+ showPowerupNotification(message, icon = "") {
+ const notificationsContainer = document.getElementById('powerup-notifications');
+ if (!notificationsContainer || !message) return;
 
-                // Replace an older toast instead of stacking over the canvas or controls.
-                if (this.powerupToastTimer) {
-                    clearTimeout(this.powerupToastTimer);
-                    this.powerupToastTimer = null;
-                }
-                notificationsContainer.replaceChildren();
+ // Replace an older toast instead of stacking over the canvas or controls.
+ if (this.powerupToastTimer) {
+ clearTimeout(this.powerupToastTimer);
+ this.powerupToastTimer = null;
+ }
+ notificationsContainer.replaceChildren();
 
-                const notification = document.createElement('div');
-                notification.className = 'powerup-notification';
-                notification.setAttribute('role', 'status');
-                notification.setAttribute('aria-live', 'polite');
+ const notification = document.createElement('div');
+ notification.className = 'powerup-notification';
+ notification.setAttribute('role', 'status');
+ notification.setAttribute('aria-live', 'polite');
 
-                const iconNode = document.createElement('span');
-                iconNode.className = 'powerup-notification-icon';
-                iconNode.setAttribute('aria-hidden', 'true');
-                iconNode.textContent = icon;
+ const iconNode = document.createElement('span');
+ iconNode.className = 'powerup-notification-icon';
+ iconNode.setAttribute('aria-hidden', 'true');
+ iconNode.textContent = "";
 
-                const textNode = document.createElement('span');
-                textNode.className = 'powerup-notification-text';
-                textNode.textContent = message;
+ const textNode = document.createElement('span');
+ textNode.className = 'powerup-notification-text';
+ textNode.textContent = message;
 
-                notification.append(iconNode, textNode);
-                notificationsContainer.appendChild(notification);
+ iconNode.innerHTML = window.lucide?.createElement ? window.lucide.createElement(icon === "❄" ? "snowflake" : icon === "🔨" ? "hammer" : "zap").outerHTML : "";\n                notification.append(iconNode, textNode);
+ notificationsContainer.appendChild(notification);
 
-                requestAnimationFrame(() => notification.classList.add('show'));
-                this.powerupToastTimer = setTimeout(() => {
-                    notification.classList.remove('show');
-                    setTimeout(() => {
-                        if (notification.parentNode === notificationsContainer) {
-                            notification.remove();
-                        }
-                    }, 220);
-                    this.powerupToastTimer = null;
-                }, 2200);
-            }
-        }
-        
-        // Start the game when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 DOM loaded, initializing game...');
-            
-            // Initialize the game controller
-            try {
-                console.log('Creating MazeChaseController...');
-                const controller = new MazeChaseController();
-                window.gameController = controller; // Make it globally accessible
-                console.log('✅ Game controller created and assigned to window.gameController');
-                
-                // Verify controller is accessible
-                if (window.gameController) {
-                    console.log('✅ window.gameController is accessible');
-                } else {
-                    console.error('❌ window.gameController is not accessible after assignment');
-                }
-                
-            } catch (error) {
-                console.error('❌ Failed to create game controller:', error);
-                console.error('Error stack:', error.stack);
-                showAlert('Initialization Error', 'Failed to initialize game controller: ' + error.message);
-                return; // Don't continue if controller failed to create
-            }
-            
-            // Add event listener for start button as backup - do this after a delay to ensure controller is ready
-            setTimeout(() => {
-                const startBtn = document.getElementById('startGameBtn');
-                if (startBtn) {
-                    startBtn.addEventListener('click', function(e) {
-                        console.log('🎮 Start button clicked via event listener');
-                        e.preventDefault();
-                        e.stopPropagation();
-                        startGame();
-                    });
-                    console.log('✅ Start button event listener added');
-                    
-                    // Test if button is clickable
-                    startBtn.style.cursor = 'pointer';
-                    console.log('✅ Start button event listener added successfully');
-                } else {
-                    console.error('❌ Start button not found');
-                }
-                
-                // Initialize database
-                window.database = new MazeChaseDB();
-                
-                // Initialize UserAuth with the database
-                userAuth = new UserAuth(window.database);
-                
-                // Initialize mobile controls - ensure they're hidden initially
-                const mobileControls = document.getElementById('mobile-controls');
-                if (mobileControls) {
-                    mobileControls.style.display = 'none';
-                    console.log('🎮 Mobile controls initialized as hidden');
-                }
-                
-                // Initialize algorithm blog panel
-                initializeBlogPanel();
-                
-                // Check if user is already logged in and update best score
-                setTimeout(async () => {
-                    if (currentUser && userAuth) {
-                        console.log('🔄 User already logged in, updating best score...');
-                        await gameController.updateBestScore();
-                    }
-                }, 1000);
-                
-            }, 500); // Wait 500ms for controller to initialize
-        });
-        
-        function updateDatabaseStatus(connected) {
-            const dbStatus = document.getElementById('dbStatus');
-            const dbStatusText = document.getElementById('dbStatusText');
-            const staticDbStatus = document.getElementById('db-status');
-            
-            if (dbStatus && dbStatusText) {
-                if (connected) {
-                    dbStatus.className = 'db-status connected';
-                    dbStatusText.textContent = 'Database: Online';
-                } else {
-                    dbStatus.className = 'db-status disconnected';
-                    dbStatusText.textContent = 'Database: Offline';
-                }
-            }
-            
-            // Update static status panel
-            if (staticDbStatus) {
-                const statusColor = connected ? '#39FF14' : '#FF6B6B';
-                const statusText = connected ? 'Online' : 'Offline';
-                staticDbStatus.innerHTML = `Database: <span style="color: ${statusColor};">${statusText}</span>`;
-            }
-            
-            console.log('📊 Database status updated:', connected ? 'Online' : 'Offline');
-            console.log('📊 window.database exists:', !!window.database);
-            console.log('📊 window.database.connected:', window.database?.connected);
-        }
-        
-        // Global Button Functions
-        function startGame() {
-            console.log('🎮 startGame() called - Button click working!');
-            console.log('window.gameController exists:', !!window.gameController);
-            
-            if (window.gameController) {
-                if (window.gameController.initialized) {
-                    console.log('Calling gameController.startGame()');
-                    window.gameController.startGame();
-                } else {
-                    console.log('Controller exists but not fully initialized yet, waiting...');
-                    setTimeout(() => {
-                        if (window.gameController && window.gameController.initialized) {
-                            console.log('✅ Controller now initialized, starting game...');
-                            window.gameController.startGame();
-                        } else {
-                            console.error('❌ Controller still not initialized');
-                            showAlert('Initialization Error', 'Game is still initializing. Please wait a moment.');
-                        }
-                    }, 1000);
-                }
-            } else {
-                console.error('❌ window.gameController is not defined');
-                console.log('Waiting for controller to initialize...');
-                
-                // Show available properties for debugging
-                console.log('Available window properties containing "game":', Object.keys(window).filter(k => k.toLowerCase().includes('game')));
-                console.log('Available window properties containing "controller":', Object.keys(window).filter(k => k.toLowerCase().includes('controller')));
-                
-                setTimeout(() => {
-                    if (window.gameController) {
-                        console.log('✅ Controller found on retry, starting game...');
-                        window.gameController.startGame();
-                    } else {
-                        console.error('❌ Controller still not found after retry');
-                        showAlert('Initialization Error', 'Game controller failed to initialize. Please refresh the page.');
-                    }
-                }, 1000);
-            }
-        }
-        
-        // Debug function to test controller creation
-        function testController() {
-            console.log('=== CONTROLLER DEBUG TEST ===');
-            console.log('window.gameController:', window.gameController);
-            console.log('typeof window.gameController:', typeof window.gameController);
-            
-            if (!window.gameController) {
-                console.log('Attempting to create controller manually...');
-                try {
-                    const testController = new MazeChaseController();
-                    window.gameController = testController;
-                    console.log('✅ Manual controller creation successful');
-                } catch (error) {
-                    console.error('❌ Manual controller creation failed:', error);
-                }
-            }
-        }
-        
-        // Make testController available globally
-        window.testController = testController;
-        
-        // Global function to start the game (called by buttons)
-        function startGame() {
-            console.log('🎮 Global startGame() called');
-            if (window.gameController) {
-                console.log('✅ Calling gameController.startGame()');
-                window.gameController.startGame();
-            } else {
-                console.error('❌ Game controller not available');
-                showAlert('Game Error', 'Game controller not initialized. Please refresh the page.');
-            }
-        }
-        
-        // Make startGame available globally
-        window.startGame = startGame;
-        
-        function restartCurrentGame() {
-            if (window.gameController && gameState !== "menu") {
-                window.gameController.startGame();
-            }
-        }
-        
-        function returnToMainMenu() {
-            if (window.gameController) {
-                window.gameController.returnToMenu();
-                const pauseBtn = document.getElementById('pause-text');
-                if (pauseBtn) pauseBtn.textContent = "⏸️ Pause";
-            }
-        }
-        
-        // Mobile control functions: direct, single-source movement (no synthetic keyboard events).
-        function handleMobileMove(direction) {
-            if (!window.gameController || gameState !== "playing" || !game) return;
+ requestAnimationFrame(() => notification.classList.add('show'));
+ this.powerupToastTimer = setTimeout(() => {
+ notification.classList.remove('show');
+ setTimeout(() => {
+ if (notification.parentNode === notificationsContainer) {
+ notification.remove();
+ }
+ }, 220);
+ this.powerupToastTimer = null;
+ }, 2200);
+ }
+ }
+ 
+ // Start the game when page loads
+ document.addEventListener('DOMContentLoaded', () => {
+ console.log(' DOM loaded, initializing game...');
+ 
+ // Initialize the game controller
+ try {
+ console.log('Creating MazeChaseController...');
+ const controller = new MazeChaseController();
+ window.gameController = controller; // Make it globally accessible
+ console.log(' Game controller created and assigned to window.gameController');
+ 
+ // Verify controller is accessible
+ if (window.gameController) {
+ console.log(' window.gameController is accessible');
+ } else {
+ console.error(' window.gameController is not accessible after assignment');
+ }
+ 
+ } catch (error) {
+ console.error(' Failed to create game controller:', error);
+ console.error('Error stack:', error.stack);
+ showAlert('Initialization Error', 'Failed to initialize game controller: ' + error.message);
+ return; // Don't continue if controller failed to create
+ }
+ 
+ // Add event listener for start button as backup - do this after a delay to ensure controller is ready
+ setTimeout(() => {
+ const startBtn = document.getElementById('startGameBtn');
+ if (startBtn) {
+ startBtn.addEventListener('click', function(e) {
+ console.log(' Start button clicked via event listener');
+ e.preventDefault();
+ e.stopPropagation();
+ startGame();
+ });
+ console.log(' Start button event listener added');
+ 
+ // Test if button is clickable
+ startBtn.style.cursor = 'pointer';
+ console.log(' Start button event listener added successfully');
+ } else {
+ console.error(' Start button not found');
+ }
+ 
+ // Initialize database
+ window.database = new MazeChaseDB();
+ 
+ // Initialize UserAuth with the database
+ userAuth = new UserAuth(window.database);
+ 
+ // Initialize mobile controls - ensure they're hidden initially
+ const mobileControls = document.getElementById('mobile-controls');
+ if (mobileControls) {
+ mobileControls.style.display = 'none';
+ console.log(' Mobile controls initialized as hidden');
+ }
+ 
+ // Initialize algorithm blog panel
+ initializeBlogPanel();
+ 
+ // Check if user is already logged in and update best score
+ setTimeout(async () => {
+ if (currentUser && userAuth) {
+ console.log(' User already logged in, updating best score...');
+ await gameController.updateBestScore();
+ }
+ }, 1000);
+ 
+ }, 500); // Wait 500ms for controller to initialize
+ });
+ 
+ function updateDatabaseStatus(connected) {
+ const dbStatus = document.getElementById('dbStatus');
+ const dbStatusText = document.getElementById('dbStatusText');
+ const staticDbStatus = document.getElementById('db-status');
+ 
+ if (dbStatus && dbStatusText) {
+ if (connected) {
+ dbStatus.className = 'db-status connected';
+ dbStatusText.textContent = 'Database: Online';
+ } else {
+ dbStatus.className = 'db-status disconnected';
+ dbStatusText.textContent = 'Database: Offline';
+ }
+ }
+ 
+ // Update static status panel
+ if (staticDbStatus) {
+ const statusColor = connected ? '#39FF14': '#FF6B6B';
+ const statusText = connected ? 'Online': 'Offline';
+ staticDbStatus.innerHTML = `Database: <span style="color: ${statusColor};">${statusText}</span>`;
+ }
+ 
+ console.log(' Database status updated:', connected ? 'Online': 'Offline');
+ console.log(' window.database exists:', !!window.database);
+ console.log(' window.database.connected:', window.database?.connected);
+ }
+ 
+ // Global Button Functions
+ function startGame() {
+ console.log(' startGame() called - Button click working!');
+ console.log('window.gameController exists:', !!window.gameController);
+ 
+ if (window.gameController) {
+ if (window.gameController.initialized) {
+ console.log('Calling gameController.startGame()');
+ window.gameController.startGame();
+ } else {
+ console.log('Controller exists but not fully initialized yet, waiting...');
+ setTimeout(() => {
+ if (window.gameController && window.gameController.initialized) {
+ console.log(' Controller now initialized, starting game...');
+ window.gameController.startGame();
+ } else {
+ console.error(' Controller still not initialized');
+ showAlert('Initialization Error', 'Game is still initializing. Please wait a moment.');
+ }
+ }, 1000);
+ }
+ } else {
+ console.error(' window.gameController is not defined');
+ console.log('Waiting for controller to initialize...');
+ 
+ // Show available properties for debugging
+ console.log('Available window properties containing "game":', Object.keys(window).filter(k => k.toLowerCase().includes('game')));
+ console.log('Available window properties containing "controller":', Object.keys(window).filter(k => k.toLowerCase().includes('controller')));
+ 
+ setTimeout(() => {
+ if (window.gameController) {
+ console.log(' Controller found on retry, starting game...');
+ window.gameController.startGame();
+ } else {
+ console.error(' Controller still not found after retry');
+ showAlert('Initialization Error', 'Game controller failed to initialize. Please refresh the page.');
+ }
+ }, 1000);
+ }
+ }
+ 
+ // Debug function to test controller creation
+ function testController() {
+ console.log('=== CONTROLLER DEBUG TEST ===');
+ console.log('window.gameController:', window.gameController);
+ console.log('typeof window.gameController:', typeof window.gameController);
+ 
+ if (!window.gameController) {
+ console.log('Attempting to create controller manually...');
+ try {
+ const testController = new MazeChaseController();
+ window.gameController = testController;
+ console.log(' Manual controller creation successful');
+ } catch (error) {
+ console.error(' Manual controller creation failed:', error);
+ }
+ }
+ }
+ 
+ // Make testController available globally
+ window.testController = testController;
+ 
+ // Global function to start the game (called by buttons)
+ function startGame() {
+ console.log(' Global startGame() called');
+ if (window.gameController) {
+ console.log(' Calling gameController.startGame()');
+ window.gameController.startGame();
+ } else {
+ console.error(' Game controller not available');
+ showAlert('Game Error', 'Game controller not initialized. Please refresh the page.');
+ }
+ }
+ 
+ // Make startGame available globally
+ window.startGame = startGame;
+ 
+ function restartCurrentGame() {
+ if (window.gameController && gameState !== "menu") {
+ window.gameController.startGame();
+ }
+ }
+ 
+ function returnToMainMenu() {
+ if (window.gameController) {
+ window.gameController.returnToMenu();
+ const pauseBtn = document.getElementById('pause-text');
+ if (pauseBtn) pauseBtn.textContent = " Pause";
+ }
+ }
+ 
+ // Mobile control functions: direct, single-source movement (no synthetic keyboard events).
+ function handleMobileMove(direction) {
+ if (!window.gameController || gameState !== "playing" || !game) return;
 
-            const vectors = {
-                up: [-1, 0],
-                down: [1, 0],
-                left: [0, -1],
-                right: [0, 1]
-            };
-            const vector = vectors[direction];
-            if (!vector) return;
+ const vectors = {
+ up: [-1, 0],
+ down: [1, 0],
+ left: [0, -1],
+ right: [0, 1]
+ };
+ const vector = vectors[direction];
+ if (!vector) return;
 
-            game.movePlayer(vector[0], vector[1]);
-        }
+ game.movePlayer(vector[0], vector[1]);
+ }
 
-        function handleMobileStop() {
-            // Stop movement when the finger/mouse is released so the player doesn't keep drifting.
-            if (game && typeof game.movePlayer === 'function' && gameState === "playing") {
-                game.movePlayer(0, 0);
-            }
-            document.querySelectorAll('#mobile-controls .control-btn.active')
-                .forEach(button => button.classList.remove('active'));
-        }
+ function handleMobileStop() {
+ // Stop movement when the finger/mouse is released so the player doesn't keep drifting.
+ if (game && typeof game.movePlayer === 'function' && gameState === "playing") {
+ game.movePlayer(0, 0);
+ }
+ document.querySelectorAll('#mobile-controls.control-btn.active')
+.forEach(button => button.classList.remove('active'));
+ }
 
-        function showHelp() {
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.id = 'helpModal';
-            
-            overlay.innerHTML = `
-                <div class="modal" style="max-width: 600px;">
-                    <h2>🎮 HOW TO PLAY - MAZESCAPE</h2>
-                    <div style="text-align: left; margin: 20px 0; max-height: 400px; overflow-y: auto;">
-                        <h4 style="color: #00BFFF; margin-top: 0px; margin-bottom: 15px;">🎯 Objective</h4>
-                        <p style="margin-bottom: 20px;">Navigate through the randomly generated maze to reach the <strong style="color: #FFD700;">yellow exit square</strong> while avoiding the red ghost.</p>
-                        
-                        <h4 style="color: #39FF14; margin-top: 20px; margin-bottom: 15px;">🕹️ Controls</h4>
-                        <p style="margin-bottom: 20px;">
-                            <strong>Movement:</strong> Use <span style="color: #00BFFF;">WASD</span> or <span style="color: #00BFFF;">Arrow keys</span><br>
-                            <strong>Start Game:</strong> Spacebar (from menu)<br>
-                            <strong>Fullscreen:</strong> F11 key
-                        </p>
-                        
-                        <h4 style="color: #FF6B6B; margin-top: 20px; margin-bottom: 15px;">👻 Enemy</h4>
-                        <p style="margin-bottom: 20px;">
-                            <strong style="color: #FF6B6B;">Red Ghost</strong> - uses smart A* pathfinding to chase you!<br>
-                            • The ghost will find the optimal path to reach you<br>
-                            • If touched by the ghost, you lose a life and respawn at start<br>
-                            • You start with 2 lives total
-                        </p>
-                        
-                        <h4 style="color: #FFD700; margin-top: 20px; margin-bottom: 15px;">⚡ Power-ups</h4>
-                        <p style="margin-bottom: 20px;">
-                            Power-ups spawn randomly and last 15 seconds on the ground:<br>
-                            • <span style="color: #00BFFF;">⚡ Speed Boost:</span> Doubles your movement speed for 3 seconds<br>
-                            • <span style="color: #64C8FF;">❄ Freeze:</span> Stops the ghost for 3 seconds<br>
-                            • <span style="color: #FFA500;">🔨 Wall Breaker:</span> Break through walls for 3 seconds
-                        </p>
-                        
-                        <h4 style="color: #9D4EDD; margin-top: 20px; margin-bottom: 15px;">🏆 Scoring System</h4>
-                        <p style="margin-bottom: 20px;">
-                            <strong style="color: #00BFFF;">🏆 WIN SCORING:</strong><br>
-                            • <span style="color: #FFD700;">Win Bonus:</span> +100 points for completing the maze<br>
-                            • <span style="color: #39FF14;">Time Bonus:</span><br>
-                            &nbsp;&nbsp;- 10-15 seconds = +100 points<br>
-                            &nbsp;&nbsp;- 15-25 seconds = +50 points<br>
-                            &nbsp;&nbsp;- Above 25 seconds = +5 points<br>
-                            • <span style="color: #00BFFF;">Playing Bonus:</span> +2 points per second played<br>
-                            • <span style="color: #FF6B6B;">Powerup Penalty:</span> -10 points per powerup used<br>
-                            • <span style="color: #39FF14;">Full Lives Bonus:</span> +20 points (if 2 lives remaining)<br><br>
-                            
-                            <strong style="color: #FF6B6B;">💀 LOSE SCORING:</strong><br>
-                            • <span style="color: #FF6B6B;">Lose Penalty:</span> -50 points<br>
-                            • <span style="color: #00BFFF;">Playing Bonus:</span> +1 point per second survived<br>
-                            • <span style="color: #FF6B6B;">Powerup Penalty:</span> -10 points per powerup used<br>
-                            • <span style="color: #888;">Note:</span> Score will show 0 if negative<br><br>
-                            
-                            <strong style="color: #FFD700;">💡 Strategy:</strong> Score increases as you play! Complete fast for maximum bonus!
-                        </p>
-                        
-                        <h4 style="color: #FF8C00; margin-top: 20px; margin-bottom: 15px;">💡 Strategy Tips</h4>
-                        <p>
-                            • The maze is randomly generated each game<br>
-                            • Plan your route carefully - the ghost is intelligent<br>
-                            • Use power-ups strategically when cornered<br>
-                            • Wall Breaker can create new escape routes<br>
-                            • Speed Boost is great for outrunning the ghost<br>
-                            • Freeze gives you time to reposition safely
-                        </p>
-                        
-                        <h4 style="color: #39FF14; margin-top: 20px; margin-bottom: 15px;">🎮 Game Features</h4>
-                        <p>
-                            • Responsive design - works on any screen size<br>
-                            • Particle effects for visual feedback<br>
-                            • Real-time pathfinding AI for the ghost<br>
-                            • Automatic maze generation with guaranteed solution<br>
-                            • Progressive difficulty as you play
-                        </p>
-                    </div>
-                    <div class="button-row">
-                        <button class="game-button primary" onclick="closeModal('helpModal')">🎮 Let's Play!</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(overlay);
-        }
-        
-        function showLogin() {
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.id = 'loginModal';
-            
-            overlay.innerHTML = `
-                <div class="auth-form">
-                    <h3>🔑 Login</h3>
-                    <input type="text" class="game-input" id="loginUsername" placeholder="Username" maxlength="50">
-                    <input type="password" class="game-input" id="loginPassword" placeholder="Password" maxlength="100">
-                    <div class="button-row">
-                        <button class="game-button primary" onclick="performLogin()">Login</button>
-                        <button class="game-button secondary" onclick="closeModal('loginModal')">Cancel</button>
-                    </div>
-                    <p style="color: #888; font-size: 12px; margin-top: 15px;">
-                        Don't have an account? <a href="#" onclick="closeModal('loginModal'); showRegister();" style="color: #00BFFF;">Register here</a>
-                    </p>
-                </div>
-            `;
-            
-            document.body.appendChild(overlay);
-            document.getElementById('loginUsername').focus();
-        }
-        
-        function showRegister() {
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.id = 'registerModal';
-            
-            overlay.innerHTML = `
-                <div class="auth-form">
-                    <h3>📝 Register</h3>
-                    <input type="text" class="game-input" id="registerUsername" placeholder="Username" maxlength="50">
-                    <input type="password" class="game-input" id="registerPassword" placeholder="Password" maxlength="100">
-                    <input type="password" class="game-input" id="registerConfirmPassword" placeholder="Confirm Password" maxlength="100">
-                    <div class="button-row">
-                        <button class="game-button primary" onclick="performRegister()">Register</button>
-                        <button class="game-button secondary" onclick="closeModal('registerModal')">Cancel</button>
-                    </div>
-                    <p style="color: #888; font-size: 12px; margin-top: 15px;">
-                        Already have an account? <a href="#" onclick="closeModal('registerModal'); showLogin();" style="color: #00BFFF;">Login here</a>
-                    </p>
-                </div>
-            `;
-            
-            document.body.appendChild(overlay);
-            document.getElementById('registerUsername').focus();
-        }
-        
-        function showLeaderboard() {
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.id = 'leaderboardModal';
-            
-            overlay.innerHTML = `
-                <div class="modal" style="max-width: 600px;">
-                    <h2><i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> LEADERBOARD</h2>
-                    <div id="leaderboardContent">
-                        <p>Loading leaderboard...</p>
-                    </div>
-                    <div class="button-row">
-                        <button class="game-button" onclick="closeModal('leaderboardModal')">Close</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(overlay);
-            loadLeaderboard();
-        }
-        
-        function showSettings() {
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.id = 'settingsModal';
-            
-            overlay.innerHTML = `
-                <div class="modal">
-                    <h2><i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS</h2>
-                    <div style="text-align: left; margin: 20px 0;">
-                        <label style="display: block; margin: 15px 0;">
-                            <input type="checkbox" id="texturesEnabled" checked style="margin-right: 10px;">
-                            🎨 Enhanced Textures
-                        </label>
-                        <label style="display: block; margin: 15px 0;">
-                            <input type="checkbox" id="onScreenControls" style="margin-right: 10px;">
-                            📱 On-Screen Controls (Mobile)
-                        </label>
-                    </div>
-                    <div class="button-row">
-                        <button class="game-button primary" onclick="saveSettings()">Save</button>
-                        <button class="game-button secondary" onclick="closeModal('settingsModal')">Cancel</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(overlay);
-            loadSettings();
-        }
-        
-        function showProfile() {
-            if (!currentUser) return;
-            
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.id = 'profileModal';
-            
-            overlay.innerHTML = `
-                <div class="modal">
-                    <h2><i data-lucide="user-round" class="ui-icon" aria-hidden="true"></i> PROFILE</h2>
-                    <div style="text-align: left; margin: 20px 0;">
-                        <p><strong>Username:</strong> ${currentUser.username || 'Unknown'}</p>
-                        <p><strong>Joined:</strong> ${new Date(currentUser.created_at || Date.now()).toLocaleDateString()}</p>
-                        <p><strong>Games Played:</strong> <span id="gamesPlayed">Loading...</span></p>
-                        <p><strong>Best Score:</strong> <span id="bestScore">Loading...</span></p>
-                    </div>
-                    <div class="button-row">
-                        <button class="game-button" onclick="closeModal('profileModal')">Close</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(overlay);
-            loadUserStats();
-        }
-        
-        function exitGame() {
-            showConfirm('Exit Game', 'Are you sure you want to exit the game?', () => {
-                window.close();
-            });
-        }
-        
-        function logout() {
-            showConfirm('Logout', 'Are you sure you want to logout?', () => {
-                currentUser = null;
-                updateUserDisplay(); // Clear username display
-                if (window.gameController) {
-                    window.gameController.returnToMenu();
-                    window.gameController.updateStatus();
-                    window.gameController.updateMenuButtons();
-                }
-                showMessage('Logged Out', 'You have been successfully logged out.', true, 2000);
-            });
-        }
-        
-        // Function to control mobile controls visibility
-        function updateMobileControlsVisibility(gameIsPlaying = false) {
-            const mobileControls = document.getElementById('mobile-controls');
-            if (!mobileControls) return;
-            
-            if (gameIsPlaying && (gameState === "playing" || gameState === "paused")) {
-                const isMobile = window.innerWidth <= 768;
-                const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
-                const shouldShow = isMobile || onScreenControls;
-                
-                if (shouldShow) {
-                    mobileControls.style.display = 'block';
-                    // Add visible class for smooth transition
-                    setTimeout(() => mobileControls.classList.add('visible'), 10);
-                    console.log('🎮 Mobile controls shown during gameplay');
-                } else {
-                    mobileControls.classList.remove('visible');
-                    setTimeout(() => mobileControls.style.display = 'none', 300);
-                    console.log('🎮 Mobile controls hidden (not mobile device)');
-                }
-            } else {
-                mobileControls.classList.remove('visible');
-                setTimeout(() => mobileControls.style.display = 'none', 300);
-                console.log('🎮 Mobile controls hidden (not playing)');
-            }
-        }
-        
-        // Function to update welcome text responsively based on screen size
-        function updateWelcomeText(username = null) {
-            const menuHeaderWelcomeText = document.getElementById('menuHeaderWelcomeText');
-            if (!menuHeaderWelcomeText) return;
-            
-            const isSmallScreen = window.innerWidth <= 400;
-            const isMobileScreen = window.innerWidth <= 600;
-            
-            if (username) {
-                if (isSmallScreen) {
-                    // Very short text for very small screens
-                    menuHeaderWelcomeText.textContent = `Hi, ${username}!`;
-                } else if (isMobileScreen) {
-                    // Shorter text for mobile screens
-                    menuHeaderWelcomeText.textContent = `Welcome, ${username}!`;
-                } else {
-                    // Full text for larger screens
-                    menuHeaderWelcomeText.textContent = `Welcome, ${username}!`;
-                }
-            } else {
-                if (isSmallScreen) {
-                    // Very short text for very small screens
-                    menuHeaderWelcomeText.textContent = 'Hi, Guest!';
-                } else if (isMobileScreen) {
-                    // Shorter text for mobile screens
-                    menuHeaderWelcomeText.textContent = 'Welcome, Guest!';
-                } else {
-                    // Full text for larger screens
-                    menuHeaderWelcomeText.textContent = 'Welcome, Guest!';
-                }
-            }
-        }
-        
-        // Update username display in menu header
-        function updateUserDisplay() {
-            const menuHeaderWelcomeText = document.getElementById('menuHeaderWelcomeText');
-            const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
-            const menuHeaderScoreInfo = document.getElementById('menuHeaderScoreInfo');
-            
-            if (currentUser) {
-                console.log('👤 Updated username display:', currentUser.username);
-                
-                // Update menu header welcome text responsively
-                if (menuHeaderWelcomeText) {
-                    updateWelcomeText(currentUser.username);
-                }
-                
-                // Show score info in menu header for logged in users
-                if (menuHeaderScoreInfo) {
-                    menuHeaderScoreInfo.style.display = 'block';
-                }
-                
-                // Load and display best score from database
-                if (userAuth && menuHeaderTopScore) {
-                    console.log('🔍 Loading best score for user:', currentUser.username);
-                    console.log('🔍 UserAuth object exists:', !!userAuth);
-                    console.log('🔍 UserAuth.getBestScore exists:', !!userAuth.getBestScore);
-                    
-                    // Add a small delay to ensure database connection is ready
-                    setTimeout(async () => {
-                        try {
-                            const bestScore = await userAuth.getBestScore();
-                            console.log('📊 Raw best score response:', bestScore);
-                            if (bestScore && bestScore.score !== undefined) {
-                                menuHeaderTopScore.textContent = `Best: ${bestScore.score} Pts`;
-                                console.log('✅ Best score loaded successfully:', bestScore.score, 'points');
-                            } else {
-                                menuHeaderTopScore.textContent = 'Best: -- Pts';
-                                console.log('⚠️ No best score found or invalid data:', bestScore);
-                            }
-                        } catch (error) {
-                            console.error('❌ Error loading best score:', error);
-                            if (menuHeaderTopScore) {
-                                menuHeaderTopScore.textContent = 'Best: -- Pts';
-                            }
-                        }
-                    }, 500);
-                }
-            } else {
-                // Update menu header to Guest Mode
-                if (menuHeaderWelcomeText) {
-                    updateWelcomeText();
-                }
-                
-                // Hide score info for guest mode
-                if (menuHeaderScoreInfo) {
-                    menuHeaderScoreInfo.style.display = 'none';
-                }
-            }
-        }
-        
-        // Modal and Form Functions
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.remove();
-            }
-        }
-        
-        async function performLogin() {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            
-            if (!username || !password) {
-                showAlert('Login Error', 'Please enter both username and password.');
-                return;
-            }
-            
-            try {
-                if (window.database && window.database.connected) {
-                    console.log(`🔧 Attempting login for: ${username}`);
-                    currentUser = await userAuth.login(username, password);
-                    if (currentUser) {
-                        closeModal('loginModal');
-                        updateUserDisplay(); // Update username display
-                        if (window.gameController) {
-                            window.gameController.updateStatus();
-                            window.gameController.updateMenuButtons();
-                        }
-                        showMessage('Login Successful', `Welcome back, ${username}!`, true, 2000);
-                    } else {
-                        showAlert('Login Failed', 'Invalid username or password.');
-                    }
-                } else {
-                    showAlert('Connection Error', 'Database not connected. Please try again later.');
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                showAlert('Login Error', 'Login failed. Please try again.');
-            }
-        }
-        
-        async function performRegister() {
-            const username = document.getElementById('registerUsername').value.trim();
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-            
-            if (!username || !password || !confirmPassword) {
-                showAlert('Registration Error', 'Please fill in all fields.');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                showAlert('Registration Error', 'Passwords do not match.');
-                return;
-            }
-            
-            if (username.length < 3) {
-                showAlert('Registration Error', 'Username must be at least 3 characters long.');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showAlert('Registration Error', 'Password must be at least 6 characters long.');
-                return;
-            }
-            
-            try {
-                if (window.database && window.database.connected) {
-                    console.log(`🔧 Attempting registration for: ${username}`);
-                    const [success, message] = await userAuth.register(username, password);
-                    if (success) {
-                        closeModal('registerModal');
-                        
-                        // Automatically log in the user after successful registration
-                        console.log(`🔧 Auto-logging in new user: ${username}`);
-                        try {
-                            currentUser = await userAuth.login(username, password);
-                            if (currentUser) {
-                                updateUserDisplay(); // Update username display
-                                // Update UI to reflect logged-in state
-                                if (window.gameController) {
-                                    window.gameController.updateStatus();
-                                    window.gameController.updateMenuButtons();
-                                }
-                                showMessage('Welcome to MazeScape!', `Registration successful! Welcome ${username}, you are now logged in and ready to play!`, true, 3000);
-                            } else {
-                                // Registration succeeded but auto-login failed
-                                showMessage('Registration Successful', `Welcome to Maze Chase, ${username}! Please login to continue.`, true, 3000);
-                            }
-                        } catch (loginError) {
-                            console.error('Auto-login after registration failed:', loginError);
-                            showMessage('Registration Successful', `Welcome to Maze Chase, ${username}! Please login to continue.`, true, 3000);
-                        }
-                    } else {
-                        showAlert('Registration Failed', message || 'Registration failed. Username might already exist.');
-                    }
-                } else {
-                    showAlert('Connection Error', 'Database not connected. Please try again later.');
-                }
-            } catch (error) {
-                console.error('Registration error:', error);
-                showAlert('Registration Error', 'Registration failed. Please try again.');
-            }
-        }
-        
-        async function loadLeaderboard() {
-            try {
-                // Wait for database connection if not ready
-                let retries = 0;
-                while (!window.database?.connected && retries < 10) {
-                    console.log(`⏳ Waiting for database connection... (attempt ${retries + 1})`);
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    retries++;
-                }
-                
-                if (window.database && window.database.connected) {
-                    console.log('📊 Loading leaderboard from database...');
-                    const [scores, error] = await window.database.getLeaderboard();
-                    const content = document.getElementById('leaderboardContent');
-                    
-                    if (error) {
-                        console.error('Error fetching leaderboard:', error);
-                        content.innerHTML = '<p>Error loading leaderboard: ' + error + '</p>';
-                    } else if (scores && scores.length > 0) {
-                        console.log('✅ Loaded', scores.length, 'scores');
-                        console.log('📊 Sample score data:', scores[0]);
-                        let html = `
-                            <div style="text-align: left;">
-                                <div style="padding: 10px; background: rgba(0, 191, 255, 0.1); border-radius: 5px; margin-bottom: 10px; text-align: center; font-size: 12px; color: #00BFFF;">
-                                    🏆 Top Players by Highest Score
-                                </div>
-                        `;
-                        scores.forEach((score, index) => {
-                            const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
-                            html += `
-                                <div style="padding: 8px; border-bottom: 1px solid #444; display: flex; justify-content: space-between; align-items: center;">
-                                    <span>${medal} ${score.username || 'Anonymous'}</span>
-                                    <span style="color: #FFD700; font-weight: bold;">
-                                        ${score.score} pts
-                                    </span>
-                                </div>
-                            `;
-                        });
-                        html += '</div>';
-                        content.innerHTML = html;
-                    } else {
-                        content.innerHTML = '<p>No scores yet. Be the first to play!</p>';
-                    }
-                } else {
-                    console.log('⚠️ Database not connected after waiting, showing offline message');
-                    const content = document.getElementById('leaderboardContent');
-                    if (content) {
-                        content.innerHTML = `
-                            <p>Leaderboard not available (database offline)</p>
-                            <button onclick="loadLeaderboard()" style="margin-top: 10px; padding: 8px 16px; background: #00BFFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                                🔄 Retry
-                            </button>
-                        `;
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading leaderboard:', error);
-                const content = document.getElementById('leaderboardContent');
-                if (content) {
-                    content.innerHTML = '<p>Error loading leaderboard</p>';
-                }
-            }
-        }
-        
-        function loadSettings() {
-            const textures = localStorage.getItem('texturesEnabled') !== 'false';
-            const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
-            
-            if (document.getElementById('texturesEnabled')) {
-                document.getElementById('texturesEnabled').checked = textures;
-            }
-            document.getElementById('onScreenControls').checked = onScreenControls;
-            
-            // Note: Mobile controls visibility is now managed by updatePanelVisibility() based on game state
-            // Settings only control whether they should be shown during gameplay
-        }
-        
-        function saveSettings() {
-            const textures = document.getElementById('texturesEnabled') ? document.getElementById('texturesEnabled').checked : true;
-            const onScreenControls = document.getElementById('onScreenControls').checked;
-            
-            localStorage.setItem('texturesEnabled', textures);
-            localStorage.setItem('onScreenControls', onScreenControls);
-            
-            // Apply texture setting to current game if running
-            if (game && game.textureManager) {
-                game.textureManager.setEnabled(textures);
-                console.log('🎨 Textures', textures ? 'enabled' : 'disabled');
-            }
-            
-            // Update mobile controls visibility based on current game state and new setting
-            if (window.gameController) {
-                window.gameController.updatePanelVisibility();
-            }
-            
-            closeModal('settingsModal');
-            showMessage('Settings Saved', 'Your settings have been saved successfully.', true, 2000);
-        }
-        
-        async function loadUserStats() {
-            try {
-                if (userAuth && userAuth.database && userAuth.database.connected && currentUser) {
-                    console.log('🔧 Loading user stats...');
-                    
-                    // Get user scores
-                    const userScores = await userAuth.getUserScores(50);
-                    const gamesPlayed = userScores.length;
-                    
-                    // Get best score
-                    const bestScore = await userAuth.getBestScore();
-                    const bestScoreValue = bestScore && bestScore.score !== undefined ? `${bestScore.score} Pts` : 'N/A';
-                    
-                    document.getElementById('gamesPlayed').textContent = gamesPlayed;
-                    document.getElementById('bestScore').textContent = bestScoreValue;
-                    
-                    console.log(`✅ User stats loaded: ${gamesPlayed} games, best score: ${bestScoreValue}`);
-                } else {
-                    document.getElementById('gamesPlayed').textContent = 'N/A';
-                    document.getElementById('bestScore').textContent = 'N/A';
-                }
-            } catch (error) {
-                console.error('❌ Error loading user stats:', error);
-                document.getElementById('gamesPlayed').textContent = 'Error';
-                document.getElementById('bestScore').textContent = 'Error';
-            }
-        }
-        
-        // Custom modal functions to replace browser alerts
-        function showAlert(title, message, callback = null) {
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.id = 'alertModal';
-            
-            overlay.innerHTML = `
-                <div class="modal">
-                    <h2 class="glow-text primary-color">${title}</h2>
-                    <p style="margin: 20px 0;">${message}</p>
-                    <div class="button-row">
-                        <button class="game-button primary" onclick="closeCustomAlert()">OK</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(overlay);
-            
-            // Store callback for when modal is closed
-            window.alertCallback = callback;
-        }
-        
-        function closeCustomAlert() {
-            const modal = document.getElementById('alertModal');
-            if (modal) {
-                modal.remove();
-            }
-            if (window.alertCallback) {
-                window.alertCallback();
-                window.alertCallback = null;
-            }
-        }
-        
-        function showConfirm(title, message, onConfirm, onCancel = null) {
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.id = 'confirmModal';
-            
-            overlay.innerHTML = `
-                <div class="modal">
-                    <h2 class="glow-text primary-color">${title}</h2>
-                    <p style="margin: 20px 0;">${message}</p>
-                    <div class="button-row">
-                        <button class="game-button primary" onclick="confirmYes()">Yes</button>
-                        <button class="game-button secondary" onclick="confirmNo()">No</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(overlay);
-            
-            // Store callbacks
-            window.confirmYesCallback = onConfirm;
-            window.confirmNoCallback = onCancel;
-        }
-        
-        function confirmYes() {
-            const modal = document.getElementById('confirmModal');
-            if (modal) {
-                modal.remove();
-            }
-            if (window.confirmYesCallback) {
-                window.confirmYesCallback();
-                window.confirmYesCallback = null;
-                window.confirmNoCallback = null;
-            }
-        }
-        
-        function confirmNo() {
-            const modal = document.getElementById('confirmModal');
-            if (modal) {
-                modal.remove();
-            }
-            if (window.confirmNoCallback) {
-                window.confirmNoCallback();
-            }
-            window.confirmYesCallback = null;
-            window.confirmNoCallback = null;
-        }
-        
-        function showMessage(title, message, autoDismiss = false, dismissTime = 3000) {
-            if (window.gameController) {
-                window.gameController.showMessage(title, message, autoDismiss, dismissTime);
-            }
-        }
+ function showHelp() {
+ const overlay = document.createElement('div');
+ overlay.className = 'modal-overlay';
+ overlay.id = 'helpModal';
+ 
+ overlay.innerHTML = `
+ <div class="modal" style="max-width: 600px;">
+ <h2>HOW TO PLAY - MAZESCAPE</h2>
+ <div style="text-align: left; margin: 20px 0; max-height: 400px; overflow-y: auto;">
+ <h4 style="color: #00BFFF; margin-top: 0px; margin-bottom: 15px;"><i data-lucide="target" class="ui-icon" aria-hidden="true"></i> Objective</h4>
+ <p style="margin-bottom: 20px;">Navigate through the randomly generated maze to reach the <strong style="color: #FFD700;">yellow exit square</strong> while avoiding the red ghost.</p>
+ 
+ <h4 style="color: #39FF14; margin-top: 20px; margin-bottom: 15px;"><i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> Controls</h4>
+ <p style="margin-bottom: 20px;">
+ <strong>Movement:</strong> Use <span style="color: #00BFFF;">WASD</span> or <span style="color: #00BFFF;">Arrow keys</span><br>
+ <strong>Start Game:</strong> Spacebar (from menu)<br>
+ <strong>Fullscreen:</strong> F11 key
+ </p>
+ 
+ <h4 style="color: #FF6B6B; margin-top: 20px; margin-bottom: 15px;"><i data-lucide="ghost" class="ui-icon" aria-hidden="true"></i> Enemy</h4>
+ <p style="margin-bottom: 20px;">
+ <strong style="color: #FF6B6B;">Red Ghost</strong> - uses smart A* pathfinding to chase you!<br>
+ • The ghost will find the optimal path to reach you<br>
+ • If touched by the ghost, you lose a life and respawn at start<br>
+ • You start with 2 lives total
+ </p>
+ 
+ <h4 style="color: #FFD700; margin-top: 20px; margin-bottom: 15px;"><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> Power-ups</h4>
+ <p style="margin-bottom: 20px;">
+ Power-ups spawn randomly and last 15 seconds on the ground:<br>
+ • <span style="color: #00BFFF;"><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> Speed Boost:</span> Doubles your movement speed for 3 seconds<br>
+ • <span style="color: #64C8FF;"><i data-lucide="snowflake" class="ui-icon" aria-hidden="true"></i> Freeze:</span> Stops the ghost for 3 seconds<br>
+ • <span style="color: #FFA500;"><i data-lucide="hammer" class="ui-icon" aria-hidden="true"></i> Wall Breaker:</span> Break through walls for 3 seconds
+ </p>
+ 
+ <h4 style="color: #9D4EDD; margin-top: 20px; margin-bottom: 15px;"> Scoring System</h4>
+ <p style="margin-bottom: 20px;">
+ <strong style="color: #00BFFF;"> WIN SCORING:</strong><br>
+ • <span style="color: #FFD700;">Win Bonus:</span> +100 points for completing the maze<br>
+ • <span style="color: #39FF14;">Time Bonus:</span><br>
+ &nbsp;&nbsp;- 10-15 seconds = +100 points<br>
+ &nbsp;&nbsp;- 15-25 seconds = +50 points<br>
+ &nbsp;&nbsp;- Above 25 seconds = +5 points<br>
+ • <span style="color: #00BFFF;">Playing Bonus:</span> +2 points per second played<br>
+ • <span style="color: #FF6B6B;">Powerup Penalty:</span> -10 points per powerup used<br>
+ • <span style="color: #39FF14;">Full Lives Bonus:</span> +20 points (if 2 lives remaining)<br><br>
+ 
+ <strong style="color: #FF6B6B;"> LOSE SCORING:</strong><br>
+ • <span style="color: #FF6B6B;">Lose Penalty:</span> -50 points<br>
+ • <span style="color: #00BFFF;">Playing Bonus:</span> +1 point per second survived<br>
+ • <span style="color: #FF6B6B;">Powerup Penalty:</span> -10 points per powerup used<br>
+ • <span style="color: #888;">Note:</span> Score will show 0 if negative<br><br>
+ 
+ <strong style="color: #FFD700;"> Strategy:</strong> Score increases as you play! Complete fast for maximum bonus!
+ </p>
+ 
+ <h4 style="color: #FF8C00; margin-top: 20px; margin-bottom: 15px;"> Strategy Tips</h4>
+ <p>
+ • The maze is randomly generated each game<br>
+ • Plan your route carefully - the ghost is intelligent<br>
+ • Use power-ups strategically when cornered<br>
+ • Wall Breaker can create new escape routes<br>
+ • Speed Boost is great for outrunning the ghost<br>
+ • Freeze gives you time to reposition safely
+ </p>
+ 
+ <h4 style="color: #39FF14; margin-top: 20px; margin-bottom: 15px;"> Game Features</h4>
+ <p>
+ • Responsive design - works on any screen size<br>
+ • Particle effects for visual feedback<br>
+ • Real-time pathfinding AI for the ghost<br>
+ • Automatic maze generation with guaranteed solution<br>
+ • Progressive difficulty as you play
+ </p>
+ </div>
+ <div class="button-row">
+ <button class="game-button primary" onclick="closeModal('helpModal')"> Let's Play!</button>
+ </div>
+ </div>
+ `;
+ 
+ document.body.appendChild(overlay);
+ }
+ 
+ function showLogin() {
+ const overlay = document.createElement('div');
+ overlay.className = 'modal-overlay';
+ overlay.id = 'loginModal';
+ 
+ overlay.innerHTML = `
+ <div class="auth-form">
+ <h3> Login</h3>
+ <input type="text" class="game-input" id="loginUsername" placeholder="Username" maxlength="50">
+ <input type="password" class="game-input" id="loginPassword" placeholder="Password" maxlength="100">
+ <div class="button-row">
+ <button class="game-button primary" onclick="performLogin()">Login</button>
+ <button class="game-button secondary" onclick="closeModal('loginModal')">Cancel</button>
+ </div>
+ <p style="color: #888; font-size: 12px; margin-top: 15px;">
+ Don't have an account? <a href="#" onclick="closeModal('loginModal'); showRegister();" style="color: #00BFFF;">Register here</a>
+ </p>
+ </div>
+ `;
+ 
+ document.body.appendChild(overlay);
+ document.getElementById('loginUsername').focus();
+ }
+ 
+ function showRegister() {
+ const overlay = document.createElement('div');
+ overlay.className = 'modal-overlay';
+ overlay.id = 'registerModal';
+ 
+ overlay.innerHTML = `
+ <div class="auth-form">
+ <h3> Register</h3>
+ <input type="text" class="game-input" id="registerUsername" placeholder="Username" maxlength="50">
+ <input type="password" class="game-input" id="registerPassword" placeholder="Password" maxlength="100">
+ <input type="password" class="game-input" id="registerConfirmPassword" placeholder="Confirm Password" maxlength="100">
+ <div class="button-row">
+ <button class="game-button primary" onclick="performRegister()">Register</button>
+ <button class="game-button secondary" onclick="closeModal('registerModal')">Cancel</button>
+ </div>
+ <p style="color: #888; font-size: 12px; margin-top: 15px;">
+ Already have an account? <a href="#" onclick="closeModal('registerModal'); showLogin();" style="color: #00BFFF;">Login here</a>
+ </p>
+ </div>
+ `;
+ 
+ document.body.appendChild(overlay);
+ document.getElementById('registerUsername').focus();
+ }
+ 
+ function showLeaderboard() {
+ const overlay = document.createElement('div');
+ overlay.className = 'modal-overlay';
+ overlay.id = 'leaderboardModal';
+ 
+ overlay.innerHTML = `
+ <div class="modal" style="max-width: 600px;">
+ <h2><i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> LEADERBOARD</h2>
+ <div id="leaderboardContent">
+ <p>Loading leaderboard...</p>
+ </div>
+ <div class="button-row">
+ <button class="game-button" onclick="closeModal('leaderboardModal')">Close</button>
+ </div>
+ </div>
+ `;
+ 
+ document.body.appendChild(overlay);
+ loadLeaderboard();
+ }
+ 
+ function showSettings() {
+ const overlay = document.createElement('div');
+ overlay.className = 'modal-overlay';
+ overlay.id = 'settingsModal';
+ 
+ overlay.innerHTML = `
+ <div class="modal">
+ <h2><i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS</h2>
+ <div style="text-align: left; margin: 20px 0;">
+ <label style="display: block; margin: 15px 0;">
+ <input type="checkbox" id="texturesEnabled" checked style="margin-right: 10px;">
+ Enhanced Textures
+ </label>
+ <label style="display: block; margin: 15px 0;">
+ <input type="checkbox" id="onScreenControls" style="margin-right: 10px;">
+ On-Screen Controls (Mobile)
+ </label>
+ </div>
+ <div class="button-row">
+ <button class="game-button primary" onclick="saveSettings()">Save</button>
+ <button class="game-button secondary" onclick="closeModal('settingsModal')">Cancel</button>
+ </div>
+ </div>
+ `;
+ 
+ document.body.appendChild(overlay);
+ loadSettings();
+ }
+ 
+ function showProfile() {
+ if (!currentUser) return;
+ 
+ const overlay = document.createElement('div');
+ overlay.className = 'modal-overlay';
+ overlay.id = 'profileModal';
+ 
+ overlay.innerHTML = `
+ <div class="modal">
+ <h2><i data-lucide="user-round" class="ui-icon" aria-hidden="true"></i> PROFILE</h2>
+ <div style="text-align: left; margin: 20px 0;">
+ <p><strong>Username:</strong> ${currentUser.username || 'Unknown'}</p>
+ <p><strong>Joined:</strong> ${new Date(currentUser.created_at || Date.now()).toLocaleDateString()}</p>
+ <p><strong>Games Played:</strong> <span id="gamesPlayed">Loading...</span></p>
+ <p><strong>Best Score:</strong> <span id="bestScore">Loading...</span></p>
+ </div>
+ <div class="button-row">
+ <button class="game-button" onclick="closeModal('profileModal')">Close</button>
+ </div>
+ </div>
+ `;
+ 
+ document.body.appendChild(overlay);
+ loadUserStats();
+ }
+ 
+ function exitGame() {
+ showConfirm('Exit Game', 'Are you sure you want to exit the game?', () => {
+ window.close();
+ });
+ }
+ 
+ function logout() {
+ showConfirm('Logout', 'Are you sure you want to logout?', () => {
+ currentUser = null;
+ updateUserDisplay(); // Clear username display
+ if (window.gameController) {
+ window.gameController.returnToMenu();
+ window.gameController.updateStatus();
+ window.gameController.updateMenuButtons();
+ }
+ showMessage('Logged Out', 'You have been successfully logged out.', true, 2000);
+ });
+ }
+ 
+ // Function to control mobile controls visibility
+ function updateMobileControlsVisibility(gameIsPlaying = false) {
+ const mobileControls = document.getElementById('mobile-controls');
+ if (!mobileControls) return;
+ 
+ if (gameIsPlaying && (gameState === "playing" || gameState === "paused")) {
+ const isMobile = window.innerWidth <= 768;
+ const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
+ const shouldShow = isMobile || onScreenControls;
+ 
+ if (shouldShow) {
+ mobileControls.style.display = 'block';
+ // Add visible class for smooth transition
+ setTimeout(() => mobileControls.classList.add('visible'), 10);
+ console.log(' Mobile controls shown during gameplay');
+ } else {
+ mobileControls.classList.remove('visible');
+ setTimeout(() => mobileControls.style.display = 'none', 300);
+ console.log(' Mobile controls hidden (not mobile device)');
+ }
+ } else {
+ mobileControls.classList.remove('visible');
+ setTimeout(() => mobileControls.style.display = 'none', 300);
+ console.log(' Mobile controls hidden (not playing)');
+ }
+ }
+ 
+ // Function to update welcome text responsively based on screen size
+ function updateWelcomeText(username = null) {
+ const menuHeaderWelcomeText = document.getElementById('menuHeaderWelcomeText');
+ if (!menuHeaderWelcomeText) return;
+ 
+ const isSmallScreen = window.innerWidth <= 400;
+ const isMobileScreen = window.innerWidth <= 600;
+ 
+ if (username) {
+ if (isSmallScreen) {
+ // Very short text for very small screens
+ menuHeaderWelcomeText.textContent = `Hi, ${username}!`;
+ } else if (isMobileScreen) {
+ // Shorter text for mobile screens
+ menuHeaderWelcomeText.textContent = `Welcome, ${username}!`;
+ } else {
+ // Full text for larger screens
+ menuHeaderWelcomeText.textContent = `Welcome, ${username}!`;
+ }
+ } else {
+ if (isSmallScreen) {
+ // Very short text for very small screens
+ menuHeaderWelcomeText.textContent = 'Hi, Guest!';
+ } else if (isMobileScreen) {
+ // Shorter text for mobile screens
+ menuHeaderWelcomeText.textContent = 'Welcome, Guest!';
+ } else {
+ // Full text for larger screens
+ menuHeaderWelcomeText.textContent = 'Welcome, Guest!';
+ }
+ }
+ }
+ 
+ // Update username display in menu header
+ function updateUserDisplay() {
+ const menuHeaderWelcomeText = document.getElementById('menuHeaderWelcomeText');
+ const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
+ const menuHeaderScoreInfo = document.getElementById('menuHeaderScoreInfo');
+ 
+ if (currentUser) {
+ console.log(' Updated username display:', currentUser.username);
+ 
+ // Update menu header welcome text responsively
+ if (menuHeaderWelcomeText) {
+ updateWelcomeText(currentUser.username);
+ }
+ 
+ // Show score info in menu header for logged in users
+ if (menuHeaderScoreInfo) {
+ menuHeaderScoreInfo.style.display = 'block';
+ }
+ 
+ // Load and display best score from database
+ if (userAuth && menuHeaderTopScore) {
+ console.log(' Loading best score for user:', currentUser.username);
+ console.log(' UserAuth object exists:', !!userAuth);
+ console.log(' UserAuth.getBestScore exists:', !!userAuth.getBestScore);
+ 
+ // Add a small delay to ensure database connection is ready
+ setTimeout(async () => {
+ try {
+ const bestScore = await userAuth.getBestScore();
+ console.log(' Raw best score response:', bestScore);
+ if (bestScore && bestScore.score !== undefined) {
+ menuHeaderTopScore.textContent = `Best: ${bestScore.score} Pts`;
+ console.log(' Best score loaded successfully:', bestScore.score, 'points');
+ } else {
+ menuHeaderTopScore.textContent = 'Best: -- Pts';
+ console.log(' No best score found or invalid data:', bestScore);
+ }
+ } catch (error) {
+ console.error(' Error loading best score:', error);
+ if (menuHeaderTopScore) {
+ menuHeaderTopScore.textContent = 'Best: -- Pts';
+ }
+ }
+ }, 500);
+ }
+ } else {
+ // Update menu header to Guest Mode
+ if (menuHeaderWelcomeText) {
+ updateWelcomeText();
+ }
+ 
+ // Hide score info for guest mode
+ if (menuHeaderScoreInfo) {
+ menuHeaderScoreInfo.style.display = 'none';
+ }
+ }
+ }
+ 
+ // Modal and Form Functions
+ function closeModal(modalId) {
+ const modal = document.getElementById(modalId);
+ if (modal) {
+ modal.remove();
+ }
+ }
+ 
+ async function performLogin() {
+ const username = document.getElementById('loginUsername').value.trim();
+ const password = document.getElementById('loginPassword').value;
+ 
+ if (!username || !password) {
+ showAlert('Login Error', 'Please enter both username and password.');
+ return;
+ }
+ 
+ try {
+ if (window.database && window.database.connected) {
+ console.log(` Attempting login for: ${username}`);
+ currentUser = await userAuth.login(username, password);
+ if (currentUser) {
+ closeModal('loginModal');
+ updateUserDisplay(); // Update username display
+ if (window.gameController) {
+ window.gameController.updateStatus();
+ window.gameController.updateMenuButtons();
+ }
+ showMessage('Login Successful', `Welcome back, ${username}!`, true, 2000);
+ } else {
+ showAlert('Login Failed', 'Invalid username or password.');
+ }
+ } else {
+ showAlert('Connection Error', 'Database not connected. Please try again later.');
+ }
+ } catch (error) {
+ console.error('Login error:', error);
+ showAlert('Login Error', 'Login failed. Please try again.');
+ }
+ }
+ 
+ async function performRegister() {
+ const username = document.getElementById('registerUsername').value.trim();
+ const password = document.getElementById('registerPassword').value;
+ const confirmPassword = document.getElementById('registerConfirmPassword').value;
+ 
+ if (!username || !password || !confirmPassword) {
+ showAlert('Registration Error', 'Please fill in all fields.');
+ return;
+ }
+ 
+ if (password !== confirmPassword) {
+ showAlert('Registration Error', 'Passwords do not match.');
+ return;
+ }
+ 
+ if (username.length < 3) {
+ showAlert('Registration Error', 'Username must be at least 3 characters long.');
+ return;
+ }
+ 
+ if (password.length < 6) {
+ showAlert('Registration Error', 'Password must be at least 6 characters long.');
+ return;
+ }
+ 
+ try {
+ if (window.database && window.database.connected) {
+ console.log(` Attempting registration for: ${username}`);
+ const [success, message] = await userAuth.register(username, password);
+ if (success) {
+ closeModal('registerModal');
+ 
+ // Automatically log in the user after successful registration
+ console.log(` Auto-logging in new user: ${username}`);
+ try {
+ currentUser = await userAuth.login(username, password);
+ if (currentUser) {
+ updateUserDisplay(); // Update username display
+ // Update UI to reflect logged-in state
+ if (window.gameController) {
+ window.gameController.updateStatus();
+ window.gameController.updateMenuButtons();
+ }
+ showMessage('Welcome to MazeScape!', `Registration successful! Welcome ${username}, you are now logged in and ready to play!`, true, 3000);
+ } else {
+ // Registration succeeded but auto-login failed
+ showMessage('Registration Successful', `Welcome to Maze Chase, ${username}! Please login to continue.`, true, 3000);
+ }
+ } catch (loginError) {
+ console.error('Auto-login after registration failed:', loginError);
+ showMessage('Registration Successful', `Welcome to Maze Chase, ${username}! Please login to continue.`, true, 3000);
+ }
+ } else {
+ showAlert('Registration Failed', message || 'Registration failed. Username might already exist.');
+ }
+ } else {
+ showAlert('Connection Error', 'Database not connected. Please try again later.');
+ }
+ } catch (error) {
+ console.error('Registration error:', error);
+ showAlert('Registration Error', 'Registration failed. Please try again.');
+ }
+ }
+ 
+ async function loadLeaderboard() {
+ try {
+ // Wait for database connection if not ready
+ let retries = 0;
+ while (!window.database?.connected && retries < 10) {
+ console.log(` Waiting for database connection... (attempt ${retries + 1})`);
+ await new Promise(resolve => setTimeout(resolve, 500));
+ retries++;
+ }
+ 
+ if (window.database && window.database.connected) {
+ console.log(' Loading leaderboard from database...');
+ const [scores, error] = await window.database.getLeaderboard();
+ const content = document.getElementById('leaderboardContent');
+ 
+ if (error) {
+ console.error('Error fetching leaderboard:', error);
+ content.innerHTML = '<p>Error loading leaderboard: ' + error + '</p>';
+ } else if (scores && scores.length > 0) {
+ console.log(' Loaded', scores.length, 'scores');
+ console.log(' Sample score data:', scores[0]);
+ let html = `
+ <div style="text-align: left;">
+ <div style="padding: 10px; background: rgba(0, 191, 255, 0.1); border-radius: 5px; margin-bottom: 10px; text-align: center; font-size: 12px; color: #00BFFF;">
+ Top Players by Highest Score
+ </div>
+ `;
+ scores.forEach((score, index) => {
+ const medal = index === 0 ? '': index === 1 ? '': index === 2 ? '': `${index + 1}.`;
+ html += `
+ <div style="padding: 8px; border-bottom: 1px solid #444; display: flex; justify-content: space-between; align-items: center;">
+ <span>${medal} ${score.username || 'Anonymous'}</span>
+ <span style="color: #FFD700; font-weight: bold;">
+ ${score.score} pts
+ </span>
+ </div>
+ `;
+ });
+ html += '</div>';
+ content.innerHTML = html;
+ } else {
+ content.innerHTML = '<p>No scores yet. Be the first to play!</p>';
+ }
+ } else {
+ console.log(' Database not connected after waiting, showing offline message');
+ const content = document.getElementById('leaderboardContent');
+ if (content) {
+ content.innerHTML = `
+ <p>Leaderboard not available (database offline)</p>
+ <button onclick="loadLeaderboard()" style="margin-top: 10px; padding: 8px 16px; background: #00BFFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+ Retry
+ </button>
+ `;
+ }
+ }
+ } catch (error) {
+ console.error('Error loading leaderboard:', error);
+ const content = document.getElementById('leaderboardContent');
+ if (content) {
+ content.innerHTML = '<p>Error loading leaderboard</p>';
+ }
+ }
+ }
+ 
+ function loadSettings() {
+ const textures = localStorage.getItem('texturesEnabled') !== 'false';
+ const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
+ 
+ if (document.getElementById('texturesEnabled')) {
+ document.getElementById('texturesEnabled').checked = textures;
+ }
+ document.getElementById('onScreenControls').checked = onScreenControls;
+ 
+ // Note: Mobile controls visibility is now managed by updatePanelVisibility() based on game state
+ // Settings only control whether they should be shown during gameplay
+ }
+ 
+ function saveSettings() {
+ const textures = document.getElementById('texturesEnabled') ? document.getElementById('texturesEnabled').checked: true;
+ const onScreenControls = document.getElementById('onScreenControls').checked;
+ 
+ localStorage.setItem('texturesEnabled', textures);
+ localStorage.setItem('onScreenControls', onScreenControls);
+ 
+ // Apply texture setting to current game if running
+ if (game && game.textureManager) {
+ game.textureManager.setEnabled(textures);
+ console.log(' Textures', textures ? 'enabled': 'disabled');
+ }
+ 
+ // Update mobile controls visibility based on current game state and new setting
+ if (window.gameController) {
+ window.gameController.updatePanelVisibility();
+ }
+ 
+ closeModal('settingsModal');
+ showMessage('Settings Saved', 'Your settings have been saved successfully.', true, 2000);
+ }
+ 
+ async function loadUserStats() {
+ try {
+ if (userAuth && userAuth.database && userAuth.database.connected && currentUser) {
+ console.log(' Loading user stats...');
+ 
+ // Get user scores
+ const userScores = await userAuth.getUserScores(50);
+ const gamesPlayed = userScores.length;
+ 
+ // Get best score
+ const bestScore = await userAuth.getBestScore();
+ const bestScoreValue = bestScore && bestScore.score !== undefined ? `${bestScore.score} Pts`: 'N/A';
+ 
+ document.getElementById('gamesPlayed').textContent = gamesPlayed;
+ document.getElementById('bestScore').textContent = bestScoreValue;
+ 
+ console.log(` User stats loaded: ${gamesPlayed} games, best score: ${bestScoreValue}`);
+ } else {
+ document.getElementById('gamesPlayed').textContent = 'N/A';
+ document.getElementById('bestScore').textContent = 'N/A';
+ }
+ } catch (error) {
+ console.error(' Error loading user stats:', error);
+ document.getElementById('gamesPlayed').textContent = 'Error';
+ document.getElementById('bestScore').textContent = 'Error';
+ }
+ }
+ 
+ // Custom modal functions to replace browser alerts
+ function showAlert(title, message, callback = null) {
+ const overlay = document.createElement('div');
+ overlay.className = 'modal-overlay';
+ overlay.id = 'alertModal';
+ 
+ overlay.innerHTML = `
+ <div class="modal">
+ <h2 class="glow-text primary-color">${title}</h2>
+ <p style="margin: 20px 0;">${message}</p>
+ <div class="button-row">
+ <button class="game-button primary" onclick="closeCustomAlert()">OK</button>
+ </div>
+ </div>
+ `;
+ 
+ document.body.appendChild(overlay);
+ 
+ // Store callback for when modal is closed
+ window.alertCallback = callback;
+ }
+ 
+ function closeCustomAlert() {
+ const modal = document.getElementById('alertModal');
+ if (modal) {
+ modal.remove();
+ }
+ if (window.alertCallback) {
+ window.alertCallback();
+ window.alertCallback = null;
+ }
+ }
+ 
+ function showConfirm(title, message, onConfirm, onCancel = null) {
+ const overlay = document.createElement('div');
+ overlay.className = 'modal-overlay';
+ overlay.id = 'confirmModal';
+ 
+ overlay.innerHTML = `
+ <div class="modal">
+ <h2 class="glow-text primary-color">${title}</h2>
+ <p style="margin: 20px 0;">${message}</p>
+ <div class="button-row">
+ <button class="game-button primary" onclick="confirmYes()">Yes</button>
+ <button class="game-button secondary" onclick="confirmNo()">No</button>
+ </div>
+ </div>
+ `;
+ 
+ document.body.appendChild(overlay);
+ 
+ // Store callbacks
+ window.confirmYesCallback = onConfirm;
+ window.confirmNoCallback = onCancel;
+ }
+ 
+ function confirmYes() {
+ const modal = document.getElementById('confirmModal');
+ if (modal) {
+ modal.remove();
+ }
+ if (window.confirmYesCallback) {
+ window.confirmYesCallback();
+ window.confirmYesCallback = null;
+ window.confirmNoCallback = null;
+ }
+ }
+ 
+ function confirmNo() {
+ const modal = document.getElementById('confirmModal');
+ if (modal) {
+ modal.remove();
+ }
+ if (window.confirmNoCallback) {
+ window.confirmNoCallback();
+ }
+ window.confirmYesCallback = null;
+ window.confirmNoCallback = null;
+ }
+ 
+ function showMessage(title, message, autoDismiss = false, dismissTime = 3000) {
+ if (window.gameController) {
+ window.gameController.showMessage(title, message, autoDismiss, dismissTime);
+ }
+ }
 
-        // Helper function for showing powerup notifications
-        function showPowerupNotification(message, icon = "⚡") {
-            if (window.gameController) {
-                window.gameController.showPowerupNotification(message, icon);
-            }
-        }
+ // Helper function for showing powerup notifications
+ function showPowerupNotification(message, icon = "") {
+ if (window.gameController) {
+ window.gameController.showPowerupNotification(message, icon);
+ }
+ }
 
-        // Blog panel is always visible - toggle functionality removed
-        function initializeBlogPanel() {
-            const blogPanel = document.querySelector('.blog-panel');
-            
-            // Mobile blog panel expansion functionality
-            if (blogPanel) {
-                // Add click listener for mobile tap-to-expand
-                blogPanel.addEventListener('click', function() {
-                    if (window.innerWidth <= 700) {
-                        blogPanel.classList.toggle('expanded');
-                    }
-                });
-                
-                // Add touch listener for better mobile interaction
-                blogPanel.addEventListener('touchstart', function(e) {
-                    if (window.innerWidth <= 700) {
-                        // Prevent default to avoid double-tap zoom
-                        e.preventDefault();
-                        blogPanel.classList.toggle('expanded');
-                    }
-                });
-                
-                // Close expanded panel when clicking outside on mobile
-                document.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 700 && 
-                        !blogPanel.contains(e.target) && 
-                        blogPanel.classList.contains('expanded')) {
-                        blogPanel.classList.remove('expanded');
-                    }
-                });
-                
-                // Handle window resize to remove expanded state on desktop
-                window.addEventListener('resize', function() {
-                    if (window.innerWidth > 700 && blogPanel.classList.contains('expanded')) {
-                        blogPanel.classList.remove('expanded');
-                    }
-                });
-            }
-        }
+ // Blog panel is always visible - toggle functionality removed
+ function initializeBlogPanel() {
+ const blogPanel = document.querySelector('.blog-panel');
+ 
+ // Mobile blog panel expansion functionality
+ if (blogPanel) {
+ // Add click listener for mobile tap-to-expand
+ blogPanel.addEventListener('click', function() {
+ if (window.innerWidth <= 700) {
+ blogPanel.classList.toggle('expanded');
+ }
+ });
+ 
+ // Add touch listener for better mobile interaction
+ blogPanel.addEventListener('touchstart', function(e) {
+ if (window.innerWidth <= 700) {
+ // Prevent default to avoid double-tap zoom
+ e.preventDefault();
+ blogPanel.classList.toggle('expanded');
+ }
+ });
+ 
+ // Close expanded panel when clicking outside on mobile
+ document.addEventListener('click', function(e) {
+ if (window.innerWidth <= 700 && 
+ !blogPanel.contains(e.target) && 
+ blogPanel.classList.contains('expanded')) {
+ blogPanel.classList.remove('expanded');
+ }
+ });
+ 
+ // Handle window resize to remove expanded state on desktop
+ window.addEventListener('resize', function() {
+ if (window.innerWidth > 700 && blogPanel.classList.contains('expanded')) {
+ blogPanel.classList.remove('expanded');
+ }
+ });
+ }
+ }
 
-        // Add event listeners for all buttons to replace onclick handlers
-        document.addEventListener('DOMContentLoaded', function() {
-            // Main game buttons
-            const startGameBtn = document.getElementById('startGameBtn');
-            const loginBtn = document.getElementById('loginBtn');
-            const registerBtn = document.getElementById('registerBtn');
-            const profileBtn = document.getElementById('profileBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const helpBtn = document.getElementById('helpBtn');
-            const leaderboardBtn = document.getElementById('leaderboardBtn');
-            const settingsBtn = document.getElementById('settingsBtn');
+ // Add event listeners for all buttons to replace onclick handlers
+ document.addEventListener('DOMContentLoaded', function() {
+ // Main game buttons
+ const startGameBtn = document.getElementById('startGameBtn');
+ const loginBtn = document.getElementById('loginBtn');
+ const registerBtn = document.getElementById('registerBtn');
+ const profileBtn = document.getElementById('profileBtn');
+ const logoutBtn = document.getElementById('logoutBtn');
+ const helpBtn = document.getElementById('helpBtn');
+ const leaderboardBtn = document.getElementById('leaderboardBtn');
+ const settingsBtn = document.getElementById('settingsBtn');
 
-            if (startGameBtn) {
-                startGameBtn.addEventListener('click', function() {
-                    startGame();
-                    console.log('Event listener onclick working!');
-                });
-            }
+ if (startGameBtn) {
+ startGameBtn.addEventListener('click', function() {
+ startGame();
+ console.log('Event listener onclick working!');
+ });
+ }
 
-            if (loginBtn) {
-                loginBtn.addEventListener('click', function() {
-                    showLogin();
-                });
-            }
+ if (loginBtn) {
+ loginBtn.addEventListener('click', function() {
+ showLogin();
+ });
+ }
 
-            if (registerBtn) {
-                registerBtn.addEventListener('click', function() {
-                    showRegister();
-                });
-            }
+ if (registerBtn) {
+ registerBtn.addEventListener('click', function() {
+ showRegister();
+ });
+ }
 
-            if (profileBtn) {
-                profileBtn.addEventListener('click', function() {
-                    showProfile();
-                });
-            }
+ if (profileBtn) {
+ profileBtn.addEventListener('click', function() {
+ showProfile();
+ });
+ }
 
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function() {
-                    logout();
-                });
-            }
+ if (logoutBtn) {
+ logoutBtn.addEventListener('click', function() {
+ logout();
+ });
+ }
 
-            if (helpBtn) {
-                helpBtn.addEventListener('click', function() {
-                    showHelp();
-                });
-            }
+ if (helpBtn) {
+ helpBtn.addEventListener('click', function() {
+ showHelp();
+ });
+ }
 
-            if (leaderboardBtn) {
-                leaderboardBtn.addEventListener('click', function() {
-                    showLeaderboard();
-                });
-            }
+ if (leaderboardBtn) {
+ leaderboardBtn.addEventListener('click', function() {
+ showLeaderboard();
+ });
+ }
 
-            if (settingsBtn) {
-                settingsBtn.addEventListener('click', function() {
-                    showSettings();
-                });
-            }
+ if (settingsBtn) {
+ settingsBtn.addEventListener('click', function() {
+ showSettings();
+ });
+ }
 
-            if (document.getElementById('blogToggleBtn')) {
-                document.getElementById('blogToggleBtn').addEventListener('click', function() {
-                    toggleAlgorithmBlog();
-                });
-            }
+ if (document.getElementById('blogToggleBtn')) {
+ document.getElementById('blogToggleBtn').addEventListener('click', function() {
+ toggleAlgorithmBlog();
+ });
+ }
 
-            // Modal buttons - these need to be added dynamically since modals are created on demand
-            document.body.addEventListener('click', function(e) {
-                if (e.target.classList.contains('game-button')) {
-                    const buttonText = e.target.textContent.trim();
-                    
-                    // Handle modal buttons
-                    if (buttonText === '🎮 Let\'s Play!' && e.target.getAttribute('onclick') === 'closeModal(\'helpModal\')') {
-                        closeModal('helpModal');
-                    } else if (buttonText === 'Login' && e.target.getAttribute('onclick') === 'performLogin()') {
-                        performLogin();
-                    } else if (buttonText === 'Cancel') {
-                        const modalId = e.target.closest('.modal-overlay')?.id;
-                        if (modalId) {
-                            closeModal(modalId.replace('Modal', ''));
-                        }
-                    } else if (buttonText === 'Register' && e.target.getAttribute('onclick') === 'performRegister()') {
-                        performRegister();
-                    } else if (buttonText === 'Close') {
-                        const modalId = e.target.closest('.modal-overlay')?.id;
-                        if (modalId) {
-                            closeModal(modalId.replace('Modal', ''));
-                        }
-                    }
-                }
-            });
+ // Modal buttons - these need to be added dynamically since modals are created on demand
+ document.body.addEventListener('click', function(e) {
+ if (e.target.classList.contains('game-button')) {
+ const buttonText = e.target.textContent.trim();
+ 
+ // Handle modal buttons
+ if (buttonText === ' Let\'s Play!' && e.target.getAttribute('onclick') === 'closeModal(\'helpModal\')') {
+ closeModal('helpModal');
+ } else if (buttonText === 'Login' && e.target.getAttribute('onclick') === 'performLogin()') {
+ performLogin();
+ } else if (buttonText === 'Cancel') {
+ const modalId = e.target.closest('.modal-overlay')?.id;
+ if (modalId) {
+ closeModal(modalId.replace('Modal', ''));
+ }
+ } else if (buttonText === 'Register' && e.target.getAttribute('onclick') === 'performRegister()') {
+ performRegister();
+ } else if (buttonText === 'Close') {
+ const modalId = e.target.closest('.modal-overlay')?.id;
+ if (modalId) {
+ closeModal(modalId.replace('Modal', ''));
+ }
+ }
+ }
+ });
 
-            // Mobile A* Blog Button
-            const mobileBlogBtn = document.getElementById('mobileBlogBtn');
-            if (mobileBlogBtn) {
-                mobileBlogBtn.addEventListener('click', function() {
-                    const blogPanel = document.querySelector('.blog-panel');
-                    if (blogPanel) {
-                        console.log('📚 Mobile blog button clicked');
-                        console.log('Blog panel classes:', blogPanel.className);
-                        console.log('Current window width:', window.innerWidth);
-                        
-                        // Remove hidden class if present
-                        if (blogPanel.classList.contains('hidden')) {
-                            blogPanel.classList.remove('hidden');
-                        }
-                        
-                        // Toggle expanded class for mobile view
-                        blogPanel.classList.toggle('expanded');
-                        
-                        console.log('Blog panel classes after toggle:', blogPanel.className);
-                    }
-                });
-            }
+ // Mobile A* Blog Button
+ const mobileBlogBtn = document.getElementById('mobileBlogBtn');
+ if (mobileBlogBtn) {
+ mobileBlogBtn.addEventListener('click', function() {
+ const blogPanel = document.querySelector('.blog-panel');
+ if (blogPanel) {
+ console.log(' Mobile blog button clicked');
+ console.log('Blog panel classes:', blogPanel.className);
+ console.log('Current window width:', window.innerWidth);
+ 
+ // Remove hidden class if present
+ if (blogPanel.classList.contains('hidden')) {
+ blogPanel.classList.remove('hidden');
+ }
+ 
+ // Toggle expanded class for mobile view
+ blogPanel.classList.toggle('expanded');
+ 
+ console.log('Blog panel classes after toggle:', blogPanel.className);
+ }
+ });
+ }
 
-            console.log('✅ Event listeners added for all buttons');
-            
-            // Initialize blog panel mobile functionality
-            initializeBlogPanel();
-            
-            // Add window resize listener for responsive welcome text
-            window.addEventListener('resize', function() {
-                if (currentUser) {
-                    updateWelcomeText(currentUser.username);
-                } else {
-                    updateWelcomeText();
-                }
-                
-                // Update mobile controls visibility on screen resize
-                const isPlaying = gameState === "playing" || gameState === "paused";
-                updateMobileControlsVisibility(isPlaying);
-            });
-            
-            // Initialize welcome text with current screen size
-            updateWelcomeText();
-            
-            // Pointer events unify touch, pen, and mouse without duplicate moves.
-            const mobileControlButtons = {
-                'btn-up': 'up',
-                'btn-down': 'down',
-                'btn-left': 'left',
-                'btn-right': 'right'
-            };
+ console.log(' Event listeners added for all buttons');
+ 
+ // Initialize blog panel mobile functionality
+ initializeBlogPanel();
+ 
+ // Add window resize listener for responsive welcome text
+ window.addEventListener('resize', function() {
+ if (currentUser) {
+ updateWelcomeText(currentUser.username);
+ } else {
+ updateWelcomeText();
+ }
+ 
+ // Update mobile controls visibility on screen resize
+ const isPlaying = gameState === "playing" || gameState === "paused";
+ updateMobileControlsVisibility(isPlaying);
+ });
+ 
+ // Initialize welcome text with current screen size
+ updateWelcomeText();
+ 
+ // Pointer events unify touch, pen, and mouse without duplicate moves.
+ const mobileControlButtons = {
+ 'btn-up': 'up',
+ 'btn-down': 'down',
+ 'btn-left': 'left',
+ 'btn-right': 'right'
+ };
 
-            Object.entries(mobileControlButtons).forEach(([buttonId, direction]) => {
-                const button = document.getElementById(buttonId);
-                if (!button) return;
+ Object.entries(mobileControlButtons).forEach(([buttonId, direction]) => {
+ const button = document.getElementById(buttonId);
+ if (!button) return;
 
-                button.setAttribute('aria-label', `Move ${direction}`);
-                button.setAttribute('type', 'button');
+ button.setAttribute('aria-label', `Move ${direction}`);
+ button.setAttribute('type', 'button');
 
-                const release = (event) => {
-                    if (event) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    button.classList.remove('active');
-                    try {
-                        if (button.hasPointerCapture && event && event.pointerId !== undefined &&
-                            button.hasPointerCapture(event.pointerId)) {
-                            button.releasePointerCapture(event.pointerId);
-                        }
-                    } catch (_) {}
-                    handleMobileStop();
-                };
+ const release = (event) => {
+ if (event) {
+ event.preventDefault();
+ event.stopPropagation();
+ }
+ button.classList.remove('active');
+ try {
+ if (button.hasPointerCapture && event && event.pointerId !== undefined &&
+ button.hasPointerCapture(event.pointerId)) {
+ button.releasePointerCapture(event.pointerId);
+ }
+ } catch (_) {}
+ handleMobileStop();
+ };
 
-                button.addEventListener('pointerdown', (event) => {
-                    if (event.pointerType === 'mouse' && event.button !== 0) return;
-                    event.preventDefault();
-                    event.stopPropagation();
-                    button.classList.add('active');
-                    try { button.setPointerCapture(event.pointerId); } catch (_) {}
-                    handleMobileMove(direction);
-                });
+ button.addEventListener('pointerdown', (event) => {
+ if (event.pointerType === 'mouse' && event.button !== 0) return;
+ event.preventDefault();
+ event.stopPropagation();
+ button.classList.add('active');
+ try { button.setPointerCapture(event.pointerId); } catch (_) {}
+ handleMobileMove(direction);
+ });
 
-                button.addEventListener('pointerup', release);
-                button.addEventListener('pointercancel', release);
-                button.addEventListener('lostpointercapture', () => {
-                    button.classList.remove('active');
-                    handleMobileStop();
-                });
-                button.addEventListener('contextmenu', event => event.preventDefault());
-                button.addEventListener('dragstart', event => event.preventDefault());
-            });
+ button.addEventListener('pointerup', release);
+ button.addEventListener('pointercancel', release);
+ button.addEventListener('lostpointercapture', () => {
+ button.classList.remove('active');
+ handleMobileStop();
+ });
+ button.addEventListener('contextmenu', event => event.preventDefault());
+ button.addEventListener('dragstart', event => event.preventDefault());
+ });
 
-            // Releasing outside the button or switching tabs must never leave movement stuck.
-            window.addEventListener('blur', handleMobileStop);
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) handleMobileStop();
-            });
-        });
-    </script>
+ // Releasing outside the button or switching tabs must never leave movement stuck.
+ window.addEventListener('blur', handleMobileStop);
+ document.addEventListener('visibilitychange', () => {
+ if (document.hidden) handleMobileStop();
+ });
+ });
+ </script>
 </body>
 </html>
