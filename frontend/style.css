@@ -3917,3 +3917,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 #menuHeaderWelcomeText {
   visibility: hidden !important;
 }
+
+
+/* Account-free menu: hide any legacy account controls left by cached markup */
+#loginBtn, #registerBtn, #profileBtn, #logoutBtn,
+#menuHeaderWelcomeText, #menuHeaderScoreInfo {
+  display: none !important;
+}
