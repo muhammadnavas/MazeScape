@@ -1,78 +1,137 @@
 import { useState } from 'react';
-import { ArrowUpRight, BrainCircuit, CircleHelp, Crown, LogIn, Menu, Settings2, Shield, Sparkles, UserPlus, Zap } from 'lucide-react';
+import {
+  ArrowRight,
+  BrainCircuit,
+  CircleHelp,
+  Crown,
+  LogIn,
+  Menu,
+  Settings2,
+  ShieldCheck,
+  UserPlus,
+  Zap,
+  X,
+} from 'lucide-react';
 
 const features = [
-  { icon: BrainCircuit, title: 'Clever pursuit', description: 'A ghost that uses A* pathfinding to track your route.' },
-  { icon: Zap, title: 'Power-ups', description: 'Freeze your pursuer, burst forward, or break through walls.' },
-  { icon: Shield, title: 'Every run counts', description: 'Survive longer, reach the exit, and build your high score.' },
+  { icon: BrainCircuit, title: 'Think ahead', description: 'Find your route through a new maze every run.' },
+  { icon: Zap, title: 'Use your power-ups', description: 'Make smart moves when the chase gets close.' },
+  { icon: ShieldCheck, title: 'Beat the chase', description: 'Avoid the ghost and reach the exit to win.' },
 ];
 
-function ActionButton({ children, primary = false, onClick }) {
-  return <button className={primary ? 'action-button action-primary' : 'action-button'} onClick={onClick} type="button">{children}</button>;
+function Button({ children, variant = 'secondary', onClick }) {
+  return <button type="button" className={`button button-${variant}`} onClick={onClick}>{children}</button>;
+}
+
+function MazeIllustration() {
+  const walls = new Set([1,2,3,8,11,18,21,22,23,25,28,31,35,38,41,42,45,48,51,55,58,61,62,65,68,71,75,78,81,82,85,88,91,92,93,98]);
+  return (
+    <div className="maze-card" aria-label="Illustration of a maze">
+      <div className="maze-card-heading"><span>THE DAILY CHALLENGE</span><span className="maze-status"><i /> READY TO PLAY</span></div>
+      <div className="maze-board">
+        {Array.from({ length: 100 }, (_, index) => (
+          <div key={index} className={['maze-tile', walls.has(index) ? 'maze-wall' : '', index === 90 ? 'maze-player' : '', index === 18 ? 'maze-ghost' : '', index === 9 ? 'maze-exit' : ''].filter(Boolean).join(' ')}>
+            {index === 90 && <span />}
+            {index === 18 && <span />}
+            {index === 9 && <span />}
+          </div>
+        ))}
+      </div>
+      <div className="maze-card-footer"><span><i className="key-player" /> Your position</span><span><i className="key-ghost" /> The ghost</span><span><i className="key-exit" /> Exit</span></div>
+    </div>
+  );
 }
 
 export default function App() {
   const [panel, setPanel] = useState('home');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const openPanel = (name) => { setPanel(name); setMobileNavOpen(false); };
+
+  const openPanel = (name) => {
+    setPanel(name);
+    setMobileNavOpen(false);
+  };
 
   return (
     <main className="app-shell">
-      <div className="ambient ambient-one" /><div className="ambient ambient-two" />
       <header className="topbar">
         <a className="brand" href="#home" onClick={() => openPanel('home')} aria-label="MazeScape home">
-          <span className="brand-mark"><Sparkles size={19} /></span><span>maze<span className="brand-accent">scape</span></span>
+          <span className="brand-symbol">M</span>
+          <span>MazeScape</span>
         </a>
-        <button className="mobile-menu-button" onClick={() => setMobileNavOpen(!mobileNavOpen)} aria-label="Toggle navigation"><Menu size={21} /></button>
+        <button className="mobile-menu-button" onClick={() => setMobileNavOpen(!mobileNavOpen)} aria-label={mobileNavOpen ? 'Close navigation' : 'Open navigation'}>
+          {mobileNavOpen ? <X size={19} /> : <Menu size={19} />}
+        </button>
         <nav className={mobileNavOpen ? 'nav-links nav-open' : 'nav-links'} aria-label="Main navigation">
           <button onClick={() => openPanel('help')}><CircleHelp size={16} /> How to play</button>
           <button onClick={() => openPanel('leaderboard')}><Crown size={16} /> Leaderboard</button>
           <button onClick={() => openPanel('settings')}><Settings2 size={16} /> Settings</button>
-          <button className="nav-login" onClick={() => openPanel('login')}><LogIn size={16} /> Sign in</button>
+          <Button onClick={() => openPanel('login')}><LogIn size={15} /> Sign in</Button>
         </nav>
       </header>
 
       {panel === 'home' ? (
-        <section className="hero">
-          <div className="hero-copy">
-            <div className="eyebrow"><span className="status-dot" /> THE MAZE IS WAITING</div>
-            <h1>Think fast.<br /><span>Find your way out.</span></h1>
-            <p className="hero-description">Every turn is a decision. Outsmart the hunter, collect power-ups, and make it to the exit before the maze closes in.</p>
-            <div className="hero-actions">
-              <ActionButton primary onClick={() => openPanel('game')}>Enter the maze <ArrowUpRight size={18} /></ActionButton>
-              <ActionButton onClick={() => openPanel('help')}>How to play</ActionButton>
+        <section className="home-content">
+          <div className="hero">
+            <div className="hero-copy">
+              <p className="eyebrow"><span /> A MAZE. A MIND. A WAY OUT.</p>
+              <h1>Every move<br />makes a difference.</h1>
+              <p className="hero-description">Find your way through a changing maze, stay one step ahead of the ghost, and reach the exit. How far can you get?</p>
+              <div className="hero-actions">
+                <Button variant="primary" onClick={() => openPanel('game')}>Play MazeScape <ArrowRight size={17} /></Button>
+                <Button onClick={() => openPanel('help')}>How to play</Button>
+              </div>
+              <p className="hero-note">Free to play <span>·</span> New maze every run</p>
             </div>
-            <div className="hero-meta"><span><i className="meta-dot green" /> Procedural mazes</span><span><i className="meta-dot blue" /> AI-powered pursuit</span></div>
+            <MazeIllustration />
           </div>
 
-          <div className="maze-preview" aria-label="Decorative maze preview">
-            <div className="preview-topline"><span>SECTOR 07</span><span className="live-label"><i /> LIVE SIMULATION</span></div>
-            <div className="maze-grid">
-              {Array.from({ length: 100 }, (_, index) => {
-                const walls = [1,2,7,8,11,17,21,22,23,27,31,37,41,42,47,48,51,57,61,62,67,71,72,73,77,81,87,91,92,97,98];
-                const className = ['maze-cell', walls.includes(index) ? 'cell-wall' : '', index === 90 ? 'cell-player' : '', index === 18 ? 'cell-ghost' : '', index === 9 ? 'cell-exit' : ''].filter(Boolean).join(' ');
-                return <div key={index} className={className}>{index === 90 && <span className="player-core" />}{index === 18 && <span className="ghost-core" />}{index === 9 && <span className="exit-core" />}</div>;
-              })}
+          <section className="features-section" aria-labelledby="features-title">
+            <div className="section-heading">
+              <div><p className="eyebrow">BUILT AROUND YOUR NEXT MOVE</p><h2 id="features-title">Simple to learn. Hard to master.</h2></div>
             </div>
-            <div className="preview-footer"><span><i className="legend-player" /> YOU</span><span><i className="legend-ghost" /> PURSUER</span><span><i className="legend-exit" /> EXIT</span></div>
-          </div>
-
-          <div className="feature-strip">{features.map(({ icon: Icon, title, description }) => <article className="feature-card" key={title}><div className="feature-icon"><Icon size={19} /></div><div><h2>{title}</h2><p>{description}</p></div></article>)}</div>
+            <div className="feature-grid">
+              {features.map(({ icon: Icon, title, description }, index) => (
+                <article className="feature-card" key={title}>
+                  <span className="feature-number">0{index + 1}</span>
+                  <div className="feature-icon"><Icon size={19} strokeWidth={1.8} /></div>
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </article>
+              ))}
+            </div>
+          </section>
         </section>
       ) : (
         <section className="subpage">
           <button className="back-link" onClick={() => openPanel('home')}>← Back to home</button>
           <div className="subpage-card">
-            {panel === 'game' && <><div className="subpage-icon"><BrainCircuit size={25} /></div><p className="eyebrow">GAME ENGINE INTEGRATION</p><h1>The maze is being prepared.</h1><p className="subpage-copy">This React interface is scaffolded separately while the existing Canvas game is preserved. The next migration step is to connect the original game engine and controls here before this frontend replaces the live site.</p><ActionButton primary onClick={() => openPanel('home')}>Back to menu</ActionButton></>}
-            {panel === 'help' && <><div className="subpage-icon"><CircleHelp size={25} /></div><p className="eyebrow">QUICK GUIDE</p><h1>Three things to remember.</h1><ul className="guide-list"><li><b>Move with purpose.</b><span>Use your keyboard to navigate the maze.</span></li><li><b>Watch the pursuer.</b><span>The ghost plans a route toward you.</span></li><li><b>Find the exit.</b><span>Use power-ups wisely and reach the golden exit.</span></li></ul></>}
-            {panel === 'leaderboard' && <><div className="subpage-icon"><Crown size={25} /></div><p className="eyebrow">HALL OF FAME</p><h1>Leaderboard</h1><p className="subpage-copy">Leaderboard data will be connected to the existing API during the integration phase.</p></>}
-            {panel === 'settings' && <><div className="subpage-icon"><Settings2 size={25} /></div><p className="eyebrow">PREFERENCES</p><h1>Settings</h1><p className="subpage-copy">Game preferences will be wired to the existing settings controls during migration.</p></>}
-            {panel === 'login' && <><div className="subpage-icon"><LogIn size={25} /></div><p className="eyebrow">WELCOME BACK</p><h1>Sign in to MazeScape</h1><p className="subpage-copy">The current authentication flow will be connected before launch.</p><div className="auth-actions"><ActionButton primary onClick={() => openPanel('home')}>Return to menu</ActionButton><ActionButton onClick={() => openPanel('register')}><UserPlus size={16} /> Create account</ActionButton></div></>}
-            {panel === 'register' && <><div className="subpage-icon"><UserPlus size={25} /></div><p className="eyebrow">JOIN THE RUN</p><h1>Create your account</h1><p className="subpage-copy">The existing registration API will be connected during migration.</p><ActionButton primary onClick={() => openPanel('login')}>Already have an account? Sign in</ActionButton></>}
+            {panel === 'game' && <>
+              <div className="subpage-icon"><BrainCircuit size={23} /></div><p className="eyebrow">GAME INTEGRATION</p><h1>Getting the maze ready.</h1>
+              <p className="subpage-copy">The new interface is being prepared separately while the existing Canvas game is preserved. Gameplay and controls need to be connected before this screen can launch the real game.</p>
+              <Button variant="primary" onClick={() => openPanel('home')}>Back to home <ArrowRight size={16} /></Button>
+            </>}
+            {panel === 'help' && <>
+              <div className="subpage-icon"><CircleHelp size={23} /></div><p className="eyebrow">QUICK GUIDE</p><h1>How to play</h1>
+              <ul className="guide-list"><li><b>Move through the maze</b><span>Use your keyboard or the on-screen controls on mobile.</span></li><li><b>Keep an eye on the ghost</b><span>It uses pathfinding to track you through the maze.</span></li><li><b>Reach the exit</b><span>Collect power-ups and get to the golden exit to win.</span></li></ul>
+            </>}
+            {panel === 'leaderboard' && <>
+              <div className="subpage-icon"><Crown size={23} /></div><p className="eyebrow">HALL OF FAME</p><h1>Leaderboard</h1><p className="subpage-copy">The existing leaderboard will be connected to this page during the gameplay integration.</p>
+            </>}
+            {panel === 'settings' && <>
+              <div className="subpage-icon"><Settings2 size={23} /></div><p className="eyebrow">PREFERENCES</p><h1>Settings</h1><p className="subpage-copy">Your existing game preferences will be connected during the integration stage.</p>
+            </>}
+            {panel === 'login' && <>
+              <div className="subpage-icon"><LogIn size={23} /></div><p className="eyebrow">WELCOME BACK</p><h1>Sign in to MazeScape</h1><p className="subpage-copy">The existing authentication flow will be connected before the new interface goes live.</p>
+              <div className="auth-actions"><Button variant="primary" onClick={() => openPanel('home')}>Back to home</Button><Button onClick={() => openPanel('register')}><UserPlus size={15} /> Create account</Button></div>
+            </>}
+            {panel === 'register' && <>
+              <div className="subpage-icon"><UserPlus size={23} /></div><p className="eyebrow">JOIN THE GAME</p><h1>Create an account</h1><p className="subpage-copy">The existing registration API will be connected during migration.</p><Button variant="primary" onClick={() => openPanel('login')}>Already registered? Sign in</Button>
+            </>}
           </div>
         </section>
       )}
-      <footer className="site-footer"><span>MAZESCAPE <b className="footer-separator">/</b> NAVIGATE · SURVIVE · ESCAPE</span><span>BUILT FOR THE CURIOUS</span></footer>
+
+      <footer className="site-footer"><a className="footer-brand" href="#home" onClick={() => openPanel('home')}>MazeScape</a><span>Navigate thoughtfully. Escape boldly.</span><span>© MazeScape</span></footer>
     </main>
   );
 }
