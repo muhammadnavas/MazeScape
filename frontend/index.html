@@ -1697,5 +1697,65 @@
  })();
  </script>
 
+
+ <!-- Start button recovery handler: capture taps before legacy handlers can interfere. -->
+ <script>
+ (() => {
+   const bindStartButton = () => {
+     const button = document.getElementById('startGameBtn');
+     if (!button || button.dataset.recoveryBound === '1') return;
+     button.dataset.recoveryBound = '1';
+     const launch = (event) => {
+       event.preventDefault();
+       event.stopPropagation();
+       event.stopImmediatePropagation();
+       try {
+         if (!window.gameController) {
+           if (typeof MazeChaseController === 'function') {
+             window.gameController = new MazeChaseController();
+           } else {
+             throw new Error('Game controller is unavailable. Reload the page and try again.');
+           }
+         }
+         const controller = window.gameController;
+         if (!controller.initialized) {
+           button.disabled = true;
+           button.textContent = 'LOADING GAME…';
+           const startedAt = Date.now();
+           const waitForInit = () => {
+             if (window.gameController && window.gameController.initialized) {
+               button.disabled = false;
+               button.innerHTML = '<i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> START GAME';
+               window.gameController.startGame();
+             } else if (Date.now() - startedAt < 8000) {
+               setTimeout(waitForInit, 100);
+             } else {
+               button.disabled = false;
+               button.textContent = 'START GAME';
+               throw new Error('Game is taking too long to initialize. Refresh the page and try again.');
+             }
+           };
+           waitForInit();
+           return;
+         }
+         controller.startGame();
+       } catch (error) {
+         console.error('Start Game recovery handler failed:', error);
+         button.disabled = false;
+         button.textContent = 'START GAME';
+         if (typeof showAlert === 'function') showAlert('Unable to Start Game', error.message || 'Please refresh and try again.');
+         else alert(error.message || 'Unable to start game. Please refresh and try again.');
+       }
+     };
+     button.addEventListener('click', launch, true);
+     button.addEventListener('pointerup', (event) => {
+       if (event.pointerType === 'touch' || event.pointerType === 'pen') launch(event);
+     }, true);
+   };
+   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindStartButton, { once: true });
+   else bindStartButton();
+ })();
+ </script>
+
 </body>
 </html>
