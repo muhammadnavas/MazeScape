@@ -1760,5 +1760,22 @@
  })();
  </script>
 
+
+ <!-- Independent controller bridge: keep this separate from the legacy initialization block. -->
+ <script>
+ (() => {
+   try {
+     if (!window.MazeChaseController && typeof MazeChaseController !== 'undefined') {
+       window.MazeChaseController = MazeChaseController;
+     }
+   } catch (e) {
+     console.error('MazeScape controller bridge failed:', e);
+   }
+   window.addEventListener('error', (event) => {
+     console.error('MazeScape runtime error:', event.message, event.filename, event.lineno);
+   });
+ })();
+ </script>
+
 </body>
 </html>
