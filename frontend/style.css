@@ -5037,3 +5037,28 @@ body:not(.game-playing) #powerup-notifications {
   display: none !important;
   visibility: hidden !important;
 }
+
+
+/* Fix Start Game taps: while the menu is open, the canvas must not sit over menu controls. */
+body:not(.game-playing) #gameCanvas {
+  pointer-events: none !important;
+}
+body:not(.game-playing) #menuButtons {
+  position: relative !important;
+  z-index: 10000 !important;
+  pointer-events: auto !important;
+}
+body:not(.game-playing) #menuButtons > *,
+body:not(.game-playing) #menuButtons button,
+body:not(.game-playing) #startGameBtn {
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 10001 !important;
+  touch-action: manipulation !important;
+}
+body:not(.game-playing) #status,
+body:not(.game-playing) #powerup-notifications {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
