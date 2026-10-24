@@ -4790,3 +4790,22 @@ body {
     font-size: 11px !important;
   }
 }
+
+
+/* Remove outlines/borders from the gameplay HUD and power-up notifications. */
+#status,
+#status .game-info,
+#status .stat,
+#status .stat-item,
+#powerup-notifications,
+.powerup-notification {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+#status {
+  background: rgba(42,26,24,.58) !important;
+}
+.powerup-notification {
+  background: rgba(42,26,24,.82) !important;
+}
