@@ -4822,3 +4822,40 @@ body {
   background: transparent !important;
   background-color: transparent !important;
 }
+
+
+/* Keep Game Info centered just above the maze canvas, not floating in a corner. */
+#status {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  width: fit-content !important;
+  min-width: 0 !important;
+  max-width: calc(100vw - 24px) !important;
+  margin: 6px auto 8px !important;
+  padding: 4px 10px !important;
+  z-index: 50 !important;
+}
+#status .status-header {
+  display: none !important;
+}
+#status .status-content {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 18px !important;
+}
+#status .status-item {
+  white-space: nowrap !important;
+}
+@media (max-width: 700px) {
+  #status {
+    margin: 4px auto 6px !important;
+    padding: 3px 8px !important;
+    font-size: 12px !important;
+  }
+  #status .status-content {
+    gap: 16px !important;
+  }
+}
