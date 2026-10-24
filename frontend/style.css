@@ -5344,3 +5344,54 @@ body:not(.game-playing) #powerup-notifications {
     visibility: hidden !important;
   }
 }
+
+
+/* Mobile HUD: show only Score and Lives; hide Time without changing game logic. */
+@media screen and (max-width: 700px) {
+  body.game-playing #gameContainer #status {
+    display: block !important;
+    visibility: visible !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 4px !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: max-content !important;
+    max-width: 48vw !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    z-index: 110 !important;
+    pointer-events: none !important;
+  }
+  body.game-playing #gameContainer #status .status-header {
+    display: none !important;
+  }
+  body.game-playing #gameContainer #status .status-content {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body.game-playing #gameContainer #status .status-item {
+    display: none !important;
+  }
+  body.game-playing #gameContainer #status .status-item:has(#current-score-value),
+  body.game-playing #gameContainer #status .status-item:has(#current-lives-value) {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+  }
+  body.game-playing #gameContainer #status #current-time-value {
+    display: none !important;
+  }
+}
