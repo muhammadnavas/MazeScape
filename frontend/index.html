@@ -308,13 +308,15 @@
  const idealCanvasHeight = FIXED_MAZE_HEIGHT * GRID_SIZE;
  
  // Get available space
- const availableWidth = Math.max(240, window.innerWidth - (window.innerWidth <= 700 ? 8 : 24));
- const availableHeight = Math.max(360, window.innerHeight - (window.innerWidth <= 700 ? 150 : 150)); // Reserve only the compact HUD and controller zone on phones
+ const isMobile = window.matchMedia('(max-width: 700px)').matches;
+ const availableWidth = Math.max(240, document.documentElement.clientWidth - (isMobile ? 4 : 24));
+ // Reserve space for the mobile direction pad and browser safe area.
+ const availableHeight = Math.max(360, window.innerHeight - (isMobile ? 250 : 150));
  
  // Calculate scale to fit while maintaining aspect ratio
  const scaleX = availableWidth / idealCanvasWidth;
  const scaleY = availableHeight / idealCanvasHeight;
- const scale = Math.min(scaleX, scaleY, 1.5); // Fit portrait maze without cropping
+ const scale = Math.min(scaleX, scaleY, isMobile ? 2 : 1.5); // Maximize mobile canvas without cropping
  
  // Set canvas size to maintain exact maze grid
  this.canvas.width = idealCanvasWidth;
