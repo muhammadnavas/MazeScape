@@ -309,9 +309,10 @@
  
  // Get available space
  const isMobile = window.matchMedia('(max-width: 700px)').matches;
+ const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
  const availableWidth = Math.max(240, document.documentElement.clientWidth - (isMobile ? 4 : 24));
- // Reserve space for the mobile direction pad and browser safe area.
- const availableHeight = Math.max(360, window.innerHeight - (isMobile ? 250 : 150));
+ // Reserve room for HUD, direction pad, and safe areas so the canvas never sits underneath controls.
+ const availableHeight = Math.max(360, viewportHeight - (isMobile ? 320 : 150));
  
  // Calculate scale to fit while maintaining aspect ratio
  const scaleX = availableWidth / idealCanvasWidth;
