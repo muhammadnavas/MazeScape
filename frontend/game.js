@@ -247,66 +247,67 @@ class TextureManager {
  }
  
  createPlayerTexture() {
-  // 3D-styled Jerry: layered gradients, rim light, soft shadow and glossy eyes.
+  // Flat, clean Jerry sprite — no glow, gradients, shadows or glossy effects.
   const canvas = document.createElement('canvas');
-  canvas.width = GRID_SIZE * 4; canvas.height = GRID_SIZE * 4;
-  const ctx = canvas.getContext('2d'); ctx.scale(4,4);
-  const s=GRID_SIZE, cx=20;
-  const gradient=(x0,y0,x1,y1,stops)=>{
-   const g=ctx.createLinearGradient(x0,y0,x1,y1);
-   stops.forEach(([p,c])=>g.addColorStop(p,c)); return g;
+  canvas.width = GRID_SIZE * 3;
+  canvas.height = GRID_SIZE * 3;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(3, 3);
+  const s = GRID_SIZE;
+  const ellipse = (x, y, rx, ry, color) => {
+   ctx.fillStyle = color;
+   ctx.beginPath();
+   ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
+   ctx.fill();
   };
-  const ball=(x,y,rx,ry,stops)=>{
-   const g=ctx.createRadialGradient(x-rx*.35,y-ry*.42,1,x,y,Math.max(rx,ry)*1.35);
-   stops.forEach(([p,c])=>g.addColorStop(p,c));
-   ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2); ctx.fill();
-  };
-  const stroke=(color,width)=>{ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';};
 
-  const aura=ctx.createRadialGradient(20,20,3,20,20,25);
-  aura.addColorStop(0,'rgba(216,169,61,.22)');aura.addColorStop(1,'rgba(216,169,61,0)');
-  ctx.fillStyle=aura;ctx.fillRect(0,0,s,s);
+  // Tail and feet.
+  ctx.strokeStyle = '#8B542D'; ctx.lineWidth = 1.2; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(13, 27); ctx.quadraticCurveTo(5, 30, 3, 35); ctx.stroke();
+  ellipse(14, 33, 5, 2.5, '#8B542D');
+  ellipse(26, 33, 5, 2.5, '#8B542D');
 
-  // Ground shadow adds a lifted, toy-like 3D appearance.
-  ctx.fillStyle='rgba(0,0,0,.42)';ctx.beginPath();ctx.ellipse(21,34,12,3,0,0,Math.PI*2);ctx.fill();
-  stroke('#75401F',1.2);ctx.beginPath();ctx.moveTo(12,27);ctx.bezierCurveTo(5,29,7,36,2,35);ctx.stroke();
-  ball(14,33,5,2.5,[[0,'#E0A15D'],[.55,'#A9632E'],[1,'#62351F']]);
-  ball(26,33,5,2.5,[[0,'#E0A15D'],[.55,'#A9632E'],[1,'#62351F']]);
+  // Ears and pink inner ears.
+  ellipse(10.5, 11, 6.2, 7, '#8B542D');
+  ellipse(29.5, 11, 6.2, 7, '#8B542D');
+  ellipse(10.5, 11, 3.8, 4.6, '#E99A9A');
+  ellipse(29.5, 11, 3.8, 4.6, '#E99A9A');
 
-  // Ears with shaded rims and inset pink surfaces.
-  ball(10.5,11,6.2,7,[[0,'#D99A53'],[.5,'#A9632E'],[1,'#63351F']]);
-  ball(29.5,11,6.2,7,[[0,'#D99A53'],[.5,'#A9632E'],[1,'#63351F']]);
-  ball(10.5,11,3.8,4.6,[[0,'#F5B4B6'],[.65,'#E99A9A'],[1,'#A85E66']]);
-  ball(29.5,11,3.8,4.6,[[0,'#F5B4B6'],[.65,'#E99A9A'],[1,'#A85E66']]);
+  // Body, arms and cream belly.
+  ellipse(20, 27, 8.2, 8.5, '#A9632E');
+  ellipse(12.7, 26, 3.2, 5.1, '#B97535');
+  ellipse(27.3, 26, 3.2, 5.1, '#B97535');
+  ellipse(20, 29, 5.8, 5.4, '#D99A53');
 
-  ball(20,27,8.2,8.5,[[0,'#E3A45B'],[.42,'#B97535'],[.8,'#8B542D'],[1,'#5B321E']]);
-  ball(12.7,26,3.2,5.1,[[0,'#D99A53'],[.65,'#A9632E'],[1,'#63351F']]);
-  ball(27.3,26,3.2,5.1,[[0,'#D99A53'],[.65,'#A9632E'],[1,'#63351F']]);
-  ball(20,29,5.8,5.4,[[0,'#F4D5A0'],[.65,'#D99A53'],[1,'#8B542D']]);
+  // Head and muzzle.
+  ellipse(20, 17.5, 13.1, 12.4, '#B97535');
+  ellipse(20, 22, 8.8, 5.8, '#F2D5A0');
+  ellipse(14.3, 21, 4.8, 3.8, '#F2D5A0');
+  ellipse(25.7, 21, 4.8, 3.8, '#F2D5A0');
 
-  // Head has a warm highlight on the upper-left and deeper shading below.
-  ball(20,17.5,13.1,12.4,[[0,'#F0B96F'],[.22,'#D9954B'],[.58,'#B97535'],[.86,'#8B542D'],[1,'#5C321E']]);
-  ball(20,22,8.8,5.8,[[0,'#FFF0C9'],[.55,'#F2D5A0'],[1,'#C58C50']]);
-  ball(14.3,21,4.8,3.8,[[0,'#FFF0C9'],[.7,'#F2D5A0'],[1,'#C58C50']]);
-  ball(25.7,21,4.8,3.8,[[0,'#FFF0C9'],[.7,'#F2D5A0'],[1,'#C58C50']]);
+  // Simple cartoon eyes, nose and smile.
+  ellipse(15.5, 15.5, 3.5, 4.6, '#FFF8E9');
+  ellipse(24.5, 15.5, 3.5, 4.6, '#FFF8E9');
+  ellipse(16.5, 16.1, 1.6, 2.8, '#29201B');
+  ellipse(25.5, 16.1, 1.6, 2.8, '#29201B');
+  ellipse(20, 21, 1.5, 1.1, '#6B3329');
 
-  // Glossy eyes with soft dark rims and bright catchlights.
-  ball(15.5,15.5,3.6,4.7,[[0,'#FFFFFF'],[.75,'#FFF8E9'],[1,'#C8B99F']]);
-  ball(24.5,15.5,3.6,4.7,[[0,'#FFFFFF'],[.75,'#FFF8E9'],[1,'#C8B99F']]);
-  ball(16.5,16.1,1.7,2.8,[[0,'#55504A'],[.35,'#29201B'],[1,'#090807']]);
-  ball(25.5,16.1,1.7,2.8,[[0,'#55504A'],[.35,'#29201B'],[1,'#090807']]);
-  ball(16,15.1,.75,.85,[[0,'#FFFFFF'],[1,'#DDE6F0']]);
-  ball(25,15.1,.75,.85,[[0,'#FFFFFF'],[1,'#DDE6F0']]);
+  ctx.strokeStyle = '#6B3329'; ctx.lineWidth = 0.75;
+  ctx.beginPath();
+  ctx.moveTo(20, 21.5); ctx.quadraticCurveTo(18, 24, 16.4, 22.5);
+  ctx.moveTo(20, 21.5); ctx.quadraticCurveTo(22, 24, 23.6, 22.5);
+  ctx.stroke();
 
-  ball(20,21,1.5,1.1,[[0,'#F08A91'],[.6,'#9D4C45'],[1,'#51251F']]);
-  stroke('#6B3329',.75);ctx.beginPath();
-  ctx.moveTo(20,21.5);ctx.quadraticCurveTo(18,24,16.4,22.5);
-  ctx.moveTo(20,21.5);ctx.quadraticCurveTo(22,24,23.6,22.5);ctx.stroke();
-  stroke('#F2D5A0',.65);ctx.beginPath();
-  ctx.moveTo(13,21);ctx.lineTo(5,19);ctx.moveTo(13,23);ctx.lineTo(5,24);
-  ctx.moveTo(27,21);ctx.lineTo(35,19);ctx.moveTo(27,23);ctx.lineTo(35,24);ctx.stroke();
+  // Whiskers.
+  ctx.strokeStyle = '#F2D5A0'; ctx.lineWidth = 0.65;
+  ctx.beginPath();
+  ctx.moveTo(13, 21); ctx.lineTo(5, 19);
+  ctx.moveTo(13, 23); ctx.lineTo(5, 24);
+  ctx.moveTo(27, 21); ctx.lineTo(35, 19);
+  ctx.moveTo(27, 23); ctx.lineTo(35, 24);
+  ctx.stroke();
 
-  this.textures.player=canvas;
+  this.textures.player = canvas;
  }
  
  createGhostTexture() {
