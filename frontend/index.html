@@ -817,6 +817,30 @@
  }
  }
 
+ // Keep HUD and booster notification aligned to the actual visible canvas edges.
+ function positionCanvasOverlays() {
+   const canvasEl = document.getElementById('gameCanvas');
+   const statusEl = document.getElementById('status');
+   const toastEl = document.getElementById('powerup-notifications');
+   if (!canvasEl) return;
+   const rect = canvasEl.getBoundingClientRect();
+   if (statusEl) {
+     statusEl.style.position = 'fixed';
+     statusEl.style.left = Math.round(rect.left + 6) + 'px';
+     statusEl.style.top = Math.round(rect.top + 6) + 'px';
+     statusEl.style.right = 'auto';
+   }
+   if (toastEl) {
+     toastEl.style.position = 'fixed';
+     toastEl.style.left = 'auto';
+     toastEl.style.right = Math.max(6, Math.round(window.innerWidth - rect.right + 6)) + 'px';
+     toastEl.style.top = Math.round(rect.top + 6) + 'px';
+   }
+ }
+ window.positionCanvasOverlays = positionCanvasOverlays;
+ window.addEventListener('resize', positionCanvasOverlays);
+ window.addEventListener('orientationchange', positionCanvasOverlays);
+
  // Show one readable, accessible booster toast at a time.
  showPowerupNotification(message, icon = "zap") {
  const notificationsContainer = document.getElementById('powerup-notifications');
@@ -847,7 +871,7 @@
                 notification.append(iconNode, textNode);
  notificationsContainer.appendChild(notification);
 
- requestAnimationFrame(() => notification.classList.add('show'));
+ requestAnimationFrame(() => { positionCanvasOverlays(); notification.classList.add('show'); });
  this.powerupToastTimer = setTimeout(() => {
  notification.classList.remove('show');
  setTimeout(() => {
