@@ -5175,63 +5175,72 @@ body:not(.game-playing) #powerup-notifications {
 
 
 
-/* Mobile gameplay: reserve the controller zone instead of shrinking the canvas via max-height. */
+
+
+/* Put the mobile HUD row above the maze, never on top of maze tiles. */
 @media screen and (max-width: 700px) {
   body.game-playing #gameContainer {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 0 !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    padding: 0 2px 0 !important;
-    margin: 0 !important;
-    overflow: visible !important;
-    box-sizing: border-box !important;
-  }
-  body.game-playing #gameCanvas {
-    width: auto !important;
-    height: auto !important;
-    max-width: calc(100vw - 4px) !important;
-    max-height: none !important;
-    flex: 0 0 auto !important;
-    margin: 0 auto !important;
-    object-fit: fill !important;
-  }
-  body.game-playing #mobile-controls {
+    padding-top: 34px !important;
     position: relative !important;
-    flex: 0 0 auto !important;
-    margin: 8px auto 0 !important;
-    z-index: 30 !important;
   }
-  body.game-playing #status {
-    position: fixed !important;
-    left: 4px !important;
+  body.game-playing #gameContainer #status {
+    position: absolute !important;
     top: 0 !important;
+    left: 4px !important;
     right: auto !important;
     bottom: auto !important;
     transform: none !important;
     width: max-content !important;
-    max-width: 55vw !important;
-    z-index: 1000 !important;
+    max-width: 54vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background: transparent !important;
     border: 0 !important;
+    outline: 0 !important;
     box-shadow: none !important;
+    z-index: 100 !important;
     pointer-events: none !important;
   }
-  body.game-playing #powerup-notifications {
-    position: fixed !important;
+  body.game-playing #gameContainer #powerup-notifications {
+    position: absolute !important;
     top: 0 !important;
     left: auto !important;
     right: 4px !important;
+    bottom: auto !important;
+    transform: none !important;
     width: max-content !important;
-    max-width: 45vw !important;
-    z-index: 1001 !important;
+    max-width: 44vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    z-index: 101 !important;
+    pointer-events: none !important;
+  }
+  body.game-playing #gameContainer #status .status-header,
+  body.game-playing #gameContainer #status .status-content {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  body.game-playing #gameContainer #status .status-item {
+    white-space: nowrap !important;
+    font-size: 12px !important;
+  }
+  body.game-playing #gameContainer .powerup-notification {
     background: transparent !important;
     border: 0 !important;
     box-shadow: none !important;
-    pointer-events: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    animation: none !important;
+    transform: none !important;
   }
 }
