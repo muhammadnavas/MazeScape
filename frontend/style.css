@@ -4809,3 +4809,16 @@ body {
 .powerup-notification {
   background: rgba(42,26,24,.82) !important;
 }
+
+
+/* Transparent HUD and booster toast backgrounds: text/icons only. */
+#status,
+#status .game-info,
+#status .stat,
+#status .stat-item,
+#powerup-notifications,
+.powerup-notification,
+.powerup-notification-icon {
+  background: transparent !important;
+  background-color: transparent !important;
+}
