@@ -5062,3 +5062,39 @@ body:not(.game-playing) #powerup-notifications {
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+
+/* Stable mobile menu: keep every control visible and tappable below the site header. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body:not(.game-playing) #gameContainer {
+    overflow: auto !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 18px 0 calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    min-height: calc(100dvh - 104px) !important;
+    height: auto !important;
+  }
+  body:not(.game-playing) #menuButtons.menu-buttons {
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin: 0 auto !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 520px !important;
+    max-height: none !important;
+    overflow: visible !important;
+    z-index: 10001 !important;
+    pointer-events: auto !important;
+  }
+  body:not(.game-playing) #menuButtons .button-row,
+  body:not(.game-playing) #menuButtons button {
+    pointer-events: auto !important;
+  }
+  body:not(.game-playing) #gameCanvas {
+    pointer-events: none !important;
+  }
+}
