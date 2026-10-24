@@ -1714,8 +1714,8 @@
        event.stopImmediatePropagation();
        try {
          if (!window.gameController) {
-           if (typeof MazeChaseController === 'function') {
-             window.gameController = new MazeChaseController();
+           if (typeof window.MazeChaseController === 'function') {
+             window.gameController = new window.MazeChaseController();
            } else {
              throw new Error('Game controller script did not initialize. Check that the page loaded the latest deployment and that there are no JavaScript errors.');
            }
