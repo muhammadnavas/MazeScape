@@ -745,42 +745,10 @@
  // Scores are kept for the current game only; no database is required.
 
   // Show result message with detailed score breakdown
- if (result === "win") {
- let breakdownText = ` SCORE BREAKDOWN \n` +
- `Win Bonus: +${scoreBreakdown.winBonus} pts\n` +
- `Time Bonus: +${scoreBreakdown.timeBonus} pts\n` +
- `Playing Bonus: +${scoreBreakdown.playingBonus} pts\n`;
- 
- if (scoreBreakdown.powerupPenalty < 0) {
- breakdownText += `Power-up cost: ${scoreBreakdown.powerupPenalty} points\n`;
- }
- 
- if (scoreBreakdown.livesBonus > 0) {
- breakdownText += `Full-lives bonus: +${scoreBreakdown.livesBonus} points\n`;
- }
- 
- breakdownText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
- `TOTAL: ${finalScore} pts\n` +
- `Time: ${survivalTime} seconds`;
- 
- this.showMessage("Maze escaped!", `Congratulations! You reached the exit.\n\n${breakdownText}`, true, 5000);
- } else {
- let breakdownText = ` SCORE BREAKDOWN \n` +
- `Lose Penalty: ${scoreBreakdown.losePenalty} pts\n` +
- `Playing Bonus: +${scoreBreakdown.playingBonus} pts\n`;
- 
- if (scoreBreakdown.powerupPenalty < 0) {
- breakdownText += `Powerup Penalty: ${scoreBreakdown.powerupPenalty} pts\n`;
- }
- 
- breakdownText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
- `TOTAL: ${finalScore} pts\n` +
- `Survived: ${survivalTime} seconds`;
- 
- this.showMessage("Game over", `The ghost caught you.\n\n${breakdownText}\n\nTry again and see if you can beat your score.`, true, 5000);
- }
- 
- // Return to menu and stop game loop
+ const resultTitle = result === "win" ? "Maze escaped!" : "Game over";
+ this.showMessage(resultTitle, `FINAL SCORE: ${finalScore} pts`, true, 5000);
+
+  // Return to menu and stop game loop
  game = null;
  gameState = "menu";
  this.gameLoopRunning = false; // Stop the game loop
