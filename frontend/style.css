@@ -4913,3 +4913,49 @@ body {
     margin: 0 !important;
   }
 }
+
+
+/* HUD and booster toast align to the canvas edges, not the full-screen container. */
+#gameContainer #status {
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 3px 6px !important;
+  width: max-content !important;
+  max-width: 48vw !important;
+  z-index: 1000 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+#powerup-notifications {
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  right: auto !important;
+  bottom: auto !important;
+  width: max-content !important;
+  max-width: 50vw !important;
+  z-index: 1001 !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+#powerup-notifications,
+#powerup-notifications *,
+#powerup-notifications *::before,
+#powerup-notifications *::after,
+.powerup-notification,
+.powerup-notification-icon,
+.powerup-notification-text {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
