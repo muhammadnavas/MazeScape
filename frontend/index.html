@@ -31,7 +31,7 @@
  </div>
  
  <div class="button-row">
- <button type="button" class="game-button primary" id="startGameBtn" onclick="if (window.startGame) window.startGame();">
+ <button class="game-button primary" id="startGameBtn">
  <i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> START GAME
  </button>
  </div>
@@ -161,6 +161,10 @@
  <div class="status-item">
  <span class="status-label">Score:</span>
  <span class="status-value" id="current-score-value">0</span>
+ </div>
+ <div class="status-item">
+ <span class="status-label">Time:</span>
+ <span class="status-value" id="current-time-value">0 Sec</span>
  </div>
  <div class="status-item">
  <span class="status-label">Lives:</span>
@@ -817,30 +821,6 @@
  }
  }
 
- // Keep HUD and booster notification aligned to the actual visible canvas edges.
- function positionCanvasOverlays() {
-   const canvasEl = document.getElementById('gameCanvas');
-   const statusEl = document.getElementById('status');
-   const toastEl = document.getElementById('powerup-notifications');
-   if (!canvasEl) return;
-   const rect = canvasEl.getBoundingClientRect();
-   if (statusEl) {
-     statusEl.style.position = 'fixed';
-     statusEl.style.left = Math.round(rect.left + 6) + 'px';
-     statusEl.style.top = Math.round(rect.top + 6) + 'px';
-     statusEl.style.right = 'auto';
-   }
-   if (toastEl) {
-     toastEl.style.position = 'fixed';
-     toastEl.style.left = 'auto';
-     toastEl.style.right = Math.max(6, Math.round(window.innerWidth - rect.right + 6)) + 'px';
-     toastEl.style.top = Math.round(rect.top + 6) + 'px';
-   }
- }
- window.positionCanvasOverlays = positionCanvasOverlays;
- window.addEventListener('resize', positionCanvasOverlays);
- window.addEventListener('orientationchange', positionCanvasOverlays);
-
  // Show one readable, accessible booster toast at a time.
  showPowerupNotification(message, icon = "zap") {
  const notificationsContainer = document.getElementById('powerup-notifications');
@@ -871,7 +851,7 @@
                 notification.append(iconNode, textNode);
  notificationsContainer.appendChild(notification);
 
- requestAnimationFrame(() => { positionCanvasOverlays(); notification.classList.add('show'); });
+ requestAnimationFrame(() => notification.classList.add('show'));
  this.powerupToastTimer = setTimeout(() => {
  notification.classList.remove('show');
  setTimeout(() => {
@@ -884,9 +864,6 @@
  }
  }
  
- // Expose the controller for recovery handlers and diagnostics.
- window.MazeChaseController = MazeChaseController;
-
  // Start the game when page loads
  document.addEventListener('DOMContentLoaded', () => {
  console.log(' DOM loaded, initializing game...');
@@ -1671,111 +1648,5 @@
  });
  });
  </script>
-
- <script>
- // Keep overlays inside the canvas only while a game is active.
- (() => {
-   const canvas = document.getElementById('gameCanvas');
-   const status = document.getElementById('status');
-   const notifications = document.getElementById('powerup-notifications');
-   if (!canvas || !status || !notifications) return;
-   const alignHudToCanvas = () => {
-     if (!document.body.classList.contains('game-playing')) return;
-     const rect = canvas.getBoundingClientRect();
-     if (rect.width < 1 || rect.height < 1) return;
-     status.style.left = Math.round(rect.left + 4) + 'px';
-     status.style.top = Math.round(rect.top + 4) + 'px';
-     notifications.style.left = Math.round(rect.right - Math.min(190, window.innerWidth * 0.52) - 4) + 'px';
-     notifications.style.top = Math.round(rect.top + 4) + 'px';
-     notifications.style.right = 'auto';
-   };
-   window.addEventListener('resize', alignHudToCanvas, { passive: true });
-   window.addEventListener('scroll', alignHudToCanvas, { passive: true });
-   if (window.ResizeObserver) new ResizeObserver(alignHudToCanvas).observe(canvas);
-   const observer = new MutationObserver(alignHudToCanvas);
-   observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-   alignHudToCanvas();
-   setTimeout(alignHudToCanvas, 150);
-   setTimeout(alignHudToCanvas, 600);
- })();
- </script>
-
-
- <!-- Start button recovery handler: capture taps before legacy handlers can interfere. -->
- <script>
- (() => {
-   const bindStartButton = () => {
-     const button = document.getElementById('startGameBtn');
-     if (!button || button.dataset.recoveryBound === '1') return;
-     button.dataset.recoveryBound = '1';
-     const launch = (event) => {
-       event.preventDefault();
-       event.stopPropagation();
-       event.stopImmediatePropagation();
-       try {
-         if (!window.gameController) {
-           if (typeof window.MazeChaseController === 'function') {
-             window.gameController = new window.MazeChaseController();
-           } else {
-             throw new Error('Game controller script did not initialize. Check that the page loaded the latest deployment and that there are no JavaScript errors.');
-           }
-         }
-         const controller = window.gameController;
-         if (!controller.initialized) {
-           button.disabled = true;
-           button.textContent = 'LOADING GAME…';
-           const startedAt = Date.now();
-           const waitForInit = () => {
-             if (window.gameController && window.gameController.initialized) {
-               button.disabled = false;
-               button.innerHTML = '<i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> START GAME';
-               window.gameController.startGame();
-             } else if (Date.now() - startedAt < 8000) {
-               setTimeout(waitForInit, 100);
-             } else {
-               button.disabled = false;
-               button.textContent = 'START GAME';
-               throw new Error('Game is taking too long to initialize. Refresh the page and try again.');
-             }
-           };
-           waitForInit();
-           return;
-         }
-         controller.startGame();
-       } catch (error) {
-         console.error('Start Game recovery handler failed:', error);
-         button.disabled = false;
-         button.textContent = 'START GAME';
-         if (typeof showAlert === 'function') showAlert('Unable to Start Game', error.message || 'Please refresh and try again.');
-         else alert(error.message || 'Unable to start game. Please refresh and try again.');
-       }
-     };
-     button.addEventListener('click', launch, true);
-     button.addEventListener('pointerup', (event) => {
-       if (event.pointerType === 'touch' || event.pointerType === 'pen') launch(event);
-     }, true);
-   };
-   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindStartButton, { once: true });
-   else bindStartButton();
- })();
- </script>
-
-
- <!-- Independent controller bridge: keep this separate from the legacy initialization block. -->
- <script>
- (() => {
-   try {
-     if (!window.MazeChaseController && typeof MazeChaseController !== 'undefined') {
-       window.MazeChaseController = MazeChaseController;
-     }
-   } catch (e) {
-     console.error('MazeScape controller bridge failed:', e);
-   }
-   window.addEventListener('error', (event) => {
-     console.error('MazeScape runtime error:', event.message, event.filename, event.lineno);
-   });
- })();
- </script>
-
 </body>
 </html>
