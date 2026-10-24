@@ -5122,3 +5122,44 @@ body:not(.game-playing) #powerup-notifications {
     cursor: pointer !important;
   }
 }
+
+
+/* Mobile-only recovery layout; desktop/tablet styles remain untouched. */
+@media screen and (max-width: 700px) {
+  body:not(.game-playing) #gameContainer {
+    min-height: calc(100dvh - 104px) !important;
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 18px 0 calc(28px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  body:not(.game-playing) #menuButtons.menu-buttons {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    z-index: 2147483000 !important;
+    pointer-events: auto !important;
+  }
+  body:not(.game-playing) #menuButtons #startGameBtn {
+    position: relative !important;
+    z-index: 2147483001 !important;
+    display: flex !important;
+    width: 100% !important;
+    min-height: 56px !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+  body:not(.game-playing) #gameCanvas,
+  body:not(.game-playing) #ui-container,
+  body:not(.game-playing) #status,
+  body:not(.game-playing) #powerup-notifications {
+    pointer-events: none !important;
+  }
+}
