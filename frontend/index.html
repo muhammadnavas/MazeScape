@@ -884,6 +884,9 @@
  }
  }
  
+ // Expose the controller for recovery handlers and diagnostics.
+ window.MazeChaseController = MazeChaseController;
+
  // Start the game when page loads
  document.addEventListener('DOMContentLoaded', () => {
  console.log(' DOM loaded, initializing game...');
