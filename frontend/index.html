@@ -593,11 +593,15 @@
  const modal = document.createElement('div');
  modal.className = 'modal';
  
+ if (title === 'FINAL SCORE') {
+ modal.innerHTML = `<h2 class="glow-text primary-color">${message}</h2>`;
+ } else {
  modal.innerHTML = `
  <h2 class="glow-text primary-color">${title}</h2>
  <p>${message.replace(/\n/g, '<br>')}</p>
  ${autoDismiss ? '<p style="margin-top: 20px; color: #888; font-size: 14px;">Returning to menu...</p>': ''}
  `;
+ }
  
  overlay.appendChild(modal);
  document.body.appendChild(overlay);
@@ -746,7 +750,7 @@
 
   // Show result message with detailed score breakdown
  const resultTitle = result === "win" ? "Maze escaped!" : "Game over";
- this.showMessage(resultTitle, `FINAL SCORE: ${finalScore} pts`, true, 5000);
+ this.showMessage('FINAL SCORE', `FINAL SCORE: ${finalScore} pts`, true, 5000);
 
   // Return to menu and stop game loop
  game = null;
