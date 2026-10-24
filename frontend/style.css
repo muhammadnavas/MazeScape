@@ -4859,3 +4859,29 @@ body {
     gap: 16px !important;
   }
 }
+
+
+/* Anchor the compact score/lives HUD immediately above the maze edge. */
+#gameContainer #status {
+  position: absolute !important;
+  top: 0 !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translateX(-50%) !important;
+  margin: 0 !important;
+  padding: 3px 8px !important;
+  width: max-content !important;
+  max-width: calc(100% - 16px) !important;
+  z-index: 60 !important;
+}
+#gameContainer #gameCanvas {
+  display: block;
+}
+@media (max-width: 700px) {
+  #gameContainer #status {
+    top: 0 !important;
+    gap: 10px !important;
+    padding: 2px 6px !important;
+  }
+}
