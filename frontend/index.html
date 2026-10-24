@@ -1644,5 +1644,31 @@
  });
  });
  </script>
+
+ <script>
+ // Keep the game info at the canvas top-left and booster toast at canvas top-right.
+ (() => {
+   const canvas = document.getElementById('gameCanvas');
+   const status = document.getElementById('status');
+   const notifications = document.getElementById('powerup-notifications');
+   if (!canvas || !status || !notifications) return;
+   const alignHudToCanvas = () => {
+     const rect = canvas.getBoundingClientRect();
+     if (!rect.width || !rect.height) return;
+     status.style.left = Math.round(rect.left + 4) + 'px';
+     status.style.top = Math.round(rect.top + 4) + 'px';
+     notifications.style.left = Math.round(rect.right - Math.min(190, window.innerWidth * 0.5) - 4) + 'px';
+     notifications.style.top = Math.round(rect.top + 4) + 'px';
+     notifications.style.right = 'auto';
+   };
+   window.addEventListener('resize', alignHudToCanvas, { passive: true });
+   window.addEventListener('scroll', alignHudToCanvas, { passive: true });
+   if (window.ResizeObserver) new ResizeObserver(alignHudToCanvas).observe(canvas);
+   alignHudToCanvas();
+   setTimeout(alignHudToCanvas, 150);
+   setTimeout(alignHudToCanvas, 600);
+ })();
+ </script>
+
 </body>
 </html>
