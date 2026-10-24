@@ -4885,3 +4885,31 @@ body {
     padding: 2px 6px !important;
   }
 }
+
+
+/* Final override: make the booster toast completely unboxed, including nested nodes. */
+#powerup-notifications,
+#powerup-notifications *,
+#powerup-notifications *::before,
+#powerup-notifications *::after,
+.powerup-notification,
+.powerup-notification-icon,
+.powerup-notification-text {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Place score/lives immediately above the actual canvas, accounting for its centered size. */
+@media (max-width: 700px) {
+  #gameContainer #status {
+    top: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+  }
+}
