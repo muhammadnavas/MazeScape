@@ -5098,3 +5098,27 @@ body:not(.game-playing) #powerup-notifications {
     pointer-events: none !important;
   }
 }
+
+
+/* Last-resort reliable Start Game hit target on mobile home screen. */
+@media (max-width: 700px) and (orientation: portrait) {
+  body:not(.game-playing) #gameContainer {
+    isolation: isolate !important;
+  }
+  body:not(.game-playing) #gameCanvas,
+  body:not(.game-playing) #ui-container,
+  body:not(.game-playing) .blog-panel {
+    pointer-events: none !important;
+  }
+  body:not(.game-playing) #menuButtons {
+    z-index: 2147483000 !important;
+    pointer-events: auto !important;
+  }
+  body:not(.game-playing) #startGameBtn {
+    z-index: 2147483001 !important;
+    position: relative !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    cursor: pointer !important;
+  }
+}
