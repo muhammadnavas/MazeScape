@@ -312,7 +312,7 @@
  const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
  const availableWidth = Math.max(240, document.documentElement.clientWidth - (isMobile ? 4 : 24));
  // Reserve room for HUD, direction pad, and safe areas so the canvas never sits underneath controls.
- const availableHeight = Math.max(360, viewportHeight - (isMobile ? 250 : 150));
+ const availableHeight = Math.max(360, viewportHeight - (isMobile ? 150 : 150));
  
  // Calculate scale to fit while maintaining aspect ratio
  const scaleX = availableWidth / idealCanvasWidth;
