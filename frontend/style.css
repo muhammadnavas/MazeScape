@@ -5012,3 +5012,28 @@ body.game-playing #status {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
+
+
+/* Emergency interaction fix: HUD/toasts must never intercept menu or game input. */
+#status,
+#powerup-notifications,
+#powerup-notifications * {
+  pointer-events: none !important;
+}
+#menuButtons {
+  position: relative !important;
+  z-index: 2000 !important;
+  pointer-events: auto !important;
+}
+#menuButtons button,
+#startGameBtn {
+  position: relative !important;
+  z-index: 2001 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+body:not(.game-playing) #status,
+body:not(.game-playing) #powerup-notifications {
+  display: none !important;
+  visibility: hidden !important;
+}
