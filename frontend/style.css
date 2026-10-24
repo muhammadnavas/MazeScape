@@ -5335,3 +5335,12 @@ body:not(.game-playing) #powerup-notifications {
     transform: none !important;
   }
 }
+
+
+/* Mobile-only: hide the entire GAME INFO HUD, while keeping booster notifications. */
+@media screen and (max-width: 700px) {
+  body.game-playing #gameContainer #status {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
