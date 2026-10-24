@@ -5100,66 +5100,75 @@ body:not(.game-playing) #powerup-notifications {
 }
 
 
-/* Last-resort reliable Start Game hit target on mobile home screen. */
-@media (max-width: 700px) and (orientation: portrait) {
-  body:not(.game-playing) #gameContainer {
-    isolation: isolate !important;
-  }
-  body:not(.game-playing) #gameCanvas,
-  body:not(.game-playing) #ui-container,
-  body:not(.game-playing) .blog-panel {
-    pointer-events: none !important;
-  }
-  body:not(.game-playing) #menuButtons {
-    z-index: 2147483000 !important;
-    pointer-events: auto !important;
-  }
-  body:not(.game-playing) #startGameBtn {
-    z-index: 2147483001 !important;
-    position: relative !important;
-    pointer-events: auto !important;
-    touch-action: manipulation !important;
-    cursor: pointer !important;
-  }
-}
 
 
-/* Mobile-only recovery layout; desktop/tablet styles remain untouched. */
-@media screen and (max-width: 700px) {
+/* Responsive mobile home screen and gameplay layout. Desktop rules remain unchanged. */
+@media (max-width: 700px) {
+  #gameContainer { width: 100%; box-sizing: border-box; }
   body:not(.game-playing) #gameContainer {
-    min-height: calc(100dvh - 104px) !important;
-    height: auto !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    align-items: flex-start !important;
-    justify-content: center !important;
-    padding: 18px 0 calc(28px + env(safe-area-inset-bottom, 0px)) !important;
+    min-height: calc(100dvh - 104px);
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0 calc(24px + env(safe-area-inset-bottom, 0px));
   }
   body:not(.game-playing) #menuButtons.menu-buttons {
-    position: relative !important;
-    inset: auto !important;
-    transform: none !important;
-    width: calc(100vw - 32px) !important;
-    max-width: 520px !important;
-    margin: 0 auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-    z-index: 2147483000 !important;
-    pointer-events: auto !important;
+    position: relative;
+    inset: auto;
+    transform: none;
+    width: min(520px, calc(100vw - 28px));
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    max-height: none;
+    overflow: visible;
+    z-index: 20;
   }
+  body:not(.game-playing) #menuButtons .main-title {
+    font-size: clamp(28px, 7.5vw, 40px);
+    line-height: 1.1;
+  }
+  body:not(.game-playing) #menuButtons .main-subtitle {
+    font-size: clamp(12px, 3.4vw, 15px);
+    white-space: normal;
+  }
+  body:not(.game-playing) #menuButtons .button-row {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  body:not(.game-playing) #menuButtons .button-row:first-of-type,
+  body:not(.game-playing) #menuButtons .button-row:nth-of-type(2) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  body:not(.game-playing) #menuButtons .game-button,
   body:not(.game-playing) #menuButtons #startGameBtn {
-    position: relative !important;
-    z-index: 2147483001 !important;
-    display: flex !important;
-    width: 100% !important;
-    min-height: 56px !important;
-    pointer-events: auto !important;
-    touch-action: manipulation !important;
+    min-width: 0;
+    width: 100%;
+    min-height: 48px;
+    box-sizing: border-box;
+    touch-action: manipulation;
   }
   body:not(.game-playing) #gameCanvas,
   body:not(.game-playing) #ui-container,
   body:not(.game-playing) #status,
   body:not(.game-playing) #powerup-notifications {
-    pointer-events: none !important;
+    pointer-events: none;
+  }
+}
+@media (max-width: 380px) {
+  body:not(.game-playing) #menuButtons.menu-buttons {
+    width: calc(100vw - 20px);
+    padding: 18px 10px 14px;
+    gap: 8px;
+  }
+  body:not(.game-playing) #menuButtons .game-button { font-size: 11px; }
+}
+@media (max-height: 650px) and (max-width: 700px) {
+  body:not(.game-playing) #gameContainer {
+    align-items: flex-start;
   }
 }
