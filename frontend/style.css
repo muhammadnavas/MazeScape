@@ -7177,3 +7177,28 @@ body:not(.game-playing) #powerup-notifications {
     max-height: 155px;
   }
 }
+
+
+/* Small, restrained overlap: keep the characters above the heading rather
+   than covering the letters. */
+#menuButtons .home-character-stage {
+  margin-top: 4px;
+  margin-bottom: -8px;
+}
+#menuButtons .home-hero-art {
+  width: min(100%, 430px);
+  max-height: clamp(150px, 23vh, 220px);
+  transform: translateY(2px);
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    width: min(100%, 390px);
+    margin-top: 4px;
+    margin-bottom: -6px;
+  }
+  #menuButtons .home-hero-art {
+    width: min(100%, 380px);
+    max-height: clamp(115px, 20vh, 185px);
+    transform: translateY(3px);
+  }
+}
