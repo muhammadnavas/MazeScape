@@ -6612,3 +6612,32 @@ body:not(.game-playing) #powerup-notifications {
   #status { font-size: 11px !important; }
   #status .status-content { gap: 8px !important; }
 }
+
+
+/* Last-resort responsive canvas rule: neutralize earlier !important sizing
+   declarations and preserve the 20x30 maze aspect ratio on mobile. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #gameContainer #gameCanvas {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3 !important;
+    max-width: calc(100vw - 8px) !important;
+    max-height: calc(100dvh - 280px - env(safe-area-inset-bottom, 0px)) !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    flex: 0 1 auto !important;
+    object-fit: contain !important;
+    margin: 0 auto !important;
+    align-self: center !important;
+  }
+
+  body.game-playing #gameContainer #mobile-controls {
+    flex: 0 0 auto !important;
+    position: relative !important;
+    inset: auto !important;
+    margin: 12px auto 8px !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+}
