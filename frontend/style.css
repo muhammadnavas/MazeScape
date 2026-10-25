@@ -6367,3 +6367,69 @@ body:not(.game-playing) #powerup-notifications {
     right: -2px !important;
   }
 }
+
+
+/* Final Help screen normalization: compact, theme-aware, protected from legacy overrides. */
+#helpModal .modal.help-modal {
+  color: var(--text-color, inherit) !important;
+  background: var(--modal-bg, var(--panel-bg, inherit)) !important;
+  border-color: var(--border-color, currentColor) !important;
+}
+#helpModal .modal.help-modal .help-content,
+#helpModal .modal.help-modal .help-section,
+#helpModal .modal.help-modal .help-section h3,
+#helpModal .modal.help-modal .help-section p,
+#helpModal .modal.help-modal .help-section ul,
+#helpModal .modal.help-modal .help-section li {
+  color: inherit !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+#helpModal .modal.help-modal .help-section h3 {
+  font-size: 15px !important;
+  margin-bottom: 5px !important;
+}
+#helpModal .modal.help-modal .help-section p,
+#helpModal .modal.help-modal .help-section li {
+  font-size: 13px !important;
+  line-height: 1.42 !important;
+}
+#helpModal .modal.help-modal .help-section { margin-bottom: 12px !important; }
+#helpModal .modal.help-modal .help-section p { margin-bottom: 5px !important; }
+#helpModal .modal.help-modal .help-section ul { margin-bottom: 5px !important; }
+#helpModal .modal.help-modal .help-section li { margin-bottom: 4px !important; }
+#helpModal .modal.help-modal .help-section .help-gold,
+#helpModal .modal.help-modal .help-section .help-blue,
+#helpModal .modal.help-modal .help-section .help-red,
+#helpModal .modal.help-modal .help-section .help-green,
+#helpModal .modal.help-modal .help-section .help-ice,
+#helpModal .modal.help-modal .help-section .help-orange {
+  color: inherit !important;
+}
+#helpModal .modal.help-modal .help-section .ui-icon {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+@media (max-width: 480px) {
+  #helpModal .modal.help-modal {
+    padding: 16px 14px !important;
+    max-height: calc(100dvh - 20px) !important;
+  }
+  #helpModal .modal.help-modal > h2 {
+    font-size: 19px !important;
+    margin-bottom: 10px !important;
+  }
+  #helpModal .modal.help-modal .help-content {
+    margin-bottom: 10px !important;
+    padding-right: 5px !important;
+    overflow-y: auto !important;
+  }
+  #helpModal .modal.help-modal .help-section h3 { display: flex !important; }
+  #helpModal .modal.help-modal > .button-row,
+  #helpModal .modal.help-modal > .button-row button {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
