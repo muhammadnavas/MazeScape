@@ -6449,3 +6449,88 @@ body:not(.game-playing) #powerup-notifications {
 #astarInfoModal .astar-formula { margin:8px 0!important; padding:9px 12px!important; border:1px solid currentColor!important; border-radius:8px!important; text-align:center!important; font-family:monospace!important; font-size:16px!important; color:inherit!important; }
 #astarInfoModal .button-row { flex:0 0 auto!important; display:block!important; margin:12px 0 0!important; }
 #astarInfoModal .button-row button { display:block!important; width:100%!important; min-height:44px!important; }
+
+
+/* Final A Star modal layout: readable left-aligned content and a compact, scrollable dialog.
+   Kept last in the stylesheet so older global modal rules cannot override it. */
+#astarInfoModal.modal-overlay {
+  padding: 16px !important;
+  align-items: center !important;
+}
+#astarInfoModal .astar-info-modal {
+  width: min(520px, calc(100vw - 32px)) !important;
+  max-width: 520px !important;
+  max-height: min(78dvh, 760px) !important;
+  padding: 20px 22px 16px !important;
+  gap: 0 !important;
+  text-align: left !important;
+  border-radius: 18px !important;
+}
+#astarInfoModal .astar-info-modal > h2 {
+  text-align: center !important;
+  font-size: clamp(18px, 4.5vw, 22px) !important;
+  margin: 0 0 18px !important;
+  letter-spacing: 0.01em !important;
+}
+#astarInfoModal .astar-info-content {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  text-align: left !important;
+  padding: 0 5px 0 0 !important;
+  scrollbar-width: thin !important;
+}
+#astarInfoModal .astar-info-content section {
+  margin: 0 0 16px !important;
+  text-align: left !important;
+}
+#astarInfoModal .astar-info-content h3 {
+  text-align: left !important;
+  margin: 0 0 7px !important;
+  font-size: 15px !important;
+  font-weight: 650 !important;
+}
+#astarInfoModal .astar-info-content p,
+#astarInfoModal .astar-info-content li {
+  text-align: left !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  overflow-wrap: anywhere !important;
+}
+#astarInfoModal .astar-info-content ul,
+#astarInfoModal .astar-info-content ol {
+  margin: 7px 0 0 !important;
+  padding-left: 23px !important;
+  text-align: left !important;
+}
+#astarInfoModal .astar-info-content li {
+  padding-left: 2px !important;
+  margin-bottom: 6px !important;
+}
+#astarInfoModal .astar-formula {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 10px 0 12px !important;
+  padding: 10px 8px !important;
+  font-size: clamp(14px, 3.8vw, 17px) !important;
+  overflow-wrap: anywhere !important;
+}
+#astarInfoModal .button-row {
+  margin-top: 12px !important;
+}
+@media (max-width: 480px) {
+  #astarInfoModal.modal-overlay {
+    padding: 12px !important;
+  }
+  #astarInfoModal .astar-info-modal {
+    width: calc(100vw - 24px) !important;
+    max-height: 76dvh !important;
+    padding: 17px 16px 14px !important;
+    border-radius: 16px !important;
+  }
+  #astarInfoModal .astar-info-modal > h2 {
+    margin-bottom: 14px !important;
+  }
+  #astarInfoModal .astar-info-content section {
+    margin-bottom: 13px !important;
+  }
+}
