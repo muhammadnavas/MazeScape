@@ -6773,3 +6773,32 @@ body:not(.game-playing) #powerup-notifications {
     cursor: pointer !important;
   }
 }
+
+
+/* Mobile controller reliability override: keep the controls above the game canvas
+   and outside the game container's clipping/stacking context. */
+@media (max-width: 768px), (pointer: coarse) {
+  body.game-playing #mobile-controls {
+    position: fixed !important;
+    left: auto !important;
+    right: max(16px, env(safe-area-inset-right)) !important;
+    bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+    z-index: 2147483000 !important;
+    display: flex !important;
+    width: auto !important;
+    height: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    touch-action: none !important;
+  }
+
+  body.game-playing #mobile-controls .control-pad,
+  body.game-playing #mobile-controls .control-row,
+  body.game-playing #mobile-controls .control-btn {
+    pointer-events: auto !important;
+    touch-action: none !important;
+  }
+}
