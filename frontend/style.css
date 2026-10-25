@@ -5432,3 +5432,56 @@ body:not(.game-playing) #powerup-notifications {
   font-size: .6em;
   font-weight: 600;
 }
+
+
+/* Compact in-game HUD: keep score and lives at the canvas top-right. */
+#status.game-hud {
+  position: fixed !important;
+  top: max(8px, env(safe-area-inset-top)) !important;
+  right: 10px !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  max-width: calc(100vw - 20px) !important;
+  z-index: 1000 !important;
+  display: none;
+  padding: 6px 10px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(216, 169, 61, .55) !important;
+  border-radius: 10px !important;
+  background: rgba(28, 18, 17, .9) !important;
+  color: #FAF7EF !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,.25) !important;
+  font-size: 12px !important;
+}
+#status.game-hud .status-header { display: none !important; }
+#status.game-hud .status-content {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+#status.game-hud .status-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+}
+#status.game-hud .status-label,
+#status.game-hud .status-value {
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+}
+@media (max-width: 700px) {
+  #status.game-hud {
+    top: 184px !important;
+    right: 14px !important;
+    padding: 5px 8px !important;
+    font-size: 11px !important;
+  }
+  #status.game-hud .status-content { gap: 9px !important; }
+  #status.game-hud .status-label,
+  #status.game-hud .status-value { font-size: 11px !important; }
+}
