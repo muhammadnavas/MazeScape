@@ -6433,3 +6433,19 @@ body:not(.game-playing) #powerup-notifications {
     opacity: 1 !important;
   }
 }
+
+
+/* Dedicated A Star explanation modal, isolated from legacy blog-panel rules. */
+#astarInfoModal.modal-overlay { position:fixed!important; inset:0!important; z-index:100001!important; display:flex!important; align-items:center!important; justify-content:center!important; padding:12px!important; box-sizing:border-box!important; overflow:auto!important; }
+#astarInfoModal .astar-info-modal { display:flex!important; flex-direction:column!important; width:min(560px,calc(100vw - 24px))!important; min-width:0!important; max-width:560px!important; max-height:calc(100dvh - 24px)!important; padding:20px!important; box-sizing:border-box!important; overflow:hidden!important; color:var(--foreground,#f5f5f5)!important; background:var(--background,#171717)!important; border:1px solid currentColor!important; border-radius:18px!important; }
+#astarInfoModal .astar-info-modal > h2 { flex:0 0 auto!important; margin:0 0 12px!important; text-align:center!important; font-size:20px!important; line-height:1.25!important; color:inherit!important; }
+#astarInfoModal .astar-info-content { display:block!important; min-height:0!important; overflow-y:auto!important; overscroll-behavior:contain!important; padding-right:6px!important; color:inherit!important; }
+#astarInfoModal .astar-info-content section { display:block!important; margin:0 0 14px!important; color:inherit!important; visibility:visible!important; }
+#astarInfoModal .astar-info-content h3 { margin:0 0 5px!important; font-size:15px!important; line-height:1.35!important; color:inherit!important; }
+#astarInfoModal .astar-info-content p, #astarInfoModal .astar-info-content li { font-size:13px!important; line-height:1.5!important; color:inherit!important; -webkit-text-fill-color:currentColor!important; }
+#astarInfoModal .astar-info-content p { margin:0!important; }
+#astarInfoModal .astar-info-content ul, #astarInfoModal .astar-info-content ol { display:block!important; margin:6px 0 0!important; padding-left:20px!important; list-style-position:outside!important; }
+#astarInfoModal .astar-info-content li { display:list-item!important; margin:0 0 5px!important; }
+#astarInfoModal .astar-formula { margin:8px 0!important; padding:9px 12px!important; border:1px solid currentColor!important; border-radius:8px!important; text-align:center!important; font-family:monospace!important; font-size:16px!important; color:inherit!important; }
+#astarInfoModal .button-row { flex:0 0 auto!important; display:block!important; margin:12px 0 0!important; }
+#astarInfoModal .button-row button { display:block!important; width:100%!important; min-height:44px!important; }
