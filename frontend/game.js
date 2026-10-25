@@ -1105,11 +1105,11 @@ class MazeGame {
  // Initialize texture system
  this.textureManager = new TextureManager();
  
- // Check texture setting from localStorage
- const texturesEnabled = localStorage.getItem('texturesEnabled') !== 'false';
- this.textureManager.setEnabled(texturesEnabled);
- console.log(' Texture system initialized:', texturesEnabled ? 'enabled': 'disabled');
- console.log(` Fixed maze dimensions: ${this.GRID_WIDTH}x${this.GRID_HEIGHT}`);
+ // Enhanced textures are always enabled; retire the old preference.
+ this.textureManager.setEnabled(true);
+ localStorage.removeItem('texturesEnabled');
+ console.log(' Enhanced texture system initialized');
+  console.log(` Fixed maze dimensions: ${this.GRID_WIDTH}x${this.GRID_HEIGHT}`);
  
  // Enhanced game state
  this.particles = new ParticleSystem();
