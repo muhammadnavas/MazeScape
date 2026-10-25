@@ -6205,3 +6205,114 @@ body:not(.game-playing) #powerup-notifications {
     opacity: 1 !important;
   }
 }
+
+
+/* Dedicated help-modal styles: replace inherited/inline layout with one consistent system. */
+#helpModal .modal.help-modal {
+  width: min(600px, calc(100vw - 32px)) !important;
+  max-width: 600px !important;
+  max-height: calc(100dvh - 32px) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  padding: 24px !important;
+  overflow: hidden !important;
+}
+#helpModal .modal.help-modal > h2 {
+  flex: 0 0 auto !important;
+  margin: 0 0 18px !important;
+  padding: 0 !important;
+  text-align: center !important;
+  font-size: clamp(19px, 4.8vw, 28px) !important;
+  line-height: 1.25 !important;
+}
+#helpModal .modal.help-modal .help-content {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  margin: 0 0 18px !important;
+  padding: 0 10px 0 0 !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+  text-align: left !important;
+}
+#helpModal .modal.help-modal .help-section {
+  display: block !important;
+  margin: 0 0 22px !important;
+  padding: 0 !important;
+}
+#helpModal .modal.help-modal .help-section:last-child {
+  margin-bottom: 4px !important;
+}
+#helpModal .modal.help-modal .help-section h3 {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 0 10px !important;
+  padding: 0 !important;
+  color: #d8ad42 !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+#helpModal .modal.help-modal .help-section p {
+  margin: 0 0 10px !important;
+  padding: 0 !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  overflow-wrap: anywhere !important;
+}
+#helpModal .modal.help-modal .help-section ul {
+  display: block !important;
+  margin: 0 0 12px !important;
+  padding: 0 0 0 20px !important;
+  list-style: disc outside !important;
+}
+#helpModal .modal.help-modal .help-section li {
+  display: list-item !important;
+  margin: 0 0 7px !important;
+  padding: 0 !important;
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+  overflow-wrap: anywhere !important;
+}
+#helpModal .modal.help-modal .help-section strong { font-weight: 700 !important; }
+#helpModal .modal.help-modal .help-section .help-gold { color: #d8ad42 !important; }
+#helpModal .modal.help-modal .help-section .help-blue { color: #64c8ff !important; }
+#helpModal .modal.help-modal .help-section .help-red { color: #ff8585 !important; }
+#helpModal .modal.help-modal .help-section .help-green { color: #9bdc83 !important; }
+#helpModal .modal.help-modal .help-section .help-ice { color: #8bdcff !important; }
+#helpModal .modal.help-modal .help-section .help-orange { color: #ffb35c !important; }
+#helpModal .modal.help-modal .help-section .ui-icon {
+  width: 17px !important;
+  height: 17px !important;
+  flex: 0 0 17px !important;
+}
+#helpModal .modal.help-modal > .button-row {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+#helpModal .modal.help-modal > .button-row button {
+  width: 100% !important;
+  min-height: 48px !important;
+  margin: 0 !important;
+}
+@media (max-width: 480px) {
+  #helpModal.modal-overlay { padding: 10px !important; box-sizing: border-box !important; }
+  #helpModal .modal.help-modal {
+    width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+    padding: 20px 16px !important;
+  }
+  #helpModal .modal.help-modal > h2 { margin-bottom: 16px !important; }
+  #helpModal .modal.help-modal .help-content { margin-bottom: 14px !important; padding-right: 8px !important; }
+  #helpModal .modal.help-modal .help-section { margin-bottom: 18px !important; }
+  #helpModal .modal.help-modal .help-section p,
+  #helpModal .modal.help-modal .help-section li { font-size: 14px !important; }
+}
