@@ -6555,3 +6555,12 @@ body:not(.game-playing) #powerup-notifications {
     padding: 8px 10px !important;
   }
 }
+
+
+/* Keep only the compact spawn/activation notifications in every rendering mode.
+   This suppresses any legacy panel created by older or fallback gameplay code. */
+#powerup-status {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
