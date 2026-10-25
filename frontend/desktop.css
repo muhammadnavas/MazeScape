@@ -39,3 +39,48 @@
   #status, #powerup-notifications { top:84px; }
 }
 @media screen and (min-width: 769px) and (prefers-reduced-motion: reduce) { #menuButtons .game-button { transition:none; } }
+
+
+/* Desktop home-screen layout correction.
+   The shared stylesheet marks the menu as position:relative for mobile taps.
+   On desktop that makes left:50% push the card off-screen instead of centering it.
+   Scope these fixes to desktop only so phone layout remains unchanged. */
+@media screen and (min-width: 769px) {
+  body:not(.game-playing) #gameContainer {
+    position: relative !important;
+    isolation: isolate;
+  }
+
+  body:not(.game-playing) #gameCanvas {
+    pointer-events: none !important;
+    z-index: 0 !important;
+  }
+
+  body:not(.game-playing) #ui-container {
+    pointer-events: none !important;
+    z-index: 1 !important;
+  }
+
+  body:not(.game-playing) #menuButtons.menu-buttons {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    z-index: 20 !important;
+    pointer-events: auto !important;
+  }
+
+  body:not(.game-playing) #menuButtons.menu-buttons > *,
+  body:not(.game-playing) #menuButtons.menu-buttons button {
+    pointer-events: auto !important;
+  }
+
+  /* Keep the long algorithm article from covering the desktop landing card.
+     It remains available during gameplay and the mobile layout is untouched. */
+  body:not(.game-playing) .blog-panel.left {
+    display: none !important;
+  }
+}
