@@ -7633,3 +7633,14 @@ body:not(.game-playing) #powerup-notifications {
         font-size: 22px;
     }
 }
+
+
+/* Nudge the homepage Tom & Jerry PNG slightly upward without moving the title or buttons. */
+#menuButtons .home-hero-art {
+  transform: translateY(-6px);
+}
+@media (max-width: 700px) {
+  #menuButtons .home-hero-art {
+    transform: translateY(-8px);
+  }
+}
