@@ -1384,7 +1384,9 @@ class MazeGame {
  // Queue turns until Jerry reaches the center of the current tile.
  // This prevents diagonal movement and keeps collision checks grid-accurate.
  if (dy === 0 && dx === 0) {
-   if (this.playerStepTarget) {
+   if (this.playerStepTarget || this.playerDir[0] !== 0 || this.playerDir[1] !== 0) {
+     // A tap can be released before the next animation frame creates a tile target.
+     // Preserve the direction long enough to complete one tile, then stop.
      this.stopAfterStep = true;
      this.pendingPlayerDir = null;
    } else {
