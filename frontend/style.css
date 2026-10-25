@@ -7438,3 +7438,42 @@ body:not(.game-playing) #powerup-notifications {
     transform: translateY(9px) !important;
   }
 }
+
+
+/* Definitive homepage artwork positioning override.
+   Keep the PNG fully visible, move it down, and let its baseline overlap the title. */
+#menuButtons .home-character-stage {
+  height: 190px !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  margin: 0 auto -12px !important;
+  padding: 0 !important;
+  position: relative !important;
+}
+#menuButtons .home-character-stage .home-hero-art {
+  position: relative !important;
+  display: block !important;
+  height: 190px !important;
+  width: auto !important;
+  max-height: none !important;
+  max-width: min(100%, 360px) !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: translateY(18px) !important;
+  z-index: 2 !important;
+}
+#menuButtons .home-title-block {
+  position: relative !important;
+  z-index: 1 !important;
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    height: 155px !important;
+    margin-bottom: -10px !important;
+  }
+  #menuButtons .home-character-stage .home-hero-art {
+    height: 155px !important;
+    max-width: min(100%, 320px) !important;
+    transform: translateY(14px) !important;
+  }
+}
