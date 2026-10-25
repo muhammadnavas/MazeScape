@@ -7414,3 +7414,27 @@ body:not(.game-playing) #powerup-notifications {
     transform: translateY(7px) !important;
   }
 }
+
+
+/* Align the PNG's horizontal baseline with the top of the MAZESCAPE title.
+   The artwork may overlap the letters slightly; do not crop its top. */
+#menuButtons .home-character-stage {
+  overflow: visible !important;
+  margin-bottom: -18px !important;
+}
+#menuButtons .home-hero-art {
+  height: 145% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: translateY(12px) !important;
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    margin-bottom: -14px !important;
+  }
+  #menuButtons .home-hero-art {
+    height: 140% !important;
+    transform: translateY(9px) !important;
+  }
+}
