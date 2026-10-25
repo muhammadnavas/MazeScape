@@ -5525,3 +5525,53 @@ body:not(.game-playing) #powerup-notifications {
     display: inline-flex !important;
   }
 }
+
+
+/* Final mobile HUD + notifications: align both flush to the canvas's top-left edge. */
+@media screen and (max-width: 700px) {
+  body.game-playing #gameContainer #status.game-hud {
+    position: absolute !important;
+    top: 0 !important;
+    left: 4px !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: max-content !important;
+    max-width: 48vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 1102 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-align: left !important;
+  }
+  body.game-playing #gameContainer #status.game-hud .status-content {
+    justify-content: flex-start !important;
+    gap: 8px !important;
+  }
+  body.game-playing #gameContainer #powerup-notifications {
+    position: absolute !important;
+    top: 0 !important;
+    left: 4px !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: max-content !important;
+    max-width: calc(100% - 8px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    text-align: left !important;
+    z-index: 1101 !important;
+    pointer-events: none !important;
+  }
+  body.game-playing #gameContainer #powerup-notifications .powerup-notification {
+    justify-content: flex-start !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+}
