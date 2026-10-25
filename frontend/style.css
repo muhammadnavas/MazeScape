@@ -6160,3 +6160,7 @@ body:not(.game-playing) #powerup-notifications {
     font-weight: 600 !important;
   }
 }
+
+
+/* Avoid duplicate score units: keep "pts" beside the number and remove the redundant Points label. */
+.modal.final-score-modal .score-points-label { display: none !important; }
