@@ -6915,3 +6915,66 @@ body:not(.game-playing) #powerup-notifications {
     border-width: 7px 0 7px 11px !important;
   }
 }
+
+
+/* Final mobile sizing: use the available viewport width for the maze, while
+   reserving a compact, fixed controller zone at the bottom. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #gameContainer {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    padding: 30px 0 calc(150px + env(safe-area-inset-bottom, 0px)) !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+  body.game-playing #gameContainer #gameCanvas {
+    display: block !important;
+    width: min(calc(100vw - 12px), calc((100dvh - 270px - env(safe-area-inset-bottom, 0px)) * 2 / 3)) !important;
+    height: auto !important;
+    max-width: calc(100vw - 12px) !important;
+    max-height: calc(100dvh - 270px - env(safe-area-inset-bottom, 0px)) !important;
+    aspect-ratio: 2 / 3 !important;
+    object-fit: contain !important;
+    flex: 0 1 auto !important;
+    margin: 0 auto !important;
+  }
+  body.game-playing #mobile-controls {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+    top: auto !important;
+    width: max-content !important;
+    transform: translateX(-50%) !important;
+  }
+  body.game-playing #mobile-controls .control-pad {
+    grid-template-columns: repeat(3, 36px) !important;
+    grid-template-rows: repeat(3, 36px) !important;
+    gap: 4px !important;
+  }
+  body.game-playing #mobile-controls .control-btn,
+  body.game-playing #mobile-controls .control-pad .control-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    border-radius: 8px !important;
+  }
+  body.game-playing #mobile-controls #btn-up::after {
+    border-width: 0 7px 10px !important;
+  }
+  body.game-playing #mobile-controls #btn-down::after {
+    border-width: 10px 7px 0 !important;
+  }
+  body.game-playing #mobile-controls #btn-left::after {
+    border-width: 7px 10px 7px 0 !important;
+  }
+  body.game-playing #mobile-controls #btn-right::after {
+    border-width: 7px 0 7px 10px !important;
+  }
+}
