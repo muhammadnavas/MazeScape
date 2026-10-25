@@ -5966,3 +5966,81 @@ body:not(.game-playing) #powerup-notifications {
     margin: 0 auto !important;
   }
 }
+
+
+/* Help screen content formatting: readable sections, consistent spacing, no clipped bullets. */
+#helpModal .modal {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+}
+#helpModal .modal > div[style*="overflow-y"] {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: min(58dvh, 520px) !important;
+  margin: 0 0 18px !important;
+  padding: 0 10px 4px 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+}
+#helpModal .modal > div[style*="overflow-y"] h4,
+#helpModal .modal > div[style*="overflow-y"] h4[style] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  margin: 22px 0 10px !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+#helpModal .modal > div[style*="overflow-y"] h4:first-child {
+  margin-top: 0 !important;
+}
+#helpModal .modal > div[style*="overflow-y"] p {
+  margin: 0 0 16px !important;
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+  overflow-wrap: anywhere !important;
+}
+#helpModal .modal > div[style*="overflow-y"] p br {
+  display: block !important;
+  content: "" !important;
+  margin-top: 7px !important;
+}
+#helpModal .modal > div[style*="overflow-y"] p strong {
+  font-weight: 700 !important;
+}
+#helpModal .modal > div[style*="overflow-y"] ul,
+#helpModal .modal > div[style*="overflow-y"] ol {
+  margin: 0 0 16px !important;
+  padding-left: 22px !important;
+}
+#helpModal .modal > div[style*="overflow-y"] li {
+  margin: 0 0 8px !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+}
+#helpModal .modal .button-row {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  padding-top: 2px !important;
+}
+@media (max-width: 420px) {
+  #helpModal .modal {
+    padding: 20px 18px !important;
+  }
+  #helpModal .modal h2 {
+    margin-bottom: 16px !important;
+    font-size: 21px !important;
+  }
+  #helpModal .modal > div[style*="overflow-y"] {
+    max-height: min(56dvh, 500px) !important;
+  }
+  #helpModal .modal > div[style*="overflow-y"] h4,
+  #helpModal .modal > div[style*="overflow-y"] h4[style] {
+    font-size: 16px !important;
+  }
+  #helpModal .modal > div[style*="overflow-y"] p {
+    font-size: 14px !important;
+  }
+}
