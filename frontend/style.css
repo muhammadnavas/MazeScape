@@ -6164,3 +6164,44 @@ body:not(.game-playing) #powerup-notifications {
 
 /* Avoid duplicate score units: keep "pts" beside the number and remove the redundant Points label. */
 .modal.final-score-modal .score-points-label { display: none !important; }
+
+
+/* Make controller arrows solid, bold, and clearly visible on mobile. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #mobile-controls .control-btn,
+  body.game-playing #mobile-controls .control-pad .control-btn {
+    font-size: 0 !important;
+    font-weight: 900 !important;
+    color: #fff8e8 !important;
+    -webkit-text-fill-color: #fff8e8 !important;
+  }
+
+  body.game-playing #mobile-controls #upBtn::after,
+  body.game-playing #mobile-controls .control-btn[data-direction="up"]::after {
+    content: "▲" !important;
+  }
+  body.game-playing #mobile-controls #downBtn::after,
+  body.game-playing #mobile-controls .control-btn[data-direction="down"]::after {
+    content: "▼" !important;
+  }
+  body.game-playing #mobile-controls #leftBtn::after,
+  body.game-playing #mobile-controls .control-btn[data-direction="left"]::after {
+    content: "◀" !important;
+  }
+  body.game-playing #mobile-controls #rightBtn::after,
+  body.game-playing #mobile-controls .control-btn[data-direction="right"]::after {
+    content: "▶" !important;
+  }
+
+  body.game-playing #mobile-controls .control-btn::after {
+    display: inline-block !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    color: #fff8e8 !important;
+    -webkit-text-fill-color: #fff8e8 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+  }
+}
