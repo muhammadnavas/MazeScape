@@ -1364,12 +1364,14 @@
    document.body.appendChild(mobileControlsRoot);
  }
 
- // Pointer events unify touch, pen, and mouse without duplicate moves.
+ // Robust controller input:
+ // Pointer events support held movement; click is a fallback for mobile browsers
+ // that synthesize clicks but lose pointer events during scrolling/compositing.
  const mobileControlButtons = {
- 'btn-up': 'up',
- 'btn-down': 'down',
- 'btn-left': 'left',
- 'btn-right': 'right'
+   'btn-up': 'up',
+   'btn-down': 'down',
+   'btn-left': 'left',
+   'btn-right': 'right'
  };
 
  Object.entries(mobileControlButtons).forEach(([buttonId, direction]) => {
@@ -1378,6 +1380,7 @@
 
    let pressed = false;
    let activePointerId = null;
+   let lastPointerDownAt = 0;
    button.setAttribute('aria-label', 'Move ' + direction);
    button.setAttribute('type', 'button');
    button.setAttribute('draggable', 'false');
@@ -1402,6 +1405,7 @@
      event.stopPropagation();
      pressed = true;
      activePointerId = event.pointerId;
+     lastPointerDownAt = Date.now();
      button.classList.add('active');
      try { button.setPointerCapture(event.pointerId); } catch (_) {}
      handleMobileMove(direction);
@@ -1416,6 +1420,18 @@
      if (activePointerId !== null && event.pointerId !== activePointerId) return;
      release();
    });
+
+   // Fallback: one accurate tile per tap if pointerdown never arrived.
+   button.addEventListener('click', (event) => {
+     event.preventDefault();
+     event.stopPropagation();
+     if (Date.now() - lastPointerDownAt < 700) return;
+     handleMobileMove(direction);
+     handleMobileStop();
+     button.classList.add('active');
+     setTimeout(() => button.classList.remove('active'), 120);
+   });
+
    button.addEventListener('contextmenu', event => event.preventDefault());
    button.addEventListener('dragstart', event => event.preventDefault());
  });
