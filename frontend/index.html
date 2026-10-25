@@ -70,9 +70,7 @@
  <button class="game-button" id="helpBtn">
  <i data-lucide="circle-help" class="ui-icon" aria-hidden="true"></i> HELP
  </button>
- <button class="game-button" id="settingsBtn">
- <i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS
- </button>
+
  <button class="game-button mobile-only" id="mobileBlogBtn">
  <i data-lucide="book-open" class="ui-icon" aria-hidden="true"></i> A STAR
  </button>
@@ -455,13 +453,8 @@
  
  console.log(' MazeGame created successfully:', game);
 
- // Apply the saved texture mode to every new game instance.
- // Without this, starting/restarting a game silently re-enables enhanced textures.
- const texturesEnabled = localStorage.getItem('texturesEnabled') !== 'false';
- if (game && game.textureManager) {
-   game.textureManager.setEnabled(texturesEnabled);
-   console.log(' Applied saved texture mode:', texturesEnabled ? 'enhanced' : 'non-enhanced');
- }
+  // Always use the enhanced texture design.
+  if (game && game.textureManager) game.textureManager.setEnabled(true);
  
  gameState = "playing";
  this.updateStatus();
@@ -1143,35 +1136,6 @@
    document.body.appendChild(overlay);
    if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons({ attrs: { 'stroke-width': 2 } });
  }
- function showSettings() {
- const overlay = document.createElement('div');
- overlay.className = 'modal-overlay';
- overlay.id = 'settingsModal';
- 
- overlay.innerHTML = `
- <div class="modal">
- <h2><i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS</h2>
- <div class="settings-options">
- <label class="settings-option" for="texturesEnabled">
-  <span class="settings-option-copy">
-   <span class="settings-option-title">Enhanced Textures</span>
-   <span class="settings-option-description">Use detailed maze textures and effects.</span>
-  </span>
-  <input type="checkbox" id="texturesEnabled" checked>
-  <span class="settings-switch" aria-hidden="true"></span>
- </label>
-</div>
- <div class="button-row">
- <button class="game-button primary" onclick="saveSettings()">Save</button>
- <button class="game-button secondary" onclick="closeModal('settingsModal')">Cancel</button>
- </div>
- </div>
- `;
- 
- document.body.appendChild(overlay);
- loadSettings();
- }
- 
  function exitGame() {
  showConfirm('Exit Game', 'Are you sure you want to exit the game?', () => {
  window.close();
@@ -1302,36 +1266,6 @@
  if (modal) {
  modal.remove();
  }
- }
- 
- function loadSettings() {
- const textures = localStorage.getItem('texturesEnabled') !== 'false';
- if (document.getElementById('texturesEnabled')) {
- document.getElementById('texturesEnabled').checked = textures;
- }
- 
- // Note: Mobile controls visibility is now managed by updatePanelVisibility() based on game state
- // Settings only control whether they should be shown during gameplay
- }
- 
- function saveSettings() {
- const textures = document.getElementById('texturesEnabled') ? document.getElementById('texturesEnabled').checked: true;
- localStorage.setItem('texturesEnabled', textures);
- localStorage.removeItem('onScreenControls');
- 
- // Apply texture setting to current game if running
- if (game && game.textureManager) {
- game.textureManager.setEnabled(textures);
- console.log(' Textures', textures ? 'enabled': 'disabled');
- }
- 
- // Update mobile controls visibility based on current game state and new setting
- if (window.gameController) {
- window.gameController.updatePanelVisibility();
- }
- 
- closeModal('settingsModal');
- showMessage('Settings Saved', 'Your settings have been saved successfully.', true, 2000);
  }
  
  async function loadUserStats() {
@@ -1500,7 +1434,6 @@
  // Main game buttons
  const startGameBtn = document.getElementById('startGameBtn');
  const helpBtn = document.getElementById('helpBtn');
- const settingsBtn = document.getElementById('settingsBtn');
 
  if (startGameBtn) {
  startGameBtn.addEventListener('click', function() {
@@ -1517,11 +1450,6 @@
 
  
 
- if (settingsBtn) {
- settingsBtn.addEventListener('click', function() {
- showSettings();
- });
- }
 
  if (document.getElementById('blogToggleBtn')) {
  document.getElementById('blogToggleBtn').addEventListener('click', function() {
