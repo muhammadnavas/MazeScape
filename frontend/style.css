@@ -6667,3 +6667,83 @@ body:not(.game-playing) #powerup-notifications {
 }
 
 
+
+
+/* Final controller button styling: distinct, consistent rounded boxes around each arrow. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #mobile-controls {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+  body.game-playing #mobile-controls .control-pad {
+    display: grid !important;
+    grid-template-columns: repeat(3, 48px) !important;
+    grid-template-rows: repeat(3, 48px) !important;
+    gap: 8px !important;
+    padding: 0 !important;
+    width: max-content !important;
+    height: max-content !important;
+    align-items: center !important;
+    justify-items: center !important;
+  }
+  body.game-playing #mobile-controls .control-btn,
+  body.game-playing #mobile-controls .control-pad .control-btn {
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 1.5px solid #c8b68b !important;
+    border-radius: 12px !important;
+    background: rgba(42, 29, 24, 0.96) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 2px 5px rgba(0,0,0,0.22) !important;
+    color: #fff8e8 !important;
+    -webkit-text-fill-color: #fff8e8 !important;
+    font-size: 0 !important;
+    transform: none !important;
+  }
+  body.game-playing #mobile-controls .control-btn:active,
+  body.game-playing #mobile-controls .control-btn.active {
+    background: #594438 !important;
+    border-color: #e0c995 !important;
+    transform: scale(0.96) !important;
+  }
+  body.game-playing #mobile-controls #btn-up::after,
+  body.game-playing #mobile-controls #btn-down::after,
+  body.game-playing #mobile-controls #btn-left::after,
+  body.game-playing #mobile-controls #btn-right::after {
+    display: block !important;
+    position: static !important;
+    inset: auto !important;
+    margin: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    content: "" !important;
+    border-style: solid !important;
+    opacity: 1 !important;
+    filter: none !important;
+    text-shadow: none !important;
+  }
+  body.game-playing #mobile-controls #btn-up::after {
+    border-width: 0 10px 15px !important;
+    border-color: transparent transparent #fff8e8 !important;
+  }
+  body.game-playing #mobile-controls #btn-down::after {
+    border-width: 15px 10px 0 !important;
+    border-color: #fff8e8 transparent transparent !important;
+  }
+  body.game-playing #mobile-controls #btn-left::after {
+    border-width: 10px 15px 10px 0 !important;
+    border-color: transparent #fff8e8 transparent transparent !important;
+  }
+  body.game-playing #mobile-controls #btn-right::after {
+    border-width: 10px 0 10px 15px !important;
+    border-color: transparent transparent transparent #fff8e8 !important;
+  }
+}
