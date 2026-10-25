@@ -517,7 +517,10 @@
        // CSS contains legacy !important rules; use important inline styles so the
        // canvas-bound position cannot be overridden by those rules.
        hud.style.setProperty('position', 'fixed', 'important');
-       hud.style.setProperty('top', `${Math.round(rect.top)}px`, 'important');
+       // Place the HUD immediately ABOVE the canvas: its bottom edge touches
+       // the canvas top edge, without covering the border or leaving a gap.
+       const hudHeight = hud.getBoundingClientRect().height || hud.offsetHeight || 0;
+       hud.style.setProperty('top', `${Math.round(rect.top - hudHeight)}px`, 'important');
        hud.style.setProperty('left', `${Math.round(rect.left)}px`, 'important');
        hud.style.setProperty('right', 'auto', 'important');
        hud.style.setProperty('bottom', 'auto', 'important');
@@ -526,7 +529,9 @@
      }
      if (notifications) {
        notifications.style.setProperty('position', 'fixed', 'important');
-       notifications.style.setProperty('top', `${Math.round(rect.top)}px`, 'important');
+       // Align notification's bottom edge to the same canvas top edge.
+       const notificationHeight = notifications.getBoundingClientRect().height || notifications.offsetHeight || 0;
+       notifications.style.setProperty('top', `${Math.round(rect.top - notificationHeight)}px`, 'important');
        notifications.style.setProperty('left', 'auto', 'important');
        notifications.style.setProperty('right', `${Math.max(0, Math.round(window.innerWidth - rect.right))}px`, 'important');
        notifications.style.setProperty('bottom', 'auto', 'important');
