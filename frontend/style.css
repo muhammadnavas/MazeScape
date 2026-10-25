@@ -7105,3 +7105,38 @@ body:not(.game-playing) #powerup-notifications {
     animation: none !important;
   }
 }
+
+
+/* Real Tom & Jerry homepage artwork asset */
+#menuButtons .home-character-stage {
+  width: min(100%, 560px);
+  min-height: 0;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#menuButtons .home-hero-art {
+  display: block;
+  width: min(100%, 540px);
+  height: auto;
+  max-height: clamp(150px, 30vh, 300px);
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 8px 18px rgba(0,0,0,.22));
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    width: min(100%, 440px);
+    margin-bottom: 4px;
+  }
+  #menuButtons .home-hero-art {
+    width: min(100%, 420px);
+    max-height: clamp(120px, 24vh, 220px);
+  }
+}
+@media (max-height: 650px) and (min-width: 701px) {
+  #menuButtons .home-hero-art {
+    max-height: 170px;
+  }
+}
