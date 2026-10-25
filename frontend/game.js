@@ -1671,6 +1671,7 @@ class MazeGame {
  this.activePowerups = {};
  }
  }
+}
 
 // Export for use (browser compatibility)
 if (typeof window !== 'undefined') {
