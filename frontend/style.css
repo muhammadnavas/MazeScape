@@ -6780,18 +6780,18 @@ body:not(.game-playing) #powerup-notifications {
 @media (max-width: 768px), (pointer: coarse) {
   body.game-playing #mobile-controls {
     position: fixed !important;
-    left: auto !important;
-    right: max(16px, env(safe-area-inset-right)) !important;
+    left: 50% !important;
+    right: auto !important;
     bottom: max(16px, env(safe-area-inset-bottom)) !important;
     top: auto !important;
     z-index: 2147483000 !important;
     display: flex !important;
-    width: auto !important;
+    width: max-content !important;
     height: auto !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    transform: none !important;
+    transform: translateX(-50%) !important;
     touch-action: none !important;
   }
 
