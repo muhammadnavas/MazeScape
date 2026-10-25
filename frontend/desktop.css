@@ -199,3 +199,101 @@
     transform: translateX(-50%) !important;
   }
 }
+
+
+/* Desktop gameplay HUD layout: keep score/info and power-up messages in a
+   dedicated top strip, never over the maze. Reset previous offset experiments. */
+@media screen and (min-width: 769px) {
+  body.game-playing #gameContainer {
+    position: relative !important;
+    top: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 72px 28px 24px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  body.game-playing #gameCanvas {
+    display: block !important;
+    position: relative !important;
+    inset: auto !important;
+    width: min(76vw, 1320px, calc((100dvh - 120px) * 1.5)) !important;
+    height: auto !important;
+    max-width: calc(100vw - 56px) !important;
+    max-height: calc(100dvh - 112px) !important;
+    aspect-ratio: 3 / 2 !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    flex: 0 1 auto !important;
+  }
+
+  body.game-playing #status {
+    position: fixed !important;
+    top: 14px !important;
+    left: 28px !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: 1600 !important;
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 320px !important;
+    margin: 0 !important;
+    padding: 8px 12px !important;
+    background: rgba(36,23,21,.94) !important;
+    border: 1px solid rgba(216,169,61,.38) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.22) !important;
+    color: #faf7ef !important;
+  }
+
+  body.game-playing #status .status-header {
+    display: block !important;
+    margin: 0 0 4px !important;
+  }
+
+  body.game-playing #status .status-content {
+    display: flex !important;
+    flex-flow: row wrap !important;
+    gap: 12px !important;
+    align-items: center !important;
+  }
+
+  body.game-playing #powerup-notifications {
+    position: fixed !important;
+    top: 14px !important;
+    left: auto !important;
+    right: 28px !important;
+    bottom: auto !important;
+    transform: none !important;
+    z-index: 1600 !important;
+    width: min(320px, 28vw) !important;
+    max-width: min(320px, 28vw) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    text-align: right !important;
+  }
+
+  body.game-playing #powerup-notifications .powerup-notification {
+    margin: 0 0 8px auto !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  body.game-playing .blog-panel.left {
+    top: 84px !important;
+    left: 18px !important;
+    max-height: calc(100dvh - 100px) !important;
+  }
+}
