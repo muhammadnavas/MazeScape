@@ -1096,9 +1096,14 @@ class MazeGame {
  this.canvas = canvas;
  this.ctx = canvas.getContext('2d');
  
- // Fixed maze dimensions for consistent gameplay across all screen sizes
- this.GRID_WIDTH = 20; // Portrait layout: 20 columns
- this.GRID_HEIGHT = 30; // Portrait layout: 30 rows
+ // Use a landscape maze on laptops/desktops and retain the portrait maze
+ // on phones. The canvas backing dimensions must match the grid's real aspect
+ // ratio; CSS-only stretching leaves the maze itself portrait-shaped.
+ const desktopLayout = window.matchMedia('(min-width: 769px)').matches;
+ this.GRID_WIDTH = desktopLayout ? 30 : 20;
+ this.GRID_HEIGHT = desktopLayout ? 20 : 30;
+ this.canvas.width = this.GRID_WIDTH * GRID_SIZE;
+ this.canvas.height = this.GRID_HEIGHT * GRID_SIZE;
  
  this.pathfinder = new AStar();
  
