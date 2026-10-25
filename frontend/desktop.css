@@ -1,64 +1,59 @@
-/* Desktop-only presentation. Mobile rules remain in style.css. */
+/* Desktop-only presentation. All rules are scoped to >=769px so mobile styles in style.css stay intact. */
 @media screen and (min-width: 769px) {
-  :root { --desktop-gutter: clamp(24px, 4vw, 64px); --desktop-panel: rgba(36, 23, 21, .82); --desktop-border: rgba(250, 247, 239, .18); }
-  html, body { min-width: 769px; min-height: 100%; }
-  body { overflow: hidden; background: radial-gradient(ellipse at 50% 8%, rgba(216,169,61,.12), transparent 38%), linear-gradient(135deg,#17100f,#241715 52%,#352321) !important; }
-  .menu-header { height:72px; padding-inline:var(--desktop-gutter); background:rgba(27,18,17,.76) !important; border-bottom:1px solid var(--desktop-border) !important; box-shadow:0 8px 28px rgba(0,0,0,.16) !important; -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px); }
-  .logo-text { font-size:24px; letter-spacing:-.04em; }
-  #gameContainer { width:100%; height:calc(100dvh - 72px); min-height:480px; margin-top:72px; padding:28px var(--desktop-gutter); display:flex; align-items:center; justify-content:center; overflow:hidden; background:radial-gradient(ellipse at 50% 20%,rgba(216,169,61,.07),transparent 42%),linear-gradient(145deg,rgba(28,18,17,.98),rgba(53,35,33,.96)) !important; }
-  #gameCanvas { position:relative; inset:auto; display:block; flex:0 1 auto; max-width:min(100%,58vw); max-height:calc(100dvh - 128px); margin:0 auto; border:1px solid rgba(216,169,61,.22); border-radius:5px; box-shadow:0 22px 60px rgba(0,0,0,.3),0 0 0 8px rgba(250,247,239,.025); image-rendering:pixelated; }
-  #ui-container { position:absolute; inset:0; pointer-events:none; }
-  #menuButtons.menu-buttons { top:50% !important; left:50% !important; width:min(480px,calc(100vw - 80px)) !important; min-width:0; max-width:480px; margin:0; padding:clamp(32px,4vw,52px); transform:translate(-50%,-50%) !important; align-items:stretch !important; gap:8px; border:1px solid rgba(250,247,239,.2) !important; border-radius:24px !important; background:linear-gradient(150deg,rgba(53,35,33,.94),rgba(27,18,17,.94)) !important; box-shadow:0 28px 90px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.06) !important; -webkit-backdrop-filter:blur(22px); backdrop-filter:blur(22px); }
-  #menuButtons > div:first-child { margin-bottom:22px !important; }
-  #menuButtons .main-title { font-size:clamp(42px,4.5vw,58px); line-height:1.05; letter-spacing:-.055em; }
-  #menuButtons .main-subtitle { margin-top:12px; color:#d4c8b7 !important; font-size:14px; letter-spacing:.08em; }
-  #menuButtons .button-row { display:flex; width:100% !important; gap:12px; margin:7px 0; }
-  #menuButtons .game-button { min-height:48px; border-radius:12px; font-size:13px; letter-spacing:.04em; transition:transform 160ms ease,background 160ms ease,border-color 160ms ease; }
-  #menuButtons .button-row .game-button { flex:1 1 0; }
-  #menuButtons .game-button.primary { box-shadow:0 8px 24px rgba(85,6,5,.28) !important; }
-  #menuButtons .game-button:hover { transform:translateY(-2px); }
-  #menuButtons .game-button:active { transform:translateY(0); }
-  #status { position:fixed; top:92px; left:var(--desktop-gutter); right:auto; min-width:210px; padding:16px 18px; border-radius:16px; border:1px solid var(--desktop-border) !important; background:var(--desktop-panel) !important; box-shadow:0 14px 38px rgba(0,0,0,.2) !important; color:#faf7ef !important; -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); }
-  #status .status-header h4 { margin-bottom:10px; color:#d8a93d !important; font-size:12px; letter-spacing:.12em; }
-  #status .status-content { gap:8px; }
-  #status .status-label { color:#d4c8b7 !important; }
-  #status .status-value { color:#f3d27b !important; font-variant-numeric:tabular-nums; }
-  #powerup-notifications { position:fixed; top:92px; right:var(--desktop-gutter); width:min(290px,24vw); z-index:160; pointer-events:none; }
-  .powerup-notification { border-radius:12px; border:1px solid var(--desktop-border); background:rgba(36,23,21,.9) !important; color:#faf7ef !important; box-shadow:0 12px 34px rgba(0,0,0,.22) !important; -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
-  #mobile-controls { display:none !important; }
-  .blog-panel.left { position:fixed; top:92px; left:var(--desktop-gutter); width:min(300px,24vw); height:calc(100dvh - 124px); padding:22px; border:1px solid var(--desktop-border) !important; border-radius:18px; background:rgba(36,23,21,.86) !important; color:#f3ead9 !important; box-shadow:0 18px 48px rgba(0,0,0,.2) !important; -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); }
-  .blog-panel.left h4, .blog-panel.left h5 { color:#f3d27b !important; }
-  .blog-panel.left .blog-content, .blog-panel.left p, .blog-panel.left li { color:#e1d6c6 !important; }
-  .modal-overlay { padding:24px; }
-  .modal { border-radius:18px; }
-}
-@media screen and (min-width: 769px) and (max-height: 700px) {
-  #gameContainer { padding-block:16px; }
-  #gameCanvas { max-height:calc(100dvh - 112px); }
-  .blog-panel.left { top:84px; height:calc(100dvh - 100px); padding:16px; }
-  #status, #powerup-notifications { top:84px; }
-}
-@media screen and (min-width: 769px) and (prefers-reduced-motion: reduce) { #menuButtons .game-button { transition:none; } }
+  :root {
+    --desktop-gutter: clamp(24px, 4vw, 64px);
+    --desktop-panel: rgba(36, 23, 21, .82);
+    --desktop-border: rgba(250, 247, 239, .18);
+  }
 
+  html, body {
+    min-width: 769px;
+    min-height: 100%;
+  }
 
-/* Desktop home-screen layout correction.
-   The shared stylesheet marks the menu as position:relative for mobile taps.
-   On desktop that makes left:50% push the card off-screen instead of centering it.
-   Scope these fixes to desktop only so phone layout remains unchanged. */
-@media screen and (min-width: 769px) {
+  body {
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 8%, rgba(216,169,61,.12), transparent 38%),
+      linear-gradient(135deg, #17100f, #241715 52%, #352321) !important;
+  }
+
+  .menu-header {
+    height: 72px;
+    padding-inline: var(--desktop-gutter);
+    background: rgba(27,18,17,.76) !important;
+    border-bottom: 1px solid var(--desktop-border) !important;
+    box-shadow: 0 8px 28px rgba(0,0,0,.16) !important;
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+  }
+
+  .logo-text { font-size: 24px; letter-spacing: -.04em; }
+
+  /* Home screen: clean background, centered card, no empty canvas frame. */
   body:not(.game-playing) #gameContainer {
     position: relative !important;
     isolation: isolate;
+    width: 100% !important;
+    max-width: none !important;
+    height: calc(100dvh - 72px) !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 24px var(--desktop-gutter) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 35%, rgba(216,169,61,.055), transparent 44%),
+      linear-gradient(145deg, #1b1211 0%, #241715 55%, #2d1d1b 100%) !important;
   }
 
-  body:not(.game-playing) #gameCanvas {
-    pointer-events: none !important;
-    z-index: 0 !important;
-  }
-
-  body:not(.game-playing) #ui-container {
-    pointer-events: none !important;
-    z-index: 1 !important;
+  body:not(.game-playing) #gameCanvas,
+  body:not(.game-playing) #ui-container,
+  body:not(.game-playing) .blog-panel.left {
+    display: none !important;
   }
 
   body:not(.game-playing) #menuButtons.menu-buttons {
@@ -67,148 +62,40 @@
     left: 50% !important;
     right: auto !important;
     bottom: auto !important;
-    transform: translate(-50%, -50%) !important;
+    width: min(480px, calc(100vw - 80px)) !important;
+    min-width: 0 !important;
+    max-width: 480px !important;
     margin: 0 !important;
+    padding: clamp(32px, 4vw, 52px) !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    align-items: stretch !important;
+    gap: 8px !important;
     z-index: 20 !important;
     pointer-events: auto !important;
+    border: 1px solid rgba(250,247,239,.2) !important;
+    border-radius: 24px !important;
+    background: linear-gradient(150deg, rgba(53,35,33,.94), rgba(27,18,17,.94)) !important;
+    box-shadow: 0 28px 90px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.06) !important;
+    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(22px);
   }
 
-  body:not(.game-playing) #menuButtons.menu-buttons > *,
-  body:not(.game-playing) #menuButtons.menu-buttons button {
-    pointer-events: auto !important;
-  }
+  #menuButtons > div:first-child { margin-bottom: 22px !important; }
+  #menuButtons .main-title { font-size: clamp(42px,4.5vw,58px); line-height: 1.05; letter-spacing: -.055em; }
+  #menuButtons .main-subtitle { margin-top: 12px; color: #d4c8b7 !important; font-size: 14px; letter-spacing: .08em; }
+  #menuButtons .button-row { display: flex; width: 100% !important; gap: 12px; margin: 7px 0; }
+  #menuButtons .game-button { min-height: 48px; border-radius: 12px; font-size: 13px; letter-spacing: .04em; transition: transform 160ms ease, background 160ms ease, border-color 160ms ease; }
+  #menuButtons .button-row .game-button { flex: 1 1 0; }
+  #menuButtons .game-button.primary { box-shadow: 0 8px 24px rgba(85,6,5,.28) !important; }
+  #menuButtons .game-button:hover { transform: translateY(-2px); }
+  #menuButtons .game-button:active { transform: translateY(0); }
 
-  /* Keep the long algorithm article from covering the desktop landing card.
-     It remains available during gameplay and the mobile layout is untouched. */
-  body:not(.game-playing) .blog-panel.left {
-    display: none !important;
-  }
-}
-
-
-/* Final desktop homepage background fix: the empty canvas was still visible as
-   a tall outlined rectangle behind the menu. Remove that gameplay surface on
-   the landing screen and let the page background fill the area below the header. */
-@media screen and (min-width: 769px) {
-  body:not(.game-playing) #gameContainer {
-    height: calc(100dvh - 72px) !important;
-    min-height: 0 !important;
-    margin-top: 0 !important;
-    padding: 24px var(--desktop-gutter) !important;
-    box-sizing: border-box !important;
-    background:
-      radial-gradient(ellipse at 50% 35%, rgba(216,169,61,.055), transparent 44%),
-      linear-gradient(145deg, #1b1211 0%, #241715 55%, #2d1d1b 100%) !important;
-  }
-
-  body:not(.game-playing) #gameCanvas {
-    display: none !important;
-  }
-
-  body:not(.game-playing) #ui-container {
-    display: none !important;
-  }
-
-  body:not(.game-playing) #menuButtons.menu-buttons {
-    top: 50% !important;
-  }
-}
-
-
-/* Desktop gameplay canvas: landscape and larger, while mobile retains its
-   existing portrait-friendly sizing in style.css. */
-@media screen and (min-width: 769px) {
-  body.game-playing #gameContainer {
-    width: 100% !important;
-    max-width: none !important;
-    height: calc(100dvh - 72px) !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 18px 28px 24px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-sizing: border-box !important;
-  }
-
-  body.game-playing #gameCanvas {
-    display: block !important;
-    width: min( min(76vw, 1320px), calc((100dvh - 130px) * 1.55) ) !important;
-    height: auto !important;
-    max-width: calc(100vw - 360px) !important;
-    max-height: calc(100dvh - 130px) !important;
-    aspect-ratio: 1.55 / 1 !important;
-    object-fit: contain !important;
-    margin: 0 auto !important;
-  }
-
-  body.game-playing #ui-container {
-    pointer-events: none;
-  }
-
-  body.game-playing #status {
-    top: 92px !important;
-    left: 28px !important;
-  }
-
-  body.game-playing .blog-panel.left {
-    top: 92px !important;
-    left: 28px !important;
-    max-height: calc(100dvh - 124px) !important;
-  }
-}
-
-
-/* Final laptop gameplay alignment: center the full playfield against the viewport,
-   not against a constrained/offset parent inherited from the base stylesheet. */
-@media screen and (min-width: 769px) {
+  /* Gameplay: one viewport-sized layout with a genuinely landscape canvas.
+     No left/translate positioning tricks: the canvas is centered by flexbox. */
   body.game-playing #gameContainer {
     position: relative !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) !important;
-    width: 100vw !important;
-    max-width: 100vw !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 28px !important;
-    padding-right: 28px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  body.game-playing #gameCanvas {
-    position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    flex: 0 1 auto !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    transform: none !important;
-  }
-}
-
-
-/* Align the desktop playfield to the center of the visible page area.
-   The score HUD sits above the frame, so offset the container down slightly
-   to visually center the maze in the browser viewport. Mobile is not affected. */
-@media screen and (min-width: 769px) {
-  body.game-playing #gameContainer {
-    top: 40px !important;
-    transform: translateX(-50%) !important;
-  }
-}
-
-
-/* Desktop gameplay HUD layout: keep score/info and power-up messages in a
-   dedicated top strip, never over the maze. Reset previous offset experiments. */
-@media screen and (min-width: 769px) {
-  body.game-playing #gameContainer {
-    position: relative !important;
-    top: 0 !important;
-    left: auto !important;
-    right: auto !important;
+    inset: auto !important;
     transform: none !important;
     width: 100vw !important;
     max-width: 100vw !important;
@@ -220,155 +107,64 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    overflow: hidden !important;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(216,169,61,.07), transparent 42%),
+      linear-gradient(145deg, rgba(28,18,17,.98), rgba(53,35,33,.96)) !important;
   }
 
   body.game-playing #gameCanvas {
-    display: block !important;
     position: relative !important;
     inset: auto !important;
-    width: min(76vw, 1320px, calc((100dvh - 120px) * 1.5)) !important;
+    display: block !important;
+    flex: 0 1 auto !important;
+    width: min(88vw, 1500px, calc((100dvh - 140px) * 1.5)) !important;
     height: auto !important;
     max-width: calc(100vw - 56px) !important;
     max-height: calc(100dvh - 112px) !important;
     aspect-ratio: 3 / 2 !important;
+    object-fit: contain !important;
     margin: 0 auto !important;
     transform: none !important;
-    flex: 0 1 auto !important;
+    border: 1px solid rgba(216,169,61,.22);
+    border-radius: 5px;
+    box-shadow: 0 22px 60px rgba(0,0,0,.3), 0 0 0 8px rgba(250,247,239,.025);
+    image-rendering: pixelated;
   }
 
+  body.game-playing #ui-container { position: absolute; inset: 0; pointer-events: none; }
+  #mobile-controls { display: none !important; }
+
+  /* HUD: same 14px type and 20px baseline on both sides of the screen. */
   body.game-playing #status {
     position: fixed !important;
-    top: 14px !important;
-    left: 28px !important;
+    top: 30px !important;
+    left: 48px !important;
     right: auto !important;
     bottom: auto !important;
     z-index: 1600 !important;
     display: block !important;
     width: auto !important;
     min-width: 0 !important;
-    max-width: 320px !important;
-    margin: 0 !important;
-    padding: 8px 12px !important;
-    background: rgba(36,23,21,.94) !important;
-    border: 1px solid rgba(216,169,61,.38) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 8px 24px rgba(0,0,0,.22) !important;
-    color: #faf7ef !important;
-  }
-
-  body.game-playing #status .status-header {
-    display: block !important;
-    margin: 0 0 4px !important;
-  }
-
-  body.game-playing #status .status-content {
-    display: flex !important;
-    flex-flow: row wrap !important;
-    gap: 12px !important;
-    align-items: center !important;
-  }
-
-  body.game-playing #powerup-notifications {
-    position: fixed !important;
-    top: 14px !important;
-    left: auto !important;
-    right: 28px !important;
-    bottom: auto !important;
-    transform: none !important;
-    z-index: 1600 !important;
-    width: min(320px, 28vw) !important;
-    max-width: min(320px, 28vw) !important;
+    max-width: 40vw !important;
     margin: 0 !important;
     padding: 0 !important;
-    pointer-events: none !important;
-    text-align: right !important;
-  }
-
-  body.game-playing #powerup-notifications .powerup-notification {
-    margin: 0 0 8px auto !important;
-    max-width: 100% !important;
-    white-space: normal !important;
-    overflow-wrap: anywhere !important;
-  }
-
-  body.game-playing .blog-panel.left {
-    top: 84px !important;
-    left: 18px !important;
-    max-height: calc(100dvh - 100px) !important;
-  }
-}
-
-
-/* Hide only the GAME INFO heading on desktop; retain score, lives and all
-   other HUD content/notifications. */
-@media screen and (min-width: 769px) {
-  body.game-playing #status .status-header {
-    display: none !important;
-  }
-}
-
-
-/* Keep score/lives and power-up notifications visually balanced on desktop. */
-@media screen and (min-width: 769px) {
-  body.game-playing #status {
-    top: 42px !important;
-    left: 48px !important;
-    padding: 0 !important;
-    background: transparent !important;
     border: 0 !important;
     border-radius: 0 !important;
+    background: transparent !important;
     box-shadow: none !important;
+    color: #faf7ef !important;
     font-size: 14px !important;
-    line-height: 1.35 !important;
-  }
-
-  body.game-playing #status .status-content,
-  body.game-playing #status .status-item,
-  body.game-playing #status .status-label,
-  body.game-playing #status .status-value {
-    font-size: 14px !important;
-    line-height: 1.35 !important;
-    font-weight: 500 !important;
-  }
-
-  body.game-playing #status .status-content {
-    gap: 12px !important;
-    flex-flow: row nowrap !important;
-    align-items: center !important;
-  }
-
-  body.game-playing #powerup-notifications {
-    top: 42px !important;
-    right: 48px !important;
-    width: min(360px, 30vw) !important;
-    max-width: min(360px, 30vw) !important;
-    font-size: 14px !important;
-    line-height: 1.35 !important;
-    text-align: right !important;
-  }
-
-  body.game-playing #powerup-notifications .powerup-notification {
-    font-size: 14px !important;
-    line-height: 1.35 !important;
-    font-weight: 500 !important;
-    align-items: center !important;
-  }
-}
-
-
-/* Pixel-align desktop score and power-up message to the same baseline. */
-@media screen and (min-width: 769px) {
-  body.game-playing #status {
-    top: 30px !important;
-    left: 70px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: block !important;
     line-height: 20px !important;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
+
+  body.game-playing #status .status-header { display: none !important; }
 
   body.game-playing #status .status-content {
     display: flex !important;
+    flex-flow: row nowrap !important;
     align-items: baseline !important;
     gap: 12px !important;
     margin: 0 !important;
@@ -376,7 +172,18 @@
     line-height: 20px !important;
   }
 
-  body.game-playing #status .status-item,
+  body.game-playing #status .status-item {
+    display: inline-flex !important;
+    align-items: baseline !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    font-weight: 500 !important;
+  }
+
   body.game-playing #status .status-label,
   body.game-playing #status .status-value {
     display: inline !important;
@@ -388,24 +195,44 @@
     vertical-align: baseline !important;
   }
 
+  body.game-playing #status .status-label { color: #d4c8b7 !important; }
+  body.game-playing #status .status-value { color: #f3d27b !important; font-variant-numeric: tabular-nums; }
+
   body.game-playing #powerup-notifications {
+    position: fixed !important;
     top: 30px !important;
-    right: 70px !important;
+    left: auto !important;
+    right: 48px !important;
+    bottom: auto !important;
+    transform: none !important;
+    z-index: 1600 !important;
+    width: min(360px, 30vw) !important;
+    max-width: min(360px, 30vw) !important;
     margin: 0 !important;
     padding: 0 !important;
+    pointer-events: none !important;
+    text-align: right !important;
+    font-size: 14px !important;
     line-height: 20px !important;
   }
 
   body.game-playing #powerup-notifications .powerup-notification {
     display: flex !important;
+    flex-flow: row nowrap !important;
     align-items: baseline !important;
     justify-content: flex-end !important;
     gap: 8px !important;
-    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 8px !important;
     padding: 0 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    text-align: right !important;
     font-size: 14px !important;
     line-height: 20px !important;
     font-weight: 500 !important;
+    animation: none !important;
   }
 
   body.game-playing #powerup-notifications .powerup-notification * {
@@ -413,4 +240,27 @@
     line-height: 20px !important;
     vertical-align: baseline !important;
   }
+
+  body.game-playing .blog-panel.left {
+    position: fixed !important;
+    top: 84px !important;
+    left: 18px !important;
+    max-height: calc(100dvh - 100px) !important;
+  }
+
+  .modal-overlay { padding: 24px; }
+  .modal { border-radius: 18px; }
+}
+
+@media screen and (min-width: 769px) and (max-height: 700px) {
+  body:not(.game-playing) #gameContainer { padding-block: 16px !important; }
+  body.game-playing #gameContainer { padding-top: 64px !important; padding-bottom: 16px !important; }
+  body.game-playing #gameCanvas { max-height: calc(100dvh - 96px) !important; }
+  body.game-playing #status,
+  body.game-playing #powerup-notifications { top: 24px !important; }
+  body.game-playing .blog-panel.left { top: 72px !important; max-height: calc(100dvh - 84px) !important; }
+}
+
+@media screen and (min-width: 769px) and (prefers-reduced-motion: reduce) {
+  #menuButtons .game-button { transition: none !important; }
 }
