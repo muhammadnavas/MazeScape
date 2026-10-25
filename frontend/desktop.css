@@ -157,3 +157,34 @@
     max-height: calc(100dvh - 124px) !important;
   }
 }
+
+
+/* Final laptop gameplay alignment: center the full playfield against the viewport,
+   not against a constrained/offset parent inherited from the base stylesheet. */
+@media screen and (min-width: 769px) {
+  body.game-playing #gameContainer {
+    position: relative !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  body.game-playing #gameCanvas {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    flex: 0 1 auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    transform: none !important;
+  }
+}
