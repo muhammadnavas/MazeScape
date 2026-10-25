@@ -5942,3 +5942,27 @@ body:not(.game-playing) #powerup-notifications {
     gap: 10px !important;
   }
 }
+
+
+/* Keep mobile controller fully below the maze; never overlap the canvas border. */
+@media screen and (max-width: 700px) {
+  body.game-playing #mobile-controls {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    margin-top: 12px !important;
+    margin-bottom: 8px !important;
+    z-index: 2 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    clear: both !important;
+  }
+
+  body.game-playing #mobile-controls .control-pad {
+    position: relative !important;
+    margin: 0 auto !important;
+  }
+}
