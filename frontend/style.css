@@ -6747,3 +6747,29 @@ body:not(.game-playing) #powerup-notifications {
     border-color: transparent transparent transparent #fff8e8 !important;
   }
 }
+
+
+/* Reliable mobile gamepad input: prevent browser gestures from cancelling pointer input. */
+@media screen and (max-width: 700px) {
+  body.game-playing #mobile-controls {
+    z-index: 500 !important;
+    pointer-events: auto !important;
+    touch-action: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+
+  body.game-playing #mobile-controls .control-pad,
+  body.game-playing #mobile-controls .control-row,
+  body.game-playing #mobile-controls .control-btn {
+    pointer-events: auto !important;
+    touch-action: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  body.game-playing #mobile-controls .control-btn {
+    cursor: pointer !important;
+  }
+}
