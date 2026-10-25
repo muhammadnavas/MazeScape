@@ -5406,29 +5406,29 @@ body:not(.game-playing) #powerup-notifications {
   text-align: center;
 }
 .modal.final-score-modal .final-score-title {
-  margin: 0 0 16px !important;
-  font-size: clamp(22px, 5.5vw, 28px) !important;
-  line-height: 1.15;
+  margin: 0 0 12px !important;
+  font-size: clamp(18px, 4.5vw, 22px) !important;
+  line-height: 1.2;
 }
 .modal.final-score-modal .final-score-value {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin: 0 !important;
-  font-size: 14px;
+  font-size: 12px;
   opacity: .92;
 }
 .modal.final-score-modal .final-score-value strong {
   display: block;
-  font-size: clamp(24px, 6.5vw, 32px);
-  line-height: 1.1;
+  font-size: clamp(19px, 4.8vw, 24px);
+  line-height: 1.2;
   font-weight: 800;
   color: var(--maze-gold, #D8A93D);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
 .modal.final-score-modal .final-score-value small {
-  font-size: .48em;
+  font-size: .6em;
   font-weight: 600;
 }
