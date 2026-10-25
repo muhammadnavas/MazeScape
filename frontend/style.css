@@ -5684,3 +5684,11 @@ body:not(.game-playing) #powerup-notifications {
     line-height: 1.25 !important;
   }
 }
+
+
+/* Remove the entire Time field from the mobile gameplay HUD (label and value). */
+@media screen and (max-width: 700px) {
+  body.game-playing #gameContainer #status .status-item:has(#current-time-value) {
+    display: none !important;
+  }
+}
