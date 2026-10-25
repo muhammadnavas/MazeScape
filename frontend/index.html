@@ -594,7 +594,12 @@
  modal.className = 'modal';
  
  if (title === 'FINAL SCORE') {
- modal.innerHTML = `<h2 class="glow-text primary-color">${message}</h2>`;
+ const scoreText = message.replace(/^FINAL SCORE:\\s*/i, '').replace(/\\s*pts?$/i, '');
+ modal.classList.add('final-score-modal');
+ modal.innerHTML = `
+ <h2 class="glow-text primary-color final-score-title">Game over</h2>
+ <p class="final-score-value"><span>Final score</span><strong>${scoreText} <small>pts</small></strong></p>
+ `;
  } else {
  modal.innerHTML = `
  <h2 class="glow-text primary-color">${title}</h2>
