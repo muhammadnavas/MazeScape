@@ -454,6 +454,14 @@
  }
  
  console.log(' MazeGame created successfully:', game);
+
+ // Apply the saved texture mode to every new game instance.
+ // Without this, starting/restarting a game silently re-enables enhanced textures.
+ const texturesEnabled = localStorage.getItem('texturesEnabled') !== 'false';
+ if (game && game.textureManager) {
+   game.textureManager.setEnabled(texturesEnabled);
+   console.log(' Applied saved texture mode:', texturesEnabled ? 'enhanced' : 'non-enhanced');
+ }
  
  gameState = "playing";
  this.updateStatus();
