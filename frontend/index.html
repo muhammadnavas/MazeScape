@@ -382,7 +382,6 @@
  }
  
  handleKeyPress(e) {
- console.log(' Key pressed:', e.key, 'Game state:', gameState);
  
  if (e.key === 'F11') {
  e.preventDefault();
@@ -699,7 +698,6 @@
  if (game) {
  game.draw();
  }
- console.log(' Game loop iteration completed - gameState:', gameState, 'game exists:', !!game);
  } catch (error) {
  console.error(' Error in game loop:', error);
  console.error('Error stack:', error.stack);
