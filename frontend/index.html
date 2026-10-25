@@ -1357,6 +1357,13 @@
  // Initialize welcome text with current screen size
  updateWelcomeText();
  
+ // Keep touch controls outside the canvas container so its overflow/stacking
+ // context cannot clip or cover them on mobile browsers.
+ const mobileControlsRoot = document.getElementById('mobile-controls');
+ if (mobileControlsRoot && mobileControlsRoot.parentElement !== document.body) {
+   document.body.appendChild(mobileControlsRoot);
+ }
+
  // Pointer events unify touch, pen, and mouse without duplicate moves.
  const mobileControlButtons = {
  'btn-up': 'up',
