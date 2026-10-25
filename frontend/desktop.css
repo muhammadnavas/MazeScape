@@ -1,0 +1,41 @@
+/* Desktop-only presentation. Mobile rules remain in style.css. */
+@media screen and (min-width: 769px) {
+  :root { --desktop-gutter: clamp(24px, 4vw, 64px); --desktop-panel: rgba(36, 23, 21, .82); --desktop-border: rgba(250, 247, 239, .18); }
+  html, body { min-width: 769px; min-height: 100%; }
+  body { overflow: hidden; background: radial-gradient(ellipse at 50% 8%, rgba(216,169,61,.12), transparent 38%), linear-gradient(135deg,#17100f,#241715 52%,#352321) !important; }
+  .menu-header { height:72px; padding-inline:var(--desktop-gutter); background:rgba(27,18,17,.76) !important; border-bottom:1px solid var(--desktop-border) !important; box-shadow:0 8px 28px rgba(0,0,0,.16) !important; -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px); }
+  .logo-text { font-size:24px; letter-spacing:-.04em; }
+  #gameContainer { width:100%; height:calc(100dvh - 72px); min-height:480px; margin-top:72px; padding:28px var(--desktop-gutter); display:flex; align-items:center; justify-content:center; overflow:hidden; background:radial-gradient(ellipse at 50% 20%,rgba(216,169,61,.07),transparent 42%),linear-gradient(145deg,rgba(28,18,17,.98),rgba(53,35,33,.96)) !important; }
+  #gameCanvas { position:relative; inset:auto; display:block; flex:0 1 auto; max-width:min(100%,58vw); max-height:calc(100dvh - 128px); margin:0 auto; border:1px solid rgba(216,169,61,.22); border-radius:5px; box-shadow:0 22px 60px rgba(0,0,0,.3),0 0 0 8px rgba(250,247,239,.025); image-rendering:pixelated; }
+  #ui-container { position:absolute; inset:0; pointer-events:none; }
+  #menuButtons.menu-buttons { top:50% !important; left:50% !important; width:min(480px,calc(100vw - 80px)) !important; min-width:0; max-width:480px; margin:0; padding:clamp(32px,4vw,52px); transform:translate(-50%,-50%) !important; align-items:stretch !important; gap:8px; border:1px solid rgba(250,247,239,.2) !important; border-radius:24px !important; background:linear-gradient(150deg,rgba(53,35,33,.94),rgba(27,18,17,.94)) !important; box-shadow:0 28px 90px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.06) !important; -webkit-backdrop-filter:blur(22px); backdrop-filter:blur(22px); }
+  #menuButtons > div:first-child { margin-bottom:22px !important; }
+  #menuButtons .main-title { font-size:clamp(42px,4.5vw,58px); line-height:1.05; letter-spacing:-.055em; }
+  #menuButtons .main-subtitle { margin-top:12px; color:#d4c8b7 !important; font-size:14px; letter-spacing:.08em; }
+  #menuButtons .button-row { display:flex; width:100% !important; gap:12px; margin:7px 0; }
+  #menuButtons .game-button { min-height:48px; border-radius:12px; font-size:13px; letter-spacing:.04em; transition:transform 160ms ease,background 160ms ease,border-color 160ms ease; }
+  #menuButtons .button-row .game-button { flex:1 1 0; }
+  #menuButtons .game-button.primary { box-shadow:0 8px 24px rgba(85,6,5,.28) !important; }
+  #menuButtons .game-button:hover { transform:translateY(-2px); }
+  #menuButtons .game-button:active { transform:translateY(0); }
+  #status { position:fixed; top:92px; left:var(--desktop-gutter); right:auto; min-width:210px; padding:16px 18px; border-radius:16px; border:1px solid var(--desktop-border) !important; background:var(--desktop-panel) !important; box-shadow:0 14px 38px rgba(0,0,0,.2) !important; color:#faf7ef !important; -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); }
+  #status .status-header h4 { margin-bottom:10px; color:#d8a93d !important; font-size:12px; letter-spacing:.12em; }
+  #status .status-content { gap:8px; }
+  #status .status-label { color:#d4c8b7 !important; }
+  #status .status-value { color:#f3d27b !important; font-variant-numeric:tabular-nums; }
+  #powerup-notifications { position:fixed; top:92px; right:var(--desktop-gutter); width:min(290px,24vw); z-index:160; pointer-events:none; }
+  .powerup-notification { border-radius:12px; border:1px solid var(--desktop-border); background:rgba(36,23,21,.9) !important; color:#faf7ef !important; box-shadow:0 12px 34px rgba(0,0,0,.22) !important; -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
+  #mobile-controls { display:none !important; }
+  .blog-panel.left { position:fixed; top:92px; left:var(--desktop-gutter); width:min(300px,24vw); height:calc(100dvh - 124px); padding:22px; border:1px solid var(--desktop-border) !important; border-radius:18px; background:rgba(36,23,21,.86) !important; color:#f3ead9 !important; box-shadow:0 18px 48px rgba(0,0,0,.2) !important; -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); }
+  .blog-panel.left h4, .blog-panel.left h5 { color:#f3d27b !important; }
+  .blog-panel.left .blog-content, .blog-panel.left p, .blog-panel.left li { color:#e1d6c6 !important; }
+  .modal-overlay { padding:24px; }
+  .modal { border-radius:18px; }
+}
+@media screen and (min-width: 769px) and (max-height: 700px) {
+  #gameContainer { padding-block:16px; }
+  #gameCanvas { max-height:calc(100dvh - 112px); }
+  .blog-panel.left { top:84px; height:calc(100dvh - 100px); padding:16px; }
+  #status, #powerup-notifications { top:84px; }
+}
+@media screen and (min-width: 769px) and (prefers-reduced-motion: reduce) { #menuButtons .game-button { transition:none; } }
