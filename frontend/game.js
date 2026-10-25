@@ -1225,6 +1225,8 @@ class MazeGame {
  this.playerPos = [1, 1];
  this.playerPosFloat = [1.0, 1.0];
  this.playerDir = [0, 0];
+ this.pendingPlayerDir = null;
+ this.playerStepTarget = null;
  this.stopAfterStep = false;
  this.targetPos = [this.GRID_HEIGHT - 2, this.GRID_WIDTH - 2];
  
@@ -1378,21 +1380,28 @@ class MazeGame {
  }
  
  movePlayer(dy, dx) {
- // Finish an in-progress tile before stopping, so short taps still register.
+ // Queue turns until Jerry reaches the center of the current tile.
+ // This prevents diagonal movement and keeps collision checks grid-accurate.
  if (dy === 0 && dx === 0) {
- const inTransit = this.playerPosFloat &&
- (Math.abs(this.playerPosFloat[0] - this.playerPos[0]) > 0.001 ||
- Math.abs(this.playerPosFloat[1] - this.playerPos[1]) > 0.001);
- if (inTransit) {
- this.stopAfterStep = true;
- return;
+   if (this.playerStepTarget) {
+     this.stopAfterStep = true;
+     this.pendingPlayerDir = null;
+   } else {
+     this.stopAfterStep = false;
+     this.pendingPlayerDir = null;
+     this.playerDir = [0, 0];
+   }
+   return;
  }
+
+ const direction = [Math.sign(dy), Math.sign(dx)];
  this.stopAfterStep = false;
- this.playerDir = [0, 0];
- return;
+ if (this.playerStepTarget) {
+   this.pendingPlayerDir = direction;
+ } else {
+   this.pendingPlayerDir = null;
+   this.playerDir = direction;
  }
- this.stopAfterStep = false;
- this.playerDir = [dy, dx];
  }
  
  canBreakWall(y, x) {
@@ -1461,53 +1470,67 @@ class MazeGame {
  ghost.update();
  }
  
- // Enhanced player movement with power-ups
- const targetY = this.playerPos[0] + this.playerDir[0];
- const targetX = this.playerPos[1] + this.playerDir[1];
- 
- // Check bounds
- if (targetY >= 0 && targetY < this.GRID_HEIGHT && targetX >= 0 && targetX < this.GRID_WIDTH) {
- let canMove = false;
- 
- if (this.maze[targetY][targetX] === 0) {
- canMove = true;
- } else if (this.canBreakWall(targetY, targetX)) {
- // Break the wall - matching Python behavior
- this.maze[targetY][targetX] = 0;
- canMove = true;
- // Particle effect for wall breaking - matching Python
- this.particles.addExplosion([targetX * GRID_SIZE + GRID_SIZE/2, targetY * GRID_SIZE + GRID_SIZE/2], ORANGE, 8);
- console.log("Wall broken!"); // Debug message matching Python
+ // Grid-accurate player movement.
+ // A step has one fixed destination; turns are applied only after reaching it.
+ if (!this.playerStepTarget && (this.playerDir[0] !== 0 || this.playerDir[1] !== 0)) {
+   const nextY = this.playerPos[0] + this.playerDir[0];
+   const nextX = this.playerPos[1] + this.playerDir[1];
+   const inBounds = nextY >= 0 && nextY < this.GRID_HEIGHT && nextX >= 0 && nextX < this.GRID_WIDTH;
+   let canMove = inBounds && this.maze[nextY][nextX] === 0;
+
+   if (inBounds && !canMove && this.canBreakWall(nextY, nextX)) {
+     this.maze[nextY][nextX] = 0;
+     canMove = true;
+     this.particles.addExplosion([nextX * GRID_SIZE + GRID_SIZE / 2, nextY * GRID_SIZE + GRID_SIZE / 2], ORANGE, 8);
+   }
+
+   if (canMove) {
+     this.playerStepTarget = [nextY, nextX];
+   } else {
+     // Do not keep pushing into a wall; require a fresh direction input.
+     this.playerDir = [0, 0];
+     this.pendingPlayerDir = null;
+     this.stopAfterStep = false;
+   }
  }
- 
- if (canMove) {
- const targetPos = [targetY, targetX];
- 
- // Apply speed boost if active
- let movementSpeed = PLAYER_SPEED;
- if (POWERUP_SPEED in this.activePowerups &&
- currentTime < this.activePowerups[POWERUP_SPEED]) {
- movementSpeed *= 2.0;
+
+ if (this.playerStepTarget) {
+   const targetPos = this.playerStepTarget;
+   let movementSpeed = PLAYER_SPEED;
+   if (POWERUP_SPEED in this.activePowerups && currentTime < this.activePowerups[POWERUP_SPEED]) {
+     movementSpeed *= 2.0;
+   }
+
+   // Move on a single axis only, so sprite position cannot cut diagonally.
+   const nextFloat = [...this.playerPosFloat];
+   const axis = targetPos[0] !== this.playerPos[0] ? 0 : 1;
+   const delta = targetPos[axis] - nextFloat[axis];
+   if (Math.abs(delta) <= movementSpeed) {
+     nextFloat[axis] = targetPos[axis];
+   } else {
+     nextFloat[axis] += Math.sign(delta) * movementSpeed;
+   }
+   nextFloat[1 - axis] = targetPos[1 - axis];
+   this.playerPosFloat = nextFloat;
+
+   if (Math.abs(this.playerPosFloat[0] - targetPos[0]) < 0.001 &&
+       Math.abs(this.playerPosFloat[1] - targetPos[1]) < 0.001) {
+     this.playerPos = [...targetPos];
+     this.playerPosFloat = [...targetPos];
+     this.playerStepTarget = null;
+
+     if (this.stopAfterStep) {
+       this.playerDir = [0, 0];
+       this.pendingPlayerDir = null;
+       this.stopAfterStep = false;
+     } else if (this.pendingPlayerDir) {
+       this.playerDir = this.pendingPlayerDir;
+       this.pendingPlayerDir = null;
+     }
+   }
  }
- 
- this.playerPosFloat = this.smoothMove(this.playerPosFloat, [targetY, targetX], movementSpeed);
- 
- if (Math.abs(this.playerPosFloat[0] - targetY) < 0.05 && 
- Math.abs(this.playerPosFloat[1] - targetX) < 0.05) {
- this.playerPos = targetPos;
- if (this.stopAfterStep) {
- this.playerDir = [0, 0];
- this.stopAfterStep = false;
- }
- 
- // Jerry has no movement trail/bubbling particles.
- }
- }
- } else {
- this.playerDir = [0, 0];
- }
- 
- // Check power-up collection
+
+  // Check power-up collection
  for (let i = this.powerups.length - 1; i >= 0; i--) {
  const powerup = this.powerups[i];
  if (powerup.pos[0] === this.playerPos[0] && powerup.pos[1] === this.playerPos[1]) {
