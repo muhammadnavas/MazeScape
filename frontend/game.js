@@ -7,7 +7,7 @@ console.log(' Loading game.js...');
 const GRID_SIZE = 40;
 const DIRECTIONS = [[-1, 0], [1, 0], [0, -1], [0, 1]];
 const WALL_DENSITY = 0.25;
-const PLAYER_SPEED = 0.04;
+const PLAYER_SPEED = 2.4; // Tiles per second; movement is scaled by frame delta
 const GHOST_STEP_INTERVAL = 0.6; // Slower ghost (increased from 0.2)
 const GHOST_PATHFIND_INTERVAL = 0.5;
 
@@ -1228,6 +1228,7 @@ class MazeGame {
  this.pendingPlayerDir = null;
  this.playerStepTarget = null;
  this.stopAfterStep = false;
+ this.lastUpdateTime = Date.now() / 1000;
  this.targetPos = [this.GRID_HEIGHT - 2, this.GRID_WIDTH - 2];
  
  // Initialize game statistics - exact Python implementation
@@ -1413,6 +1414,8 @@ class MazeGame {
  
  update() {
  const currentTime = Date.now() / 1000;
+ const deltaTime = Math.min(Math.max(currentTime - (this.lastUpdateTime || currentTime), 0), 0.05);
+ this.lastUpdateTime = currentTime;
  
  // Add +10 points every second - new scoring system
  if (!this.lastScoreTime) {
@@ -1505,10 +1508,11 @@ class MazeGame {
    const nextFloat = [...this.playerPosFloat];
    const axis = targetPos[0] !== this.playerPos[0] ? 0 : 1;
    const delta = targetPos[axis] - nextFloat[axis];
-   if (Math.abs(delta) <= movementSpeed) {
+   const frameDistance = movementSpeed * deltaTime;
+   if (Math.abs(delta) <= frameDistance) {
      nextFloat[axis] = targetPos[axis];
    } else {
-     nextFloat[axis] += Math.sign(delta) * movementSpeed;
+     nextFloat[axis] += Math.sign(delta) * frameDistance;
    }
    nextFloat[1 - axis] = targetPos[1 - axis];
    this.playerPosFloat = nextFloat;
@@ -1569,6 +1573,10 @@ class MazeGame {
  // Reset player position to start
  this.playerPos = [1, 1];
  this.playerPosFloat = [1.0, 1.0];
+ this.playerDir = [0, 0];
+ this.pendingPlayerDir = null;
+ this.playerStepTarget = null;
+ this.stopAfterStep = false;
  
  // No particles are emitted from Jerry on respawn; keep his sprite visually clean.
 
