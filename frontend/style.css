@@ -7525,3 +7525,27 @@ body:not(.game-playing) #powerup-notifications {
     max-width: min(100%, 320px) !important;
   }
 }
+
+
+/* Center the complete homepage menu card within the available game viewport. */
+#gameContainer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+#menuButtons.menu-buttons {
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 900px) {
+  #menuButtons.menu-buttons {
+    left: 50% !important;
+    margin: 0 !important;
+    transform: translate(-50%, -50%) !important;
+  }
+}
