@@ -7213,3 +7213,15 @@ body:not(.game-playing) #powerup-notifications {
     transform: translateY(-5px);
   }
 }
+
+
+/* Raise the artwork enough to keep Tom and Jerry's faces and bodies clear
+   of the MAZESCAPE lettering; preserve the title and button positions. */
+#menuButtons .home-hero-art {
+  transform: translateY(-24px);
+}
+@media (max-width: 700px) {
+  #menuButtons .home-hero-art {
+    transform: translateY(-18px);
+  }
+}
