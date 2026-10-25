@@ -660,8 +660,9 @@
  const scoreText = message.replace(/^FINAL SCORE:\s*/i, '').replace(/\s*pts?$/i, '').trim();
  modal.classList.add('final-score-modal');
  modal.innerHTML = `
+ <div class="score-celebration" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>✦</span></div>
  <h2 class="glow-text primary-color final-score-title">Game over</h2>
- <p class="final-score-value"><span>Final score</span><strong>${scoreText} <small>pts</small></strong></p>
+ <p class="final-score-value"><span>Final score</span><strong>${scoreText} <small>pts</small></strong><span class="score-points-label">Points</span></p>
  `;
  } else {
  modal.innerHTML = `
