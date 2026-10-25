@@ -7140,3 +7140,40 @@ body:not(.game-playing) #powerup-notifications {
     max-height: 170px;
   }
 }
+
+
+/* Fine-tune uploaded Tom & Jerry artwork: smaller, lower, and visually tucked
+   into the title so the artwork's baseline sits close to the heading. */
+#menuButtons .home-character-stage {
+  margin-top: 10px;
+  margin-bottom: -26px;
+}
+#menuButtons .home-hero-art {
+  width: min(100%, 470px);
+  max-height: clamp(140px, 26vh, 250px);
+  transform: translateY(8px);
+}
+#menuButtons .home-title-block {
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    width: min(100%, 370px);
+    margin-top: 8px;
+    margin-bottom: -24px;
+  }
+  #menuButtons .home-hero-art {
+    width: min(100%, 360px);
+    max-height: clamp(105px, 19vh, 175px);
+    transform: translateY(10px);
+  }
+}
+@media (max-height: 650px) and (min-width: 701px) {
+  #menuButtons .home-character-stage {
+    margin-bottom: -18px;
+  }
+  #menuButtons .home-hero-art {
+    max-height: 155px;
+  }
+}
