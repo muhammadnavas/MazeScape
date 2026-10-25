@@ -5881,3 +5881,64 @@ body:not(.game-playing) #powerup-notifications {
     transition: none !important;
   }
 }
+
+
+/* Settings modal alignment: balanced rows and evenly sized action buttons. */
+#settingsModal .modal {
+  width: min(560px, calc(100vw - 32px)) !important;
+  box-sizing: border-box !important;
+  margin: 0 auto !important;
+}
+#settingsModal .modal > h2 {
+  margin: 0 0 24px !important;
+  text-align: center !important;
+}
+#settingsModal .settings-options {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+#settingsModal .settings-option {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+}
+#settingsModal .settings-option-copy {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+#settingsModal .settings-option-title,
+#settingsModal .settings-option-description {
+  display: block !important;
+  text-align: left !important;
+}
+#settingsModal .button-row {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  gap: 14px !important;
+  width: 100% !important;
+  margin-top: 24px !important;
+}
+#settingsModal .button-row button {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+@media (max-width: 480px) {
+  #settingsModal .modal {
+    padding: 24px 18px !important;
+  }
+  #settingsModal .settings-option {
+    padding: 16px !important;
+  }
+  #settingsModal .button-row {
+    gap: 10px !important;
+  }
+}
