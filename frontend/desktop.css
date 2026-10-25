@@ -113,3 +113,47 @@
     top: 50% !important;
   }
 }
+
+
+/* Desktop gameplay canvas: landscape and larger, while mobile retains its
+   existing portrait-friendly sizing in style.css. */
+@media screen and (min-width: 769px) {
+  body.game-playing #gameContainer {
+    width: 100% !important;
+    max-width: none !important;
+    height: calc(100dvh - 72px) !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 18px 28px 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+
+  body.game-playing #gameCanvas {
+    display: block !important;
+    width: min( min(76vw, 1320px), calc((100dvh - 130px) * 1.55) ) !important;
+    height: auto !important;
+    max-width: calc(100vw - 360px) !important;
+    max-height: calc(100dvh - 130px) !important;
+    aspect-ratio: 1.55 / 1 !important;
+    object-fit: contain !important;
+    margin: 0 auto !important;
+  }
+
+  body.game-playing #ui-container {
+    pointer-events: none;
+  }
+
+  body.game-playing #status {
+    top: 92px !important;
+    left: 28px !important;
+  }
+
+  body.game-playing .blog-panel.left {
+    top: 92px !important;
+    left: 28px !important;
+    max-height: calc(100dvh - 124px) !important;
+  }
+}
