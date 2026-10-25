@@ -1089,71 +1089,51 @@
  overlay.id = 'helpModal';
 
  overlay.innerHTML = `
- <div class="modal help-modal">
-   <h2>HOW TO PLAY</h2>
-   <div class="help-content">
-     <section class="help-section">
-       <h3><i data-lucide="target" class="ui-icon" aria-hidden="true"></i> Your Mission</h3>
-       <p>Find your way through a new maze and reach the <strong class="help-gold">yellow exit</strong>. Avoid the <strong class="help-red">Red Ghost</strong>, collect useful power-ups, and aim for the highest score.</p>
-     </section>
-
-     <section class="help-section">
-       <h3><i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> Controls</h3>
-       <ul>
-         <li><strong>Move:</strong> Use <span class="help-blue">W A S D</span> or the <span class="help-blue">arrow keys</span>.</li>
-         <li><strong>Mobile:</strong> Use the on-screen directional buttons when available.</li>
-         <li><strong>Start:</strong> Press <strong>Space</strong> from the game menu, or use the on-screen option.</li>
-         <li><strong>Fullscreen:</strong> Press <strong>F11</strong> on supported desktop browsers.</li>
-       </ul>
-     </section>
-
-     <section class="help-section">
-       <h3><i data-lucide="ghost" class="ui-icon" aria-hidden="true"></i> Watch Out: Red Ghost</h3>
-       <p>The Red Ghost uses pathfinding to follow you through the maze.</p>
-       <ul>
-         <li>Keep moving and look for an escape route before you get cornered.</li>
-         <li>Touching the ghost costs a life and sends you back to the start.</li>
-         <li>You begin with <strong>2 lives</strong>. Protect them!</li>
-       </ul>
-     </section>
-
-     <section class="help-section">
-       <h3><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> Power-Ups</h3>
-       <p>Pick up power-ups when you spot them. Each effect is temporary, so use the opportunity wisely.</p>
-       <ul>
-         <li><span class="help-blue"><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> Speed Boost:</span> Move faster for a short time.</li>
-         <li><span class="help-ice"><i data-lucide="snowflake" class="ui-icon" aria-hidden="true"></i> Ghost Freeze:</span> Temporarily stops the ghost so you can escape or reposition.</li>
-         <li><span class="help-orange"><i data-lucide="hammer" class="ui-icon" aria-hidden="true"></i> Wall Breaker:</span> Temporarily lets you break through walls and open a new route.</li>
-       </ul>
-     </section>
-
-     <section class="help-section">
-       <h3><i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> Scoring</h3>
-       <p>Your score depends on how the round goes. Reaching the exit earns a completion bonus; time, remaining lives, and power-up use can also affect your result.</p>
-       <ul>
-         <li>Finish the maze efficiently to improve your result.</li>
-         <li>Use power-ups when they help you progress or avoid danger.</li>
-         <li>Try to reach the exit without losing lives.</li>
-       </ul>
-     </section>
-
-     <section class="help-section">
-       <h3><i data-lucide="lightbulb" class="ui-icon" aria-hidden="true"></i> Tips for Success</h3>
-       <ul>
-         <li>Every round generates a different maze, so adapt your route.</li>
-         <li>Watch the ghost's position instead of focusing only on the exit.</li>
-         <li>Use open corridors to create distance before turning into narrow paths.</li>
-         <li>Freeze the ghost when you need breathing room.</li>
-         <li>Use the Wall Breaker to escape a dead end when possible.</li>
-         <li>Keep your route toward the yellow exit in mind as you move.</li>
-       </ul>
-     </section>
-   </div>
-   <div class="button-row">
-     <button class="game-button primary" onclick="closeModal('helpModal')">LET'S PLAY</button>
-   </div>
- </div>
- `;
+  <div class="modal help-modal">
+    <h2>HOW TO PLAY</h2>
+    <div class="help-content">
+      <section class="help-section">
+        <h3><i data-lucide="target" class="ui-icon" aria-hidden="true"></i> Objective</h3>
+        <p>Reach the <strong>yellow exit</strong>, avoid the Red Ghost, and aim for the highest score.</p>
+      </section>
+      <section class="help-section">
+        <h3><i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> Controls</h3>
+        <ul>
+          <li><strong>Move:</strong> WASD or arrow keys.</li>
+          <li><strong>Mobile:</strong> Use the on-screen arrows when enabled.</li>
+          <li><strong>Start:</strong> Space from the menu. <strong>Fullscreen:</strong> F11 on desktop.</li>
+        </ul>
+      </section>
+      <section class="help-section">
+        <h3><i data-lucide="ghost" class="ui-icon" aria-hidden="true"></i> Red Ghost</h3>
+        <ul>
+          <li>The ghost follows you through the maze using pathfinding.</li>
+          <li>Touching it costs one life and sends you back to the start.</li>
+          <li>You begin with <strong>2 lives</strong>—keep your distance!</li>
+        </ul>
+      </section>
+      <section class="help-section">
+        <h3><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> Power-Ups</h3>
+        <ul>
+          <li><strong>Speed Boost:</strong> Move faster temporarily.</li>
+          <li><strong>Ghost Freeze:</strong> Stops the ghost temporarily.</li>
+          <li><strong>Wall Breaker:</strong> Breaks walls temporarily to open a route.</li>
+        </ul>
+      </section>
+      <section class="help-section">
+        <h3><i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> Scoring & Tips</h3>
+        <ul>
+          <li>Reach the exit efficiently and try to keep both lives.</li>
+          <li>Use power-ups when they give you an advantage.</li>
+          <li>Each maze is different—watch the ghost and plan your next turn.</li>
+        </ul>
+      </section>
+    </div>
+    <div class="button-row">
+      <button class="game-button primary" onclick="closeModal('helpModal')">LET'S PLAY</button>
+    </div>
+  </div>
+`;
 
  document.body.appendChild(overlay);
  if (window.lucide && typeof window.lucide.createIcons === 'function') {
