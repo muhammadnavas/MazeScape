@@ -6534,3 +6534,24 @@ body:not(.game-playing) #powerup-notifications {
     margin-bottom: 13px !important;
   }
 }
+
+
+/* Keep the A* formula box sized to its content instead of stretching across the modal. */
+#astarInfoModal .astar-formula {
+  display: table !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 10px auto 12px !important;
+  padding: 9px 18px !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 380px) {
+  #astarInfoModal .astar-formula {
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    padding: 8px 10px !important;
+  }
+}
