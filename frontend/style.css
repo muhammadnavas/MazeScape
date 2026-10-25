@@ -7225,3 +7225,14 @@ body:not(.game-playing) #powerup-notifications {
     transform: translateY(-18px);
   }
 }
+
+
+/* Final small upward nudge requested for the homepage character artwork. */
+#menuButtons .home-hero-art {
+  transform: translateY(-34px);
+}
+@media (max-width: 700px) {
+  #menuButtons .home-hero-art {
+    transform: translateY(-26px);
+  }
+}
