@@ -6806,12 +6806,24 @@ body:not(.game-playing) #powerup-notifications {
 }
 
 
-/* Keep a clear gap between the maze canvas and the fixed mobile controller. */
+/* Reserve a dedicated controller zone below the maze on short mobile viewports.
+   Size the canvas itself to fit above the controller; moving the controller alone
+   causes it to overlap the last maze rows on portrait phones. */
 @media screen and (max-width: 700px) and (orientation: portrait) {
   body.game-playing #gameContainer #gameCanvas {
-    max-height: max(240px, calc(100dvh - 350px - env(safe-area-inset-bottom, 0px))) !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: max(240px, calc(100dvh - 470px - env(safe-area-inset-bottom, 0px))) !important;
+    max-width: calc(100vw - 12px) !important;
+    aspect-ratio: 2 / 3 !important;
+    object-fit: contain !important;
   }
   body.game-playing #mobile-controls {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
     bottom: max(20px, env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+    transform: translateX(-50%) !important;
   }
 }
