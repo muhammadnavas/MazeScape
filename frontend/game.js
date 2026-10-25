@@ -1207,8 +1207,7 @@ class MazeGame {
  }
  }
  
- // Particle effect - matching Python
- this.particles.addExplosion([powerup.pos[1] * GRID_SIZE + GRID_SIZE/2, powerup.pos[0] * GRID_SIZE + GRID_SIZE/2], powerup.color, 12);
+ // Do not emit particles on Jerry when he collects a power-up.
  }
  
  updateForScreenChange() {
