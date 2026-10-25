@@ -583,12 +583,39 @@ class TextureManager {
  break;
  
  case 'target':
- // Original target rendering
- ctx.fillStyle = YELLOW;
+ // Draw the cheese goal in non-enhanced mode too; never revert to a plain square.
+ ctx.fillStyle = 'rgba(216, 169, 61, 0.22)';
  ctx.fillRect(x, y, width, height);
- ctx.strokeStyle = WHITE;
- ctx.lineWidth = 2;
- ctx.strokeRect(x, y, width, height);
+ ctx.save();
+ ctx.translate(x, y);
+ ctx.scale(width / GRID_SIZE, height / GRID_SIZE);
+ ctx.fillStyle = '#C88720';
+ ctx.beginPath();
+ ctx.moveTo(5, 19);
+ ctx.lineTo(31, 13);
+ ctx.lineTo(31, 29);
+ ctx.lineTo(5, 32);
+ ctx.closePath();
+ ctx.fill();
+ ctx.fillStyle = '#FFD84D';
+ ctx.beginPath();
+ ctx.moveTo(5, 19);
+ ctx.lineTo(22, 7);
+ ctx.lineTo(36, 17);
+ ctx.lineTo(31, 23);
+ ctx.lineTo(5, 27);
+ ctx.closePath();
+ ctx.fill();
+ ctx.fillStyle = '#B87518';
+ for (const [hx, hy, radius] of [[14, 18, 2], [24, 17, 2.5], [19, 23, 1.8], [28, 23, 1.6]]) {
+   ctx.beginPath();
+   ctx.arc(hx, hy, radius, 0, Math.PI * 2);
+   ctx.fill();
+ }
+ ctx.strokeStyle = '#FFF0A3';
+ ctx.lineWidth = 1.2;
+ ctx.stroke();
+ ctx.restore();
  break;
  
  case 'powerup_speed':
@@ -1521,9 +1548,8 @@ class MazeGame {
  this.playerPos = [1, 1];
  this.playerPosFloat = [1.0, 1.0];
  
- // Add explosion particle effect
- this.particles.addExplosion([this.playerPos[1] * GRID_SIZE + GRID_SIZE/2, this.playerPos[0] * GRID_SIZE + GRID_SIZE/2], '#FF6B6B', 20);
- 
+ // No particles are emitted from Jerry on respawn; keep his sprite visually clean.
+
  if (this.lives <= 0) {
  // Deduct points for losing - new scoring system
  this.score -= 20;
@@ -1598,19 +1624,10 @@ class MazeGame {
  powerup.draw(this.ctx, offsetX, offsetY, currentTime, this.textureManager);
  }
  
- // Draw target with texture and pulsing glow effect
- const pulse = 50 + 30 * (1 + Math.sin(currentTime * 0.01));
+ // Draw the cheese goal consistently in enhanced and non-enhanced modes.
+ // Keep it inside its tile so it cannot bleed over neighbouring maze cells.
  const targetX = offsetX + this.targetPos[1] * GRID_SIZE;
  const targetY = offsetY + this.targetPos[0] * GRID_SIZE;
- 
- // Glow effect
- this.ctx.save();
- this.ctx.globalAlpha = pulse / 255;
- this.ctx.fillStyle = YELLOW;
- this.ctx.fillRect(targetX - 10, targetY - 10, GRID_SIZE + 20, GRID_SIZE + 20);
- this.ctx.restore();
- 
- // Main target with texture
  this.textureManager.drawTexturedRect(this.ctx, 'target', targetX, targetY, GRID_SIZE, GRID_SIZE, currentTime);
  
  // Draw player with texture and power-up effects
