@@ -6934,7 +6934,7 @@ body:not(.game-playing) #powerup-notifications {
   }
   body.game-playing #gameContainer #gameCanvas {
     display: block !important;
-    width: min(calc(100vw - 12px), calc((100dvh - 270px - env(safe-area-inset-bottom, 0px)) * 2 / 3)) !important;
+    width: min(calc(100vw - 12px), calc((100dvh - 180px - env(safe-area-inset-bottom, 0px)) * 2 / 3)) !important;
     height: auto !important;
     max-width: calc(100vw - 12px) !important;
     max-height: calc(100dvh - 270px - env(safe-area-inset-bottom, 0px)) !important;
