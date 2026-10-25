@@ -1636,22 +1636,10 @@ class MazeGame {
  }
  
  drawEnhancedHud() {
- // Draw enhanced HUD with improved alignment and spacing
- const currentTime = Date.now() / 1000;
- 
- // Adaptive spacing based on screen size
- const margin = Math.max(8, this.canvas.width / 120); // Scale margin with screen size
- const panelSpacing = Math.max(15, this.canvas.height / 40); // Adaptive panel spacing
- 
- // Active power-ups panel (moved to HTML element to avoid overlap)
- if (Object.keys(this.activePowerups).length > 0) {
- this.updatePowerupDisplay();
- } else {
- // Hide powerup display when no powerups are active
- this.hidePowerupDisplay();
+ // Keep power-up feedback in the single top notification only.
+ // Do not create a separate active-power-ups popup over the maze.
  }
- }
- 
+
  cleanup() {
  // Clean up resources to prevent memory leaks
  if (this.particles) {
@@ -1667,67 +1655,6 @@ class MazeGame {
  this.activePowerups = {};
  }
  }
-
- // Update powerup display in HTML element instead of canvas
- updatePowerupDisplay() {
- const currentTime = Date.now() / 1000;
- let powerupPanel = document.getElementById('powerup-status');
- 
- // Create powerup panel if it doesn't exist
- if (!powerupPanel) {
- powerupPanel = document.createElement('div');
- powerupPanel.id = 'powerup-status';
- powerupPanel.style.cssText = `
- position: absolute;
- top: 200px;
- right: 20px;
- background: rgba(26, 26, 46, 0.9);
- backdrop-filter: blur(10px);
- padding: 15px;
- border-radius: 12px;
- border: 2px solid #D8A93D;
- font-size: 13px;
- line-height: 1.5;
- box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
- 0 0 20px rgba(255, 215, 0, 0.2);
- color: #E0E0E0;
- z-index: 60;
- min-width: 160px;
- `;
- document.body.appendChild(powerupPanel);
- }
-
- // Update powerup content
- let content = '<h4 style="color: #D8A93D; margin: 0 0 10px 0; font-size: 14px; text-align: center;"> POWER-UPS</h4>';
- 
- for (let [powerupType, endTime] of Object.entries(this.activePowerups)) {
- const remaining = Math.max(0, Math.floor(endTime - currentTime));
- let text, color;
- if (powerupType === 'speed') {
- text = ` SPEED: ${remaining}s`;
- color = '#D8A93D';
- } else if (powerupType === 'wallbreaker') {
- text = ` BREAK: ${remaining}s`;
- color = '#C08A2E';
- } else {
- text = `${powerupType.slice(0, 5)}: ${remaining}s`;
- color = '#FAF7EF';
- }
- content += `<div style="color: ${color}; margin-bottom: 5px;">${text}</div>`;
- }
- 
- powerupPanel.innerHTML = content;
- powerupPanel.style.display = 'block';
- }
-
- // Hide powerup display when no powerups are active
- hidePowerupDisplay() {
- const powerupPanel = document.getElementById('powerup-status');
- if (powerupPanel) {
- powerupPanel.style.display = 'none';
- }
- }
-}
 
 // Export for use (browser compatibility)
 if (typeof window !== 'undefined') {
