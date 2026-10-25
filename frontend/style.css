@@ -5395,3 +5395,38 @@ body:not(.game-playing) #powerup-notifications {
     display: none !important;
   }
 }
+
+
+/* Clear, compact final-score layout. */
+.modal.final-score-modal {
+  width: min(520px, calc(100vw - 36px));
+  box-sizing: border-box;
+  padding: 28px 24px !important;
+  text-align: center;
+}
+.modal.final-score-modal .final-score-title {
+  margin: 0 0 22px !important;
+  font-size: clamp(26px, 6vw, 34px) !important;
+  line-height: 1.15;
+}
+.modal.final-score-modal .final-score-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0 !important;
+  font-size: 15px;
+  opacity: .92;
+}
+.modal.final-score-modal .final-score-value strong {
+  display: block;
+  font-size: clamp(30px, 8vw, 42px);
+  line-height: 1.1;
+  font-weight: 800;
+  color: var(--maze-gold, #D8A93D);
+  font-variant-numeric: tabular-nums;
+}
+.modal.final-score-modal .final-score-value small {
+  font-size: .48em;
+  font-weight: 600;
+}
