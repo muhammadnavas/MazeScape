@@ -1028,6 +1028,14 @@
 .forEach(button => button.classList.remove('active'));
  }
 
+ // Close a modal by its overlay ID. The help dialog previously called this
+ // function without defining it, so its primary action threw a ReferenceError.
+ function closeModal(modalId) {
+   const modal = document.getElementById(modalId);
+   if (modal) modal.remove();
+ }
+ window.closeModal = closeModal;
+
  function showHelp() {
  const overlay = document.createElement('div');
  overlay.className = 'modal-overlay';
@@ -1075,7 +1083,7 @@
       </section>
     </div>
     <div class="button-row">
-      <button class="game-button primary" onclick="closeModal('helpModal')">LET'S PLAY</button>
+      <button class="game-button primary" type="button" onclick="closeModal('helpModal'); startGame();">LET'S PLAY</button>
     </div>
   </div>
 `;
