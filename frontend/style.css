@@ -6564,3 +6564,51 @@ body:not(.game-playing) #powerup-notifications {
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+
+/* Final canvas HUD overrides: one compact, aligned row above the maze.
+   These intentionally come last to defeat older responsive rules. */
+#status {
+  display: none;
+  position: fixed;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: calc(50vw - 8px) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  color: #FAF7EF !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+  z-index: 301 !important;
+}
+#status .status-header { display: none !important; }
+#status .status-content {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  white-space: nowrap !important;
+}
+#status .status-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 3px !important;
+}
+#status .status-label,
+#status .status-value {
+  color: #FAF7EF !important;
+  font-size: inherit !important;
+  font-weight: 600 !important;
+}
+#status .status-value { color: #D8A93D !important; }
+@media (max-width: 400px) {
+  #status { font-size: 11px !important; }
+  #status .status-content { gap: 8px !important; }
+}
