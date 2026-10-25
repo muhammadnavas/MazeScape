@@ -1432,6 +1432,39 @@
      setTimeout(() => button.classList.remove('active'), 120);
    });
 
+   // Android WebView/Chrome fallback: handle native touch events explicitly as
+   // well as Pointer Events. Some mobile compositing states show the buttons but
+   // fail to deliver pointer events to them.
+   let touchHandled = false;
+   button.addEventListener('touchstart', (event) => {
+     if (!event.cancelable) return;
+     event.preventDefault();
+     event.stopPropagation();
+     touchHandled = true;
+     lastPointerDownAt = Date.now();
+     pressed = true;
+     button.classList.add('active');
+     handleMobileMove(direction);
+   }, { passive: false });
+
+   button.addEventListener('touchend', (event) => {
+     if (touchHandled) {
+       event.preventDefault();
+       event.stopPropagation();
+       touchHandled = false;
+       pressed = false;
+       button.classList.remove('active');
+       handleMobileStop();
+     }
+   }, { passive: false });
+
+   button.addEventListener('touchcancel', () => {
+     touchHandled = false;
+     pressed = false;
+     button.classList.remove('active');
+     handleMobileStop();
+   }, { passive: true });
+
    button.addEventListener('contextmenu', event => event.preventDefault());
    button.addEventListener('dragstart', event => event.preventDefault());
  });
