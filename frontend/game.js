@@ -1225,57 +1225,77 @@ class MazeGame {
  }
  
  generateMaze() {
- // Optimized maze generation with retry limit
- const maxAttempts = 10;
- let attempt = 0;
- 
- while (attempt < maxAttempts) {
- this.maze = Array(this.GRID_HEIGHT).fill().map(() => Array(this.GRID_WIDTH).fill(0));
- 
- // Create borders
- for (let i = 0; i < this.GRID_WIDTH; i++) {
- this.maze[0][i] = 1;
- this.maze[this.GRID_HEIGHT - 1][i] = 1;
- }
- for (let i = 0; i < this.GRID_HEIGHT; i++) {
- this.maze[i][0] = 1;
- this.maze[i][this.GRID_WIDTH - 1] = 1;
- }
- 
- // Add walls with improved distribution
- const wallCount = Math.floor(this.GRID_WIDTH * this.GRID_HEIGHT * WALL_DENSITY);
- let placedWalls = 0;
- 
- while (placedWalls < wallCount) {
- const x = randomInt(1, this.GRID_WIDTH - 2);
- const y = randomInt(1, this.GRID_HEIGHT - 2);
- 
- // Avoid blocking key positions
- if ((y !== this.playerPos[0] || x !== this.playerPos[1]) && 
- (y !== this.targetPos[0] || x !== this.targetPos[1]) &&
- (y !== Math.floor(this.GRID_HEIGHT / 2) || x !== Math.floor(this.GRID_WIDTH / 2)) &&
- this.maze[y][x] === 0) {
- this.maze[y][x] = 1;
- placedWalls++;
- }
- }
- 
- // Verify path exists
+ // Accept a maze only when Jerry can reach the cheese AND Tom can reach Jerry.
+ // A player-to-exit-only check can leave Tom trapped in a disconnected region.
+ const maxAttempts = 30;
+ const ghostSpawn = [
+   Math.floor(this.GRID_HEIGHT / 2),
+   Math.floor(this.GRID_WIDTH / 2)
+ ];
  const pathfinder = new AStar();
- if (pathfinder.findPath(this.maze, this.playerPos, this.targetPos).length > 0) {
- break;
+ const hasPath = (from, to) => pathfinder.findPath(this.maze, from, to).length > 0;
+
+ for (let attempt = 0; attempt < maxAttempts; attempt++) {
+   this.maze = Array.from(
+     { length: this.GRID_HEIGHT },
+     () => Array(this.GRID_WIDTH).fill(0)
+   );
+
+   // Solid outer border.
+   for (let x = 0; x < this.GRID_WIDTH; x++) {
+     this.maze[0][x] = 1;
+     this.maze[this.GRID_HEIGHT - 1][x] = 1;
+   }
+   for (let y = 0; y < this.GRID_HEIGHT; y++) {
+     this.maze[y][0] = 1;
+     this.maze[y][this.GRID_WIDTH - 1] = 1;
+   }
+
+   // Random walls, never covering Jerry, the cheese, or Tom's spawn tile.
+   const protectedCells = new Set([
+     this.playerPos.join(','),
+     this.targetPos.join(','),
+     ghostSpawn.join(',')
+   ]);
+   const wallCount = Math.floor(
+     (this.GRID_WIDTH - 2) * (this.GRID_HEIGHT - 2) * WALL_DENSITY
+   );
+   let placedWalls = 0;
+   let placementAttempts = 0;
+   const maxPlacementAttempts = wallCount * 12;
+
+   while (placedWalls < wallCount && placementAttempts < maxPlacementAttempts) {
+     placementAttempts++;
+     const y = randomInt(1, this.GRID_HEIGHT - 2);
+     const x = randomInt(1, this.GRID_WIDTH - 2);
+     if (protectedCells.has(`${y},${x}`) || this.maze[y][x] === 1) continue;
+     this.maze[y][x] = 1;
+     placedWalls++;
+   }
+
+   // Both routes are required before this maze is accepted.
+   const jerryCanReachCheese = hasPath(this.playerPos, this.targetPos);
+   const tomCanReachJerry = hasPath(ghostSpawn, this.playerPos);
+   if (jerryCanReachCheese && tomCanReachJerry) {
+     return;
+   }
  }
- 
- attempt++;
- }
- 
- if (attempt >= maxAttempts) {
- console.log(" Warning: Could not generate optimal maze, using fallback");
- // Create simple maze as fallback
+
+ // Safe fallback: a lightly obstructed maze with connected gameplay routes.
+ console.warn('Maze generation retries exhausted; using connected fallback maze.');
  this.createSimpleMaze();
+
+ // Defensive final validation. The fallback should be connected, but never
+ // start a round with a broken route if its layout is changed in the future.
+ if (!hasPath(this.playerPos, this.targetPos) || !hasPath(ghostSpawn, this.playerPos)) {
+   for (let y = 1; y < this.GRID_HEIGHT - 1; y++) {
+     for (let x = 1; x < this.GRID_WIDTH - 1; x++) {
+       this.maze[y][x] = 0;
+     }
+   }
  }
  }
- 
+
  createSimpleMaze() {
  // Create a simple maze as fallback
  this.maze = Array(this.GRID_HEIGHT).fill().map(() => Array(this.GRID_WIDTH).fill(0));
