@@ -5485,3 +5485,43 @@ body:not(.game-playing) #powerup-notifications {
   #status.game-hud .status-label,
   #status.game-hud .status-value { font-size: 11px !important; }
 }
+
+
+/* FINAL mobile HUD placement override: beat legacy #gameContainer and game-playing rules. */
+@media screen and (max-width: 700px) {
+  body.game-playing #gameContainer #status.game-hud {
+    position: absolute !important;
+    top: 0 !important;
+    right: 4px !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: max-content !important;
+    max-width: 48vw !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 1100 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    visibility: visible !important;
+  }
+  body.game-playing #gameContainer #status.game-hud .status-content {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+  }
+  body.game-playing #gameContainer #status.game-hud .status-item {
+    display: none !important;
+  }
+  body.game-playing #gameContainer #status.game-hud .status-item:has(#current-score-value),
+  body.game-playing #gameContainer #status.game-hud .status-item:has(#current-lives-value) {
+    display: inline-flex !important;
+  }
+}
