@@ -6316,3 +6316,54 @@ body:not(.game-playing) #powerup-notifications {
   #helpModal .modal.help-modal .help-section p,
   #helpModal .modal.help-modal .help-section li { font-size: 14px !important; }
 }
+
+
+/* Fix arrow selectors to match the actual controller IDs in index.html.
+   This intentionally overrides older pseudo-element rules that targeted nonexistent IDs. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #mobile-controls .control-btn {
+    font-size: 0 !important;
+    color: #fff8e8 !important;
+    -webkit-text-fill-color: #fff8e8 !important;
+    position: relative !important;
+  }
+
+  body.game-playing #mobile-controls #btn-up::after,
+  body.game-playing #mobile-controls #btn-down::after,
+  body.game-playing #mobile-controls #btn-left::after,
+  body.game-playing #mobile-controls #btn-right::after {
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    content: "" !important;
+    margin: auto !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-style: solid !important;
+    opacity: 1 !important;
+    transform: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  body.game-playing #mobile-controls #btn-up::after {
+    border-width: 0 8px 12px !important;
+    border-color: transparent transparent #fff8e8 !important;
+    top: -2px !important;
+  }
+  body.game-playing #mobile-controls #btn-down::after {
+    border-width: 12px 8px 0 !important;
+    border-color: #fff8e8 transparent transparent !important;
+    bottom: -2px !important;
+  }
+  body.game-playing #mobile-controls #btn-left::after {
+    border-width: 8px 12px 8px 0 !important;
+    border-color: transparent #fff8e8 transparent transparent !important;
+    left: -2px !important;
+  }
+  body.game-playing #mobile-controls #btn-right::after {
+    border-width: 8px 0 8px 12px !important;
+    border-color: transparent transparent transparent #fff8e8 !important;
+    right: -2px !important;
+  }
+}
