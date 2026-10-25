@@ -6147,3 +6147,16 @@ body:not(.game-playing) #powerup-notifications {
     margin-top: 0 !important;
   }
 }
+
+
+/* Match mobile game-info typography to the smaller power-up notification text. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #gameContainer #status.game-hud,
+  body.game-playing #gameContainer #status.game-hud .status-item,
+  body.game-playing #gameContainer #status.game-hud .status-label,
+  body.game-playing #gameContainer #status.game-hud .status-value {
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+    font-weight: 600 !important;
+  }
+}
