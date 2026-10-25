@@ -7576,3 +7576,42 @@ body:not(.game-playing) #powerup-notifications {
     padding: 1rem !important;
   }
 }
+
+
+/* Restore the original menu card size; keep only the requested lower position. */
+#menuButtons.menu-buttons {
+  width: calc(50vw - 3.75rem) !important;
+  max-width: 37.5rem !important;
+  min-width: 25rem !important;
+  padding: 2.5rem !important;
+  top: 54% !important;
+  left: 50% !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 1200px) {
+  #menuButtons.menu-buttons {
+    width: calc(55vw - 3rem) !important;
+    max-width: 35rem !important;
+    min-width: 22rem !important;
+    padding: 2rem !important;
+  }
+}
+@media (max-width: 900px) {
+  #menuButtons.menu-buttons {
+    width: calc(90vw - 2.5rem) !important;
+    max-width: 28rem !important;
+    min-width: 18rem !important;
+    padding: 1.5rem !important;
+    top: 53% !important;
+  }
+}
+@media (max-width: 600px) {
+  #menuButtons.menu-buttons {
+    width: calc(95vw - 2rem) !important;
+    max-width: 25rem !important;
+    min-width: 16rem !important;
+    padding: 1.25rem !important;
+  }
+}
