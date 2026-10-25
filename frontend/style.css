@@ -5575,3 +5575,56 @@ body:not(.game-playing) #powerup-notifications {
     text-align: left !important;
   }
 }
+
+
+/* FINAL gameplay HUD alignment: score hugs canvas top-left; power-up notices hug top-right. */
+@media screen and (max-width: 700px) {
+  body.game-playing #gameContainer #status.game-hud {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: max-content !important;
+    max-width: 48% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 1100 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-align: left !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud .status-content {
+    justify-content: flex-start !important;
+    gap: 8px !important;
+  }
+
+  body.game-playing #gameContainer #powerup-notifications {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: max-content !important;
+    max-width: 48% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 1101 !important;
+    text-align: right !important;
+  }
+
+  body.game-playing #gameContainer #powerup-notifications .powerup-notification {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: right !important;
+  }
+}
