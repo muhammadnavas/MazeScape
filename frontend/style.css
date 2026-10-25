@@ -7236,3 +7236,36 @@ body:not(.game-playing) #powerup-notifications {
     transform: translateY(-26px);
   }
 }
+
+
+/* Correct the hero flow: place the full artwork above the title, not layered
+   over it. Reset prior overlap/transform tweaks and keep a small gap. */
+#menuButtons .home-character-stage {
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+  overflow: visible;
+}
+#menuButtons .home-hero-art {
+  display: block;
+  width: min(100%, 390px) !important;
+  height: auto !important;
+  max-height: 190px !important;
+  object-fit: contain;
+  transform: none !important;
+}
+#menuButtons .home-title-block {
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    width: min(100%, 390px) !important;
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+  }
+  #menuButtons .home-hero-art {
+    width: min(100%, 350px) !important;
+    max-height: 165px !important;
+    transform: none !important;
+  }
+}
