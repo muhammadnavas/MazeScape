@@ -84,3 +84,32 @@
     display: none !important;
   }
 }
+
+
+/* Final desktop homepage background fix: the empty canvas was still visible as
+   a tall outlined rectangle behind the menu. Remove that gameplay surface on
+   the landing screen and let the page background fill the area below the header. */
+@media screen and (min-width: 769px) {
+  body:not(.game-playing) #gameContainer {
+    height: calc(100dvh - 72px) !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    padding: 24px var(--desktop-gutter) !important;
+    box-sizing: border-box !important;
+    background:
+      radial-gradient(ellipse at 50% 35%, rgba(216,169,61,.055), transparent 44%),
+      linear-gradient(145deg, #1b1211 0%, #241715 55%, #2d1d1b 100%) !important;
+  }
+
+  body:not(.game-playing) #gameCanvas {
+    display: none !important;
+  }
+
+  body:not(.game-playing) #ui-container {
+    display: none !important;
+  }
+
+  body:not(.game-playing) #menuButtons.menu-buttons {
+    top: 50% !important;
+  }
+}
