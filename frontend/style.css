@@ -7363,3 +7363,42 @@ body:not(.game-playing) #powerup-notifications {
     height: 130% !important;
   }
 }
+
+
+/* Jerry beside the Game Over score card */
+.modal-overlay:has(.final-score-modal) {
+  gap: clamp(10px, 2.5vw, 30px) !important;
+}
+.modal-overlay .game-over-jerry {
+  display: block;
+  width: clamp(130px, 22vw, 250px);
+  max-height: min(48vh, 390px);
+  height: auto;
+  object-fit: contain;
+  object-position: center bottom;
+  align-self: center;
+  flex: 0 1 auto;
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,.35));
+}
+.modal-overlay .final-score-modal {
+  flex: 0 1 500px;
+}
+@media (max-width: 700px) {
+  .modal-overlay:has(.final-score-modal) {
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    overflow-y: auto !important;
+  }
+  .modal-overlay .game-over-jerry {
+    width: clamp(95px, 28vw, 145px);
+    max-height: 22dvh;
+    order: 0;
+  }
+  .modal-overlay .final-score-modal {
+    order: 1;
+    width: min(100%, 390px) !important;
+    min-width: 0 !important;
+    padding: 22px !important;
+  }
+}
