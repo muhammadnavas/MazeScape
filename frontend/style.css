@@ -6624,7 +6624,9 @@ body:not(.game-playing) #powerup-notifications {
     height: auto !important;
     aspect-ratio: 2 / 3 !important;
     max-width: calc(100vw - 12px) !important;
-    max-height: max(240px, calc(100dvh - 190px - env(safe-area-inset-bottom, 0px))) !important;
+    /* Reserve a dedicated controller zone below the maze; never let the
+       fixed directional pad sit on top of the playable canvas. */
+    max-height: max(240px, calc(100dvh - 350px - env(safe-area-inset-bottom, 0px))) !important;
     min-width: 0 !important;
     min-height: 0 !important;
     flex: 0 1 auto !important;
@@ -6800,5 +6802,16 @@ body:not(.game-playing) #powerup-notifications {
   body.game-playing #mobile-controls .control-btn {
     pointer-events: auto !important;
     touch-action: none !important;
+  }
+}
+
+
+/* Keep a clear gap between the maze canvas and the fixed mobile controller. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #gameContainer #gameCanvas {
+    max-height: max(240px, calc(100dvh - 350px - env(safe-area-inset-bottom, 0px))) !important;
+  }
+  body.game-playing #mobile-controls {
+    bottom: max(20px, env(safe-area-inset-bottom)) !important;
   }
 }
