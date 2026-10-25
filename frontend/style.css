@@ -5750,3 +5750,55 @@ body:not(.game-playing) #powerup-notifications {
     box-shadow: none !important;
   }
 }
+
+
+/* Consistent mobile game-info HUD: identical typography and balanced spacing. */
+@media screen and (max-width: 700px) {
+  body.game-playing #gameContainer #status.game-hud .status-content {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+    column-gap: 16px !important;
+    row-gap: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud .status-item {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud .status-label,
+  body.game-playing #gameContainer #status.game-hud .status-value {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0 !important;
+    vertical-align: baseline !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud .status-label {
+    color: #f7f0e5 !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud .status-value {
+    color: #d8a93d !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+}
