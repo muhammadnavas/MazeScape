@@ -297,3 +297,12 @@
     max-height: calc(100dvh - 100px) !important;
   }
 }
+
+
+/* Hide only the GAME INFO heading on desktop; retain score, lives and all
+   other HUD content/notifications. */
+@media screen and (min-width: 769px) {
+  body.game-playing #status .status-header {
+    display: none !important;
+  }
+}
