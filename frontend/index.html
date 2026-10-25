@@ -74,7 +74,7 @@
  <i data-lucide="settings-2" class="ui-icon" aria-hidden="true"></i> SETTINGS
  </button>
  <button class="game-button mobile-only" id="mobileBlogBtn">
- <i data-lucide="book-open" class="ui-icon" aria-hidden="true"></i> A* ALGORITHM
+ <i data-lucide="book-open" class="ui-icon" aria-hidden="true"></i> A STAR
  </button>
  </div>
  </div>
@@ -1140,6 +1140,30 @@
    window.lucide.createIcons({ attrs: { 'stroke-width': 2 } });
  }
  }
+
+ function showAStarInfo() {
+   const oldModal = document.getElementById('astarInfoModal');
+   if (oldModal) oldModal.remove();
+   const overlay = document.createElement('div');
+   overlay.className = 'modal-overlay';
+   overlay.id = 'astarInfoModal';
+   overlay.setAttribute('role', 'dialog');
+   overlay.setAttribute('aria-modal', 'true');
+   overlay.setAttribute('aria-labelledby', 'astarInfoTitle');
+   overlay.innerHTML = `
+     <div class="modal astar-info-modal">
+       <h2 id="astarInfoTitle">A STAR PATHFINDING</h2>
+       <div class="astar-info-content">
+         <section><h3>What is A*?</h3><p>A* (pronounced “A-star”) is a pathfinding algorithm that helps the ghost find a route through the maze. It compares the distance already travelled with an estimate of the distance remaining to choose a promising route.</p></section>
+         <section><h3>How it chooses a path</h3><div class="astar-formula">f(n) = g(n) + h(n)</div><ul><li><strong>g(n):</strong> Cost from the start to the current tile.</li><li><strong>h(n):</strong> Estimated distance from the current tile to the target.</li><li><strong>f(n):</strong> Combined score used to compare possible tiles.</li></ul></section>
+         <section><h3>How the search works</h3><ol><li>Start at the ghost’s current position.</li><li>Check reachable neighbouring tiles and estimate their costs.</li><li>Explore the tile with the lowest estimated total cost.</li><li>Repeat until the target is reached or no route is available.</li><li>Trace the selected route to determine the next move.</li></ol></section>
+         <section><h3>Why use A*?</h3><p>With a suitable heuristic, A* can find a shortest path efficiently. MazeScape uses Manhattan distance, which estimates distance along horizontal and vertical grid moves.</p></section>
+       </div>
+       <div class="button-row"><button class="game-button primary" type="button" onclick="closeModal('astarInfoModal')">GOT IT</button></div>
+     </div>`;
+   document.body.appendChild(overlay);
+   if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons({ attrs: { 'stroke-width': 2 } });
+ }
  function showSettings() {
  const overlay = document.createElement('div');
  overlay.className = 'modal-overlay';
@@ -1551,30 +1575,11 @@
  }
  }
  });
+  // Open the explanation in a dedicated modal, independent of the legacy sliding blog panel.
+  const mobileBlogBtn = document.getElementById('mobileBlogBtn');
+  if (mobileBlogBtn) mobileBlogBtn.addEventListener('click', showAStarInfo);
 
- // Mobile A* Blog Button
- const mobileBlogBtn = document.getElementById('mobileBlogBtn');
- if (mobileBlogBtn) {
- mobileBlogBtn.addEventListener('click', function() {
- const blogPanel = document.querySelector('.blog-panel');
- if (blogPanel) {
- console.log(' Mobile blog button clicked');
- console.log('Blog panel classes:', blogPanel.className);
- console.log('Current window width:', window.innerWidth);
- 
- // Remove hidden class if present
- if (blogPanel.classList.contains('hidden')) {
- blogPanel.classList.remove('hidden');
- }
- 
- // Toggle expanded class for mobile view
- blogPanel.classList.toggle('expanded');
- 
- console.log('Blog panel classes after toggle:', blogPanel.className);
- }
- });
- }
-
+  
  console.log(' Event listeners added for all buttons');
  
  // Initialize blog panel mobile functionality
