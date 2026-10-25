@@ -7269,3 +7269,70 @@ body:not(.game-playing) #powerup-notifications {
     transform: none !important;
   }
 }
+
+
+/* Stable hero composition: reserve a dedicated art row above the title.
+   The source PNG has transparent padding/ground line, so size it and position
+   it without negative margins or transforms. */
+#menuButtons .home-hero {
+  gap: 0 !important;
+}
+#menuButtons .home-character-stage {
+  display: flex !important;
+  width: 100% !important;
+  height: clamp(150px, 24vh, 205px) !important;
+  min-height: 0 !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  margin: 0 auto 10px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+#menuButtons .home-hero-art {
+  display: block !important;
+  width: auto !important;
+  height: 100% !important;
+  max-width: min(100%, 360px) !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  filter: none !important;
+}
+#menuButtons .home-title-block {
+  flex: 0 0 auto !important;
+  position: relative !important;
+  z-index: 1 !important;
+  margin: 0 !important;
+}
+#menuButtons .home-title-block .main-title {
+  line-height: 1.08 !important;
+  margin: 0 !important;
+}
+#menuButtons .home-title-block .main-subtitle {
+  margin-top: 12px !important;
+}
+#menuButtons .home-hero {
+  margin-bottom: 12px !important;
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    height: clamp(130px, 21vh, 165px) !important;
+    margin-bottom: 8px !important;
+  }
+  #menuButtons .home-hero-art {
+    max-width: min(100%, 320px) !important;
+  }
+  #menuButtons .home-title-block .main-subtitle {
+    margin-top: 10px !important;
+  }
+}
+@media (max-height: 650px) {
+  #menuButtons .home-character-stage {
+    height: 125px !important;
+    margin-bottom: 6px !important;
+  }
+  #menuButtons .home-hero {
+    margin-bottom: 6px !important;
+  }
+}
