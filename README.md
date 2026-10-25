@@ -9,12 +9,12 @@ MazeScape is a browser-based maze game built with HTML, CSS, and vanilla JavaScr
 - Keyboard and mobile touch controls
 - Power-ups, lives, timers, and in-game scoring
 - Enhanced maze textures
-- Local settings stored in the browser
+- Enhanced maze textures enabled by default
 - Help and A* algorithm explanation
 
 ## No backend required
 
-MazeScape does not require a server, database, user account, or API credentials. Gameplay and scoring run in the browser. Settings are saved locally using `localStorage`; scores are not uploaded to a server or shared between players.
+MazeScape does not require a server, database, user account, or API credentials. Gameplay and scoring run in the browser. The game runs locally in the browser; scores are not uploaded to a server or shared between players.
 
 ## Run locally
 
