@@ -1618,23 +1618,7 @@ class MazeGame {
  const playerX = offsetX + Math.floor(this.playerPosFloat[1] * GRID_SIZE);
  const playerY = offsetY + Math.floor(this.playerPosFloat[0] * GRID_SIZE);
  
- // Player glow with power-up effects
- let playerGlowSize = GRID_SIZE + 10;
- let playerColor = NEON_GREEN;
- 
- // Modify appearance based on active power-ups
- if (POWERUP_SPEED in this.activePowerups) {
- playerGlowSize += 5;
- playerColor = ELECTRIC_BLUE;
- }
- 
- // Player glow
- this.ctx.save();
- this.ctx.globalAlpha = 0.4;
- this.ctx.fillStyle = playerColor;
- this.ctx.fillRect(playerX - 5, playerY - 5, GRID_SIZE + 10, GRID_SIZE + 10);
- this.ctx.restore();
- 
+ // Draw Jerry without the colored glow/background effect.
  // Main player with texture
  this.textureManager.drawTexturedRect(this.ctx, 'player', playerX, playerY, GRID_SIZE, GRID_SIZE, currentTime);
  
