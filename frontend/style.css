@@ -5802,3 +5802,82 @@ body:not(.game-playing) #powerup-notifications {
     font-variant-numeric: tabular-nums !important;
   }
 }
+
+
+/* Celebratory final-score presentation with clear pts + Points labels. */
+.modal.final-score-modal {
+  position: relative;
+  overflow: hidden;
+}
+.modal.final-score-modal .final-score-title {
+  animation: score-title-pop .55s cubic-bezier(.2,.8,.2,1) both;
+}
+.modal.final-score-modal .final-score-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.modal.final-score-modal .final-score-value strong {
+  display: block;
+  animation: score-number-pop .65s cubic-bezier(.2,.8,.2,1) both, score-gold-glow 1.8s ease-in-out .65s infinite alternate;
+}
+.modal.final-score-modal .final-score-value strong small {
+  font-size: .58em;
+  vertical-align: baseline;
+}
+.modal.final-score-modal .score-points-label {
+  display: block;
+  margin-top: 1px;
+  color: rgba(250,247,239,.72);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.modal.final-score-modal .score-celebration {
+  position: absolute;
+  top: 9px;
+  left: 0;
+  right: 0;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  pointer-events: none;
+  color: #d8a93d;
+}
+.modal.final-score-modal .score-celebration span {
+  display: inline-block;
+  opacity: 0;
+  animation: score-sparkle 1.8s ease-in-out infinite;
+}
+.modal.final-score-modal .score-celebration span:nth-child(2) { animation-delay: .25s; font-size: 12px; }
+.modal.final-score-modal .score-celebration span:nth-child(3) { animation-delay: .5s; }
+.modal.final-score-modal .score-celebration span:nth-child(4) { animation-delay: .75s; font-size: 12px; }
+.modal.final-score-modal .score-celebration span:nth-child(5) { animation-delay: 1s; }
+@keyframes score-title-pop {
+  from { opacity: 0; transform: translateY(6px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes score-number-pop {
+  0% { opacity: 0; transform: scale(.65); }
+  70% { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes score-gold-glow {
+  from { text-shadow: 0 0 4px rgba(216,169,61,.15); }
+  to { text-shadow: 0 0 13px rgba(216,169,61,.55); }
+}
+@keyframes score-sparkle {
+  0%, 100% { opacity: 0; transform: translateY(5px) rotate(-15deg) scale(.7); }
+  35%, 65% { opacity: .95; transform: translateY(-2px) rotate(15deg) scale(1.1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .modal.final-score-modal *,
+  .modal.final-score-modal *::before,
+  .modal.final-score-modal *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
