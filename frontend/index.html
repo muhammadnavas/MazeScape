@@ -191,10 +191,6 @@
  <span class="status-value" id="current-score-value">0</span>
  </div>
  <div class="status-item">
- <span class="status-label">Time:</span>
- <span class="status-value" id="current-time-value">0 Sec</span>
- </div>
- <div class="status-item">
  <span class="status-label">Lives:</span>
  <span class="status-value" id="current-lives-value">2</span>
  </div>
@@ -542,7 +538,6 @@
  }
  const statusPanel = document.getElementById('status');
  const currentScoreEl = document.getElementById('current-score-value');
- const currentTimeEl = document.getElementById('current-time-value');
  const currentLivesEl = document.getElementById('current-lives-value');
  
  // Show panel only during gameplay
@@ -555,32 +550,8 @@
  }
  
  if (currentScoreEl) {
- // Calculate real-time increasing score during gameplay starting from 0
- let currentScore = 0;
- if (game && game.startTime) {
- const elapsedSeconds = Math.floor((Date.now() / 1000) - game.startTime);
- 
- // Start from 0 and add points for survival/playing time (increase as playing)
- const survivalPoints = Math.floor(elapsedSeconds * 2); // 2 points per second
- currentScore += survivalPoints;
- 
- // Subtract powerup penalty if any powerups used
- const powerupsUsed = game.powerupsUsed || 0;
- currentScore += (powerupsUsed * -10);
- 
- // Ensure score is never negative
- currentScore = Math.max(0, currentScore);
- }
- currentScoreEl.textContent = currentScore;
- }
- 
- if (currentTimeEl) {
- let timeText = '0 Sec';
- if (game && game.startTime) {
- const elapsedSeconds = Math.floor((Date.now() / 1000) - game.startTime);
- timeText = `${elapsedSeconds} Sec`;
- }
- currentTimeEl.textContent = timeText;
+ // Display the score maintained by the game engine so the HUD and final score agree.
+ currentScoreEl.textContent = game ? (game.score ?? 0) : 0;
  }
  
  if (currentLivesEl) {
