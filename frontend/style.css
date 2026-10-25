@@ -7615,3 +7615,21 @@ body:not(.game-playing) #powerup-notifications {
     padding: 1.25rem !important;
   }
 }
+
+
+/* Slightly larger mobile movement controls; keep the D-pad compact and centered. */
+@media (max-width: 768px) {
+    #mobile-controls .control-pad {
+        gap: 11px;
+    }
+
+    #mobile-controls .control-row {
+        gap: 11px;
+    }
+
+    #mobile-controls .control-btn {
+        width: 58px;
+        height: 58px;
+        font-size: 22px;
+    }
+}
