@@ -240,8 +240,7 @@
 
  // Game initialization and controller
  let game = null;
- let ui = null;
- let gameDB = null;
+
  let userAuth = null; // Accounts are disabled; retained only for legacy compatibility.
  let currentUser = null;
  let gameState = "menu"; // "menu", "playing", "paused"
@@ -974,27 +973,6 @@
  }
  }
  
- // Debug function to test controller creation
- function testController() {
- console.log('=== CONTROLLER DEBUG TEST ===');
- console.log('window.gameController:', window.gameController);
- console.log('typeof window.gameController:', typeof window.gameController);
- 
- if (!window.gameController) {
- console.log('Attempting to create controller manually...');
- try {
- const testController = new MazeChaseController();
- window.gameController = testController;
- console.log(' Manual controller creation successful');
- } catch (error) {
- console.error(' Manual controller creation failed:', error);
- }
- }
- }
- 
- // Make testController available globally
- window.testController = testController;
- 
  // Global function to start the game (called by buttons)
  function startGame() {
  console.log(' Global startGame() called');
@@ -1107,35 +1085,6 @@
  }
  }
 
- function showAStarInfo() {
-   const oldModal = document.getElementById('astarInfoModal');
-   if (oldModal) oldModal.remove();
-   const overlay = document.createElement('div');
-   overlay.className = 'modal-overlay';
-   overlay.id = 'astarInfoModal';
-   overlay.setAttribute('role', 'dialog');
-   overlay.setAttribute('aria-modal', 'true');
-   overlay.setAttribute('aria-labelledby', 'astarInfoTitle');
-   overlay.innerHTML = `
-     <div class="modal astar-info-modal">
-       <h2 id="astarInfoTitle">A STAR PATHFINDING</h2>
-       <div class="astar-info-content">
-         <section><h3>What is A*?</h3><p>A* (pronounced “A-star”) is a pathfinding algorithm that helps the ghost find a route through the maze. It compares the distance already travelled with an estimate of the distance remaining to choose a promising route.</p></section>
-         <section><h3>How it chooses a path</h3><div class="astar-formula">f(n) = g(n) + h(n)</div><ul><li><strong>g(n):</strong> Cost from the start to the current tile.</li><li><strong>h(n):</strong> Estimated distance from the current tile to the target.</li><li><strong>f(n):</strong> Combined score used to compare possible tiles.</li></ul></section>
-         <section><h3>How the search works</h3><ol><li>Start at the ghost’s current position.</li><li>Check reachable neighbouring tiles and estimate their costs.</li><li>Explore the tile with the lowest estimated total cost.</li><li>Repeat until the target is reached or no route is available.</li><li>Trace the selected route to determine the next move.</li></ol></section>
-         <section><h3>Why use A*?</h3><p>With a suitable heuristic, A* can find a shortest path efficiently. MazeScape uses Manhattan distance, which estimates distance along horizontal and vertical grid moves.</p></section>
-       </div>
-       <div class="button-row"><button class="game-button primary" type="button" onclick="closeModal('astarInfoModal')">GOT IT</button></div>
-     </div>`;
-   document.body.appendChild(overlay);
-   if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons({ attrs: { 'stroke-width': 2 } });
- }
- function exitGame() {
- showConfirm('Exit Game', 'Are you sure you want to exit the game?', () => {
- window.close();
- });
- }
- 
  // Function to control mobile controls visibility
  function updateMobileControlsVisibility(gameIsPlaying = false) {
  const mobileControls = document.getElementById('mobile-controls');
@@ -1196,101 +1145,6 @@
  }
  }
  
- // Update username display in menu header
- function updateUserDisplay() {
- const menuHeaderWelcomeText = document.getElementById('menuHeaderWelcomeText');
- const menuHeaderTopScore = document.getElementById('menuHeaderTopScore');
- const menuHeaderScoreInfo = document.getElementById('menuHeaderScoreInfo');
- 
- if (currentUser) {
- console.log(' Updated username display:', currentUser.username);
- 
- // Update menu header welcome text responsively
- if (menuHeaderWelcomeText) {
- updateWelcomeText(currentUser.username);
- }
- 
- // Show score info in menu header for logged in users
- if (menuHeaderScoreInfo) {
- menuHeaderScoreInfo.style.display = 'block';
- }
- 
- // Load and display best score from database
- if (userAuth && menuHeaderTopScore) {
- console.log(' Loading best score for user:', currentUser.username);
- console.log(' UserAuth object exists:', !!userAuth);
- console.log(' UserAuth.getBestScore exists:', !!userAuth.getBestScore);
- 
- // Add a small delay to ensure database connection is ready
- setTimeout(async () => {
- try {
- const bestScore = await userAuth.getBestScore();
- console.log(' Raw best score response:', bestScore);
- if (bestScore && bestScore.score !== undefined) {
- menuHeaderTopScore.textContent = `Best: ${bestScore.score} Pts`;
- console.log(' Best score loaded successfully:', bestScore.score, 'points');
- } else {
- menuHeaderTopScore.textContent = 'Best: -- Pts';
- console.log(' No best score found or invalid data:', bestScore);
- }
- } catch (error) {
- console.error(' Error loading best score:', error);
- if (menuHeaderTopScore) {
- menuHeaderTopScore.textContent = 'Best: -- Pts';
- }
- }
- }, 500);
- }
- } else {
- // Update menu header to Guest Mode
- if (menuHeaderWelcomeText) {
- updateWelcomeText();
- }
- 
- // Hide score info for guest mode
- if (menuHeaderScoreInfo) {
- menuHeaderScoreInfo.style.display = 'none';
- }
- }
- }
- 
- // Modal and Form Functions
- function closeModal(modalId) {
- const modal = document.getElementById(modalId);
- if (modal) {
- modal.remove();
- }
- }
- 
- async function loadUserStats() {
- try {
- if (userAuth && userAuth.database && userAuth.database.connected && currentUser) {
- console.log(' Loading user stats...');
- 
- // Get user scores
- const userScores = await userAuth.getUserScores(50);
- const gamesPlayed = userScores.length;
- 
- // Get best score
- const bestScore = await userAuth.getBestScore();
- const bestScoreValue = bestScore && bestScore.score !== undefined ? `${bestScore.score} Pts`: 'N/A';
- 
- document.getElementById('gamesPlayed').textContent = gamesPlayed;
- document.getElementById('bestScore').textContent = bestScoreValue;
- 
- console.log(` User stats loaded: ${gamesPlayed} games, best score: ${bestScoreValue}`);
- } else {
- document.getElementById('gamesPlayed').textContent = 'N/A';
- document.getElementById('bestScore').textContent = 'N/A';
- }
- } catch (error) {
- console.error(' Error loading user stats:', error);
- document.getElementById('gamesPlayed').textContent = 'Error';
- document.getElementById('bestScore').textContent = 'Error';
- }
- }
- 
- // Custom modal functions to replace browser alerts
  function showAlert(title, message, callback = null) {
  const overlay = document.createElement('div');
  overlay.className = 'modal-overlay';
