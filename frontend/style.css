@@ -7549,3 +7549,30 @@ body:not(.game-playing) #powerup-notifications {
     transform: translate(-50%, -50%) !important;
   }
 }
+
+
+/* Slightly smaller homepage card, positioned a little below viewport center. */
+#menuButtons.menu-buttons {
+  width: min(88vw, 540px) !important;
+  min-width: 0 !important;
+  max-width: 540px !important;
+  padding: 1.65rem !important;
+  top: 54% !important;
+  left: 50% !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 700px) {
+  #menuButtons.menu-buttons {
+    width: min(92vw, 440px) !important;
+    padding: 1.25rem !important;
+    top: 53% !important;
+  }
+}
+@media (max-height: 650px) {
+  #menuButtons.menu-buttons {
+    top: 52% !important;
+    padding: 1rem !important;
+  }
+}
