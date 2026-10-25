@@ -645,6 +645,17 @@
  }
  
  overlay.appendChild(modal);
+
+ // Add Jerry artwork beside the Game Over score card.
+ if (title === 'FINAL SCORE') {
+   const jerryArt = document.createElement('img');
+   jerryArt.className = 'game-over-jerry';
+   jerryArt.src = 'assets/pngegg.png';
+   jerryArt.alt = 'Jerry celebrating beside the final score';
+   jerryArt.decoding = 'async';
+   overlay.appendChild(jerryArt);
+ }
+
  document.body.appendChild(overlay);
  
  const removeModal = () => {
