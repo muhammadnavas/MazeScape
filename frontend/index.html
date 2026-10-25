@@ -505,6 +505,34 @@
  }
  
  updateStatus() {
+ // Align HUD and power-up notifications to the actual rendered canvas bounds.
+ // This avoids conflicting legacy CSS offsets and works across mobile viewport sizes.
+ const canvas = document.getElementById('gameCanvas');
+ const hud = document.getElementById('status');
+ const notifications = document.getElementById('powerup-notifications');
+ if (canvas) {
+   const rect = canvas.getBoundingClientRect();
+   if (rect.width > 0 && rect.height > 0) {
+     if (hud) {
+       hud.style.position = 'fixed';
+       hud.style.top = `${Math.round(rect.top)}px`;
+       hud.style.left = `${Math.round(rect.left)}px`;
+       hud.style.right = 'auto';
+       hud.style.bottom = 'auto';
+       hud.style.transform = 'none';
+       hud.style.margin = '0';
+     }
+     if (notifications) {
+       notifications.style.position = 'fixed';
+       notifications.style.top = `${Math.round(rect.top)}px`;
+       notifications.style.left = 'auto';
+       notifications.style.right = `${Math.max(0, Math.round(window.innerWidth - rect.right))}px`;
+       notifications.style.bottom = 'auto';
+       notifications.style.transform = 'none';
+       notifications.style.margin = '0';
+     }
+   }
+ }
  const statusPanel = document.getElementById('status');
  const currentScoreEl = document.getElementById('current-score-value');
  const currentTimeEl = document.getElementById('current-time-value');
