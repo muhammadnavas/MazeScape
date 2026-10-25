@@ -7336,3 +7336,30 @@ body:not(.game-playing) #powerup-notifications {
     margin-bottom: 6px !important;
   }
 }
+
+
+/* Crop transparent/white padding around the uploaded character PNG at display
+   time, so the visible characters sit above the title without extra blank area. */
+#menuButtons .home-character-stage {
+  height: clamp(130px, 21vh, 180px) !important;
+  margin-bottom: 2px !important;
+  overflow: hidden !important;
+}
+#menuButtons .home-hero-art {
+  width: auto !important;
+  height: 135% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: translateY(2px) !important;
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    height: clamp(115px, 19vh, 150px) !important;
+    margin-bottom: 2px !important;
+  }
+  #menuButtons .home-hero-art {
+    height: 130% !important;
+  }
+}
