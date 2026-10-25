@@ -1024,7 +1024,7 @@
  if (game && typeof game.movePlayer === 'function' && gameState === "playing") {
  game.movePlayer(0, 0);
  }
- document.querySelectorAll('#mobile-controls.control-btn.active')
+ document.querySelectorAll('#mobile-controls .control-btn.active')
 .forEach(button => button.classList.remove('active'));
  }
 
@@ -1366,44 +1366,51 @@
  };
 
  Object.entries(mobileControlButtons).forEach(([buttonId, direction]) => {
- const button = document.getElementById(buttonId);
- if (!button) return;
+   const button = document.getElementById(buttonId);
+   if (!button) return;
 
- button.setAttribute('aria-label', `Move ${direction}`);
- button.setAttribute('type', 'button');
+   let pressed = false;
+   let activePointerId = null;
+   button.setAttribute('aria-label', 'Move ' + direction);
+   button.setAttribute('type', 'button');
+   button.setAttribute('draggable', 'false');
+   button.style.touchAction = 'none';
 
- const release = (event) => {
- if (event) {
- event.preventDefault();
- event.stopPropagation();
- }
- button.classList.remove('active');
- try {
- if (button.hasPointerCapture && event && event.pointerId !== undefined &&
- button.hasPointerCapture(event.pointerId)) {
- button.releasePointerCapture(event.pointerId);
- }
- } catch (_) {}
- handleMobileStop();
- };
+   const release = (event) => {
+     if (!pressed) return;
+     if (event) {
+       event.preventDefault();
+       event.stopPropagation();
+     }
+     pressed = false;
+     activePointerId = null;
+     button.classList.remove('active');
+     handleMobileStop();
+   };
 
- button.addEventListener('pointerdown', (event) => {
- if (event.pointerType === 'mouse' && event.button !== 0) return;
- event.preventDefault();
- event.stopPropagation();
- button.classList.add('active');
- try { button.setPointerCapture(event.pointerId); } catch (_) {}
- handleMobileMove(direction);
- });
+   button.addEventListener('pointerdown', (event) => {
+     if (event.pointerType === 'mouse' && event.button !== 0) return;
+     if (pressed) return;
+     event.preventDefault();
+     event.stopPropagation();
+     pressed = true;
+     activePointerId = event.pointerId;
+     button.classList.add('active');
+     try { button.setPointerCapture(event.pointerId); } catch (_) {}
+     handleMobileMove(direction);
+   });
 
- button.addEventListener('pointerup', release);
- button.addEventListener('pointercancel', release);
- button.addEventListener('lostpointercapture', () => {
- button.classList.remove('active');
- handleMobileStop();
- });
- button.addEventListener('contextmenu', event => event.preventDefault());
- button.addEventListener('dragstart', event => event.preventDefault());
+   button.addEventListener('pointerup', (event) => {
+     if (activePointerId !== null && event.pointerId !== activePointerId) return;
+     release(event);
+   });
+   button.addEventListener('pointercancel', release);
+   button.addEventListener('lostpointercapture', (event) => {
+     if (activePointerId !== null && event.pointerId !== activePointerId) return;
+     release();
+   });
+   button.addEventListener('contextmenu', event => event.preventDefault());
+   button.addEventListener('dragstart', event => event.preventDefault());
  });
 
  // Releasing outside the button or switching tabs must never leave movement stuck.
