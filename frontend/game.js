@@ -371,57 +371,77 @@ class TextureManager {
  canvas.width = GRID_SIZE;
  canvas.height = GRID_SIZE;
  const ctx = canvas.getContext('2d');
- 
- // Golden target with shine effect
- const centerX = GRID_SIZE / 2;
- const centerY = GRID_SIZE / 2;
- 
- // Outer glow
- const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, GRID_SIZE * 0.6);
- glowGradient.addColorStop(0, YELLOW);
- glowGradient.addColorStop(0.7, YELLOW + '80');
- glowGradient.addColorStop(1, 'transparent');
- 
- ctx.fillStyle = glowGradient;
- ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE);
- 
- // Main target body
- const bodyGradient = ctx.createLinearGradient(0, 0, GRID_SIZE, GRID_SIZE);
- bodyGradient.addColorStop(0, '#FFFF99');
- bodyGradient.addColorStop(0.5, YELLOW);
- bodyGradient.addColorStop(1, '#CCAA00');
- 
- ctx.fillStyle = bodyGradient;
- ctx.fillRect(GRID_SIZE * 0.05, GRID_SIZE * 0.05, GRID_SIZE * 0.9, GRID_SIZE * 0.9);
- 
- // Target rings
- ctx.strokeStyle = '#FAF7EF';
- ctx.lineWidth = 2;
- for (let i = 1; i <= 3; i++) {
+ const s = GRID_SIZE;
+
+ // Cheese wedge goal icon: clear silhouette that reads well at maze-tile size.
+ ctx.save();
+ ctx.translate(s * 0.08, s * 0.13);
+ ctx.rotate(-0.08);
+
+ // Soft golden tile behind the cheese keeps the goal easy to spot.
+ ctx.fillStyle = 'rgba(216, 169, 61, 0.20)';
  ctx.beginPath();
- ctx.arc(centerX, centerY, (GRID_SIZE * 0.4 * i) / 3, 0, 2 * Math.PI);
- ctx.stroke();
+ ctx.roundRect(-s * 0.04, -s * 0.08, s * 0.92, s * 0.86, s * 0.12);
+ ctx.fill();
+
+ // Wedge side.
+ ctx.fillStyle = '#C88720';
+ ctx.beginPath();
+ ctx.moveTo(s * 0.08, s * 0.32);
+ ctx.lineTo(s * 0.78, s * 0.18);
+ ctx.lineTo(s * 0.78, s * 0.67);
+ ctx.lineTo(s * 0.08, s * 0.78);
+ ctx.closePath();
+ ctx.fill();
+
+ // Main cheese face.
+ ctx.fillStyle = '#FFD84D';
+ ctx.beginPath();
+ ctx.moveTo(s * 0.08, s * 0.32);
+ ctx.lineTo(s * 0.58, s * 0.08);
+ ctx.lineTo(s * 0.92, s * 0.30);
+ ctx.lineTo(s * 0.78, s * 0.48);
+ ctx.lineTo(s * 0.08, s * 0.58);
+ ctx.closePath();
+ ctx.fill();
+
+ // Cheese holes with warm shading.
+ const holes = [
+   [0.34, 0.29, 0.055],
+   [0.61, 0.28, 0.075],
+   [0.47, 0.43, 0.045],
+   [0.69, 0.53, 0.05],
+   [0.24, 0.48, 0.035]
+ ];
+ for (const [x, y, r] of holes) {
+   ctx.fillStyle = '#B87518';
+   ctx.beginPath();
+   ctx.ellipse(s * x, s * y, s * r, s * r * 0.78, 0, 0, Math.PI * 2);
+   ctx.fill();
+   ctx.fillStyle = 'rgba(255, 246, 166, 0.75)';
+   ctx.beginPath();
+   ctx.ellipse(s * (x - 0.012), s * (y - 0.012), s * r * 0.45, s * r * 0.32, 0, 0, Math.PI * 2);
+   ctx.fill();
  }
- 
- // Center dot
- ctx.fillStyle = '#FAF7EF';
+
+ // Subtle edge gives the icon contrast against the dark maze floor.
+ ctx.strokeStyle = '#FFF0A3';
+ ctx.lineWidth = 1.4;
+ ctx.lineJoin = 'round';
  ctx.beginPath();
- ctx.arc(centerX, centerY, GRID_SIZE * 0.08, 0, 2 * Math.PI);
- ctx.fill();
- 
- // Shine effect
- const shineGradient = ctx.createLinearGradient(0, 0, GRID_SIZE * 0.3, GRID_SIZE * 0.3);
- shineGradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
- shineGradient.addColorStop(1, 'transparent');
- 
- ctx.fillStyle = shineGradient;
- ctx.beginPath();
- ctx.arc(centerX - GRID_SIZE * 0.15, centerY - GRID_SIZE * 0.15, GRID_SIZE * 0.2, 0, 2 * Math.PI);
- ctx.fill();
- 
+ ctx.moveTo(s * 0.08, s * 0.32);
+ ctx.lineTo(s * 0.58, s * 0.08);
+ ctx.lineTo(s * 0.92, s * 0.30);
+ ctx.lineTo(s * 0.78, s * 0.48);
+ ctx.lineTo(s * 0.78, s * 0.67);
+ ctx.lineTo(s * 0.08, s * 0.78);
+ ctx.closePath();
+ ctx.stroke();
+
+ ctx.restore();
  this.textures.target = canvas;
  }
- 
+
  createPowerupTextures() {
  // Speed Powerup
  this.textures.powerup_speed = this.createPowerupTexture(ELECTRIC_BLUE, '↯');
