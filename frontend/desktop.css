@@ -354,3 +354,63 @@
     align-items: center !important;
   }
 }
+
+
+/* Pixel-align desktop score and power-up message to the same baseline. */
+@media screen and (min-width: 769px) {
+  body.game-playing #status {
+    top: 30px !important;
+    left: 70px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    line-height: 20px !important;
+  }
+
+  body.game-playing #status .status-content {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 20px !important;
+  }
+
+  body.game-playing #status .status-item,
+  body.game-playing #status .status-label,
+  body.game-playing #status .status-value {
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    font-weight: 500 !important;
+    vertical-align: baseline !important;
+  }
+
+  body.game-playing #powerup-notifications {
+    top: 30px !important;
+    right: 70px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 20px !important;
+  }
+
+  body.game-playing #powerup-notifications .powerup-notification {
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    font-weight: 500 !important;
+  }
+
+  body.game-playing #powerup-notifications .powerup-notification * {
+    font-size: 14px !important;
+    line-height: 20px !important;
+    vertical-align: baseline !important;
+  }
+}
