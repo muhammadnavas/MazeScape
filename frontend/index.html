@@ -1087,86 +1087,93 @@
  const overlay = document.createElement('div');
  overlay.className = 'modal-overlay';
  overlay.id = 'helpModal';
- 
+
  overlay.innerHTML = `
- <div class="modal" style="max-width: 600px;">
- <h2>HOW TO PLAY - MAZESCAPE</h2>
- <div style="text-align: left; margin: 20px 0; max-height: 400px; overflow-y: auto;">
- <h4 style="color: #00BFFF; margin-top: 0px; margin-bottom: 15px;"><i data-lucide="target" class="ui-icon" aria-hidden="true"></i> Objective</h4>
- <p style="margin-bottom: 20px;">Navigate through the randomly generated maze to reach the <strong style="color: #FFD700;">yellow exit square</strong> while avoiding the red ghost.</p>
- 
- <h4 style="color: #39FF14; margin-top: 20px; margin-bottom: 15px;"><i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> Controls</h4>
- <p style="margin-bottom: 20px;">
- <strong>Movement:</strong> Use <span style="color: #00BFFF;">WASD</span> or <span style="color: #00BFFF;">Arrow keys</span><br>
- <strong>Start Game:</strong> Spacebar (from menu)<br>
- <strong>Fullscreen:</strong> F11 key
- </p>
- 
- <h4 style="color: #FF6B6B; margin-top: 20px; margin-bottom: 15px;"><i data-lucide="ghost" class="ui-icon" aria-hidden="true"></i> Enemy</h4>
- <p style="margin-bottom: 20px;">
- <strong style="color: #FF6B6B;">Red Ghost</strong> - uses smart A* pathfinding to chase you!<br>
- • The ghost will find the optimal path to reach you<br>
- • If touched by the ghost, you lose a life and respawn at start<br>
- • You start with 2 lives total
- </p>
- 
- <h4 style="color: #FFD700; margin-top: 20px; margin-bottom: 15px;"><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> Power-ups</h4>
- <p style="margin-bottom: 20px;">
- Power-ups spawn randomly and last 15 seconds on the ground:<br>
- • <span style="color: #00BFFF;"><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> Speed Boost:</span> Doubles your movement speed for 3 seconds<br>
- • <span style="color: #64C8FF;"><i data-lucide="snowflake" class="ui-icon" aria-hidden="true"></i> Freeze:</span> Stops the ghost for 3 seconds<br>
- • <span style="color: #FFA500;"><i data-lucide="hammer" class="ui-icon" aria-hidden="true"></i> Wall Breaker:</span> Break through walls for 3 seconds
- </p>
- 
- <h4 style="color: #9D4EDD; margin-top: 20px; margin-bottom: 15px;"> Scoring System</h4>
- <p style="margin-bottom: 20px;">
- <strong style="color: #00BFFF;"> WIN SCORING:</strong><br>
- • <span style="color: #FFD700;">Win Bonus:</span> +100 points for completing the maze<br>
- • <span style="color: #39FF14;">Time Bonus:</span><br>
- &nbsp;&nbsp;- 10-15 seconds = +100 points<br>
- &nbsp;&nbsp;- 15-25 seconds = +50 points<br>
- &nbsp;&nbsp;- Above 25 seconds = +5 points<br>
- • <span style="color: #00BFFF;">Playing Bonus:</span> +2 points per second played<br>
- • <span style="color: #FF6B6B;">Powerup Penalty:</span> -10 points per powerup used<br>
- • <span style="color: #39FF14;">Full Lives Bonus:</span> +20 points (if 2 lives remaining)<br><br>
- 
- <strong style="color: #FF6B6B;"> LOSE SCORING:</strong><br>
- • <span style="color: #FF6B6B;">Lose Penalty:</span> -50 points<br>
- • <span style="color: #00BFFF;">Playing Bonus:</span> +1 point per second survived<br>
- • <span style="color: #FF6B6B;">Powerup Penalty:</span> -10 points per powerup used<br>
- • <span style="color: #888;">Note:</span> Score will show 0 if negative<br><br>
- 
- <strong style="color: #FFD700;"> Strategy:</strong> Score increases as you play! Complete fast for maximum bonus!
- </p>
- 
- <h4 style="color: #FF8C00; margin-top: 20px; margin-bottom: 15px;"> Strategy Tips</h4>
- <p>
- • The maze is randomly generated each game<br>
- • Plan your route carefully - the ghost is intelligent<br>
- • Use power-ups strategically when cornered<br>
- • Wall Breaker can create new escape routes<br>
- • Speed Boost is great for outrunning the ghost<br>
- • Freeze gives you time to reposition safely
- </p>
- 
- <h4 style="color: #39FF14; margin-top: 20px; margin-bottom: 15px;"> Game Features</h4>
- <p>
- • Responsive design - works on any screen size<br>
- • Particle effects for visual feedback<br>
- • Real-time pathfinding AI for the ghost<br>
- • Automatic maze generation with guaranteed solution<br>
- • Progressive difficulty as you play
- </p>
- </div>
- <div class="button-row">
- <button class="game-button primary" onclick="closeModal('helpModal')"> Let's Play!</button>
- </div>
+ <div class="modal help-modal">
+   <h2>HOW TO PLAY - MAZESCAPE</h2>
+   <div class="help-content">
+     <section class="help-section">
+       <h3><i data-lucide="target" class="ui-icon" aria-hidden="true"></i> Objective</h3>
+       <p>Navigate through the randomly generated maze to reach the <strong class="help-gold">yellow exit square</strong> while avoiding the red ghost.</p>
+     </section>
+     <section class="help-section">
+       <h3><i data-lucide="gamepad-2" class="ui-icon" aria-hidden="true"></i> Controls</h3>
+       <ul>
+         <li><strong>Movement:</strong> Use <span class="help-blue">WASD</span> or <span class="help-blue">Arrow keys</span></li>
+         <li><strong>Start Game:</strong> Spacebar (from menu)</li>
+         <li><strong>Fullscreen:</strong> F11 key</li>
+       </ul>
+     </section>
+     <section class="help-section">
+       <h3><i data-lucide="ghost" class="ui-icon" aria-hidden="true"></i> Enemy</h3>
+       <p><strong class="help-red">Red Ghost</strong> uses smart A* pathfinding to chase you.</p>
+       <ul>
+         <li>The ghost finds the optimal path to reach you.</li>
+         <li>If touched, you lose a life and respawn at the start.</li>
+         <li>You start with 2 lives total.</li>
+       </ul>
+     </section>
+     <section class="help-section">
+       <h3><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> Power-ups</h3>
+       <p>Power-ups spawn randomly and last 15 seconds on the ground.</p>
+       <ul>
+         <li><span class="help-blue"><i data-lucide="zap" class="ui-icon" aria-hidden="true"></i> Speed Boost:</span> Doubles movement speed for 3 seconds.</li>
+         <li><span class="help-ice"><i data-lucide="snowflake" class="ui-icon" aria-hidden="true"></i> Freeze:</span> Stops the ghost for 3 seconds.</li>
+         <li><span class="help-orange"><i data-lucide="hammer" class="ui-icon" aria-hidden="true"></i> Wall Breaker:</span> Breaks through walls for 3 seconds.</li>
+       </ul>
+     </section>
+     <section class="help-section">
+       <h3><i data-lucide="trophy" class="ui-icon" aria-hidden="true"></i> Scoring System</h3>
+       <p><strong class="help-blue">Win scoring</strong></p>
+       <ul>
+         <li><span class="help-gold">Win bonus:</span> +100 points for completing the maze.</li>
+         <li><span class="help-green">Time bonus:</span> 10–15 seconds: +100; 15–25 seconds: +50; above 25 seconds: +5 points.</li>
+         <li><span class="help-blue">Playing bonus:</span> +2 points per second played.</li>
+         <li><span class="help-red">Power-up penalty:</span> −10 points per power-up used.</li>
+         <li><span class="help-green">Full lives bonus:</span> +20 points if both lives remain.</li>
+       </ul>
+       <p><strong class="help-red">Lose scoring</strong></p>
+       <ul>
+         <li>Lose penalty: −50 points.</li>
+         <li>Playing bonus: +1 point per second survived.</li>
+         <li>Power-up penalty: −10 points per power-up used.</li>
+         <li>Negative scores display as 0.</li>
+       </ul>
+       <p><strong class="help-gold">Strategy:</strong> Complete the maze quickly for the highest score.</p>
+     </section>
+     <section class="help-section">
+       <h3><i data-lucide="lightbulb" class="ui-icon" aria-hidden="true"></i> Strategy Tips</h3>
+       <ul>
+         <li>The maze is randomly generated each game.</li>
+         <li>Plan your route carefully—the ghost is intelligent.</li>
+         <li>Use power-ups strategically when cornered.</li>
+         <li>Wall Breaker can create new escape routes.</li>
+         <li>Speed Boost helps you outrun the ghost.</li>
+         <li>Freeze gives you time to reposition safely.</li>
+       </ul>
+     </section>
+     <section class="help-section">
+       <h3><i data-lucide="sparkles" class="ui-icon" aria-hidden="true"></i> Game Features</h3>
+       <ul>
+         <li>Responsive design for different screen sizes.</li>
+         <li>Particle effects for visual feedback.</li>
+         <li>Real-time pathfinding AI for the ghost.</li>
+         <li>Automatic maze generation with a guaranteed solution.</li>
+         <li>Progressive difficulty as you play.</li>
+       </ul>
+     </section>
+   </div>
+   <div class="button-row">
+     <button class="game-button primary" onclick="closeModal('helpModal')">Let's Play!</button>
+   </div>
  </div>
  `;
- 
+
  document.body.appendChild(overlay);
+ if (window.lucide && typeof window.lucide.createIcons === 'function') {
+   window.lucide.createIcons({ attrs: { 'stroke-width': 2 } });
  }
- 
+ }
  function showSettings() {
  const overlay = document.createElement('div');
  overlay.className = 'modal-overlay';
