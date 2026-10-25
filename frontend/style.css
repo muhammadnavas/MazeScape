@@ -6044,3 +6044,106 @@ body:not(.game-playing) #powerup-notifications {
     font-size: 14px !important;
   }
 }
+
+
+/*
+ * Single final mobile HUD layout override.
+ * Reserve a dedicated row above the canvas and prevent HUD/notifications
+ * from sharing the same horizontal space or being positioned over maze tiles.
+ */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #gameContainer {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    padding: calc(30px + env(safe-area-inset-top, 0px)) 4px calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+    overflow: hidden !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud,
+  body.game-playing #gameContainer #powerup-notifications {
+    position: absolute !important;
+    top: env(safe-area-inset-top, 0px) !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    z-index: 1200 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud {
+    left: 0 !important;
+    right: auto !important;
+    width: 49% !important;
+    text-align: left !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud .status-content {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud .status-item {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: baseline !important;
+    gap: 3px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    font-size: 13px !important;
+    line-height: 20px !important;
+  }
+
+  body.game-playing #gameContainer #status.game-hud .status-item:has(#current-time-value) {
+    display: none !important;
+  }
+
+  body.game-playing #gameContainer #powerup-notifications {
+    left: 51% !important;
+    right: 0 !important;
+    width: 49% !important;
+    text-align: right !important;
+  }
+
+  body.game-playing #gameContainer #powerup-notifications .powerup-notification {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 5px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    text-align: right !important;
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  body.game-playing #gameContainer #gameCanvas {
+    position: relative !important;
+    flex: 0 1 auto !important;
+    margin-top: 0 !important;
+  }
+}
