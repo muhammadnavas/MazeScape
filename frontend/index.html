@@ -54,9 +54,22 @@
  <!-- Menu Buttons Container -->
  <div class="menu-buttons" id="menuButtons">
  <!-- Game Title -->
- <div style="text-align: center; margin-bottom: 40px;">
+ <div class="home-hero">
+ <div class="home-character-stage" aria-label="Tom and Jerry">
+   <div class="home-character home-character-tom">
+     <canvas id="homeTomSprite" width="160" height="160" role="img" aria-label="Tom the cat"></canvas>
+     <span>TOM</span>
+   </div>
+   <div class="home-chase-mark" aria-hidden="true">✦</div>
+   <div class="home-character home-character-jerry">
+     <canvas id="homeJerrySprite" width="120" height="120" role="img" aria-label="Jerry the mouse"></canvas>
+     <span>JERRY</span>
+   </div>
+ </div>
+ <div class="home-title-block">
  <h1 class="main-title">MAZESCAPE</h1>
  <p class="main-subtitle">Navigate • Survive • Escape</p>
+ </div>
  </div>
  
  <div class="button-row">
@@ -212,6 +225,29 @@
  <!-- Load dependencies -->
  <script src="astar.js"></script>
  <script src="game.js"></script>
+ <script>
+ // Reuse the exact Tom and Jerry sprites from gameplay on the home screen.
+ document.addEventListener('DOMContentLoaded', function () {
+   try {
+     if (typeof TextureManager !== 'function') return;
+     const sprites = new TextureManager();
+     const tomCanvas = document.getElementById('homeTomSprite');
+     const jerryCanvas = document.getElementById('homeJerrySprite');
+     if (tomCanvas && sprites.textures.ghost) {
+       const ctx = tomCanvas.getContext('2d');
+       ctx.clearRect(0, 0, tomCanvas.width, tomCanvas.height);
+       ctx.drawImage(sprites.textures.ghost, 0, 0, tomCanvas.width, tomCanvas.height);
+     }
+     if (jerryCanvas && sprites.textures.player) {
+       const ctx = jerryCanvas.getContext('2d');
+       ctx.clearRect(0, 0, jerryCanvas.width, jerryCanvas.height);
+       ctx.drawImage(sprites.textures.player, 0, 0, jerryCanvas.width, jerryCanvas.height);
+     }
+   } catch (error) {
+     console.warn('Homepage character art could not be initialized:', error);
+   }
+ });
+ </script>
  
  <script>
  // Render consistent outline icons for static UI labels.
