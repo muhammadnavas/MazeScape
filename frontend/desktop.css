@@ -188,3 +188,14 @@
     transform: none !important;
   }
 }
+
+
+/* Align the desktop playfield to the center of the visible page area.
+   The score HUD sits above the frame, so offset the container down slightly
+   to visually center the maze in the browser viewport. Mobile is not affected. */
+@media screen and (min-width: 769px) {
+  body.game-playing #gameContainer {
+    top: 40px !important;
+    transform: translateX(-50%) !important;
+  }
+}
