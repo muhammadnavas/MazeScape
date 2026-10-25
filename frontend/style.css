@@ -6614,8 +6614,8 @@ body:not(.game-playing) #powerup-notifications {
 }
 
 
-/* Last-resort responsive canvas rule: neutralize earlier !important sizing
-   declarations and preserve the 20x30 maze aspect ratio on mobile. */
+/* Final canvas fit: size the maze to the visible mobile viewport while reserving
+   space for the on-screen direction pad. Keep all other game UI unchanged. */
 @media screen and (max-width: 700px) and (orientation: portrait) {
   body.game-playing #gameContainer #gameCanvas {
     display: block !important;
@@ -6623,7 +6623,7 @@ body:not(.game-playing) #powerup-notifications {
     height: auto !important;
     aspect-ratio: 2 / 3 !important;
     max-width: calc(100vw - 8px) !important;
-    max-height: calc(100dvh - 280px - env(safe-area-inset-bottom, 0px)) !important;
+    max-height: max(240px, calc(100dvh - 340px - env(safe-area-inset-bottom, 0px))) !important;
     min-width: 0 !important;
     min-height: 0 !important;
     flex: 0 1 auto !important;
@@ -6636,7 +6636,7 @@ body:not(.game-playing) #powerup-notifications {
     flex: 0 0 auto !important;
     position: relative !important;
     inset: auto !important;
-    margin: 12px auto 8px !important;
+    margin: 8px auto 4px !important;
     width: 100% !important;
     transform: none !important;
   }
