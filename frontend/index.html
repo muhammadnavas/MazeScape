@@ -1184,14 +1184,6 @@
   <input type="checkbox" id="texturesEnabled" checked>
   <span class="settings-switch" aria-hidden="true"></span>
  </label>
- <label class="settings-option" for="onScreenControls">
-  <span class="settings-option-copy">
-   <span class="settings-option-title">On-Screen Controls</span>
-   <span class="settings-option-description">Show touch controls while playing on mobile.</span>
-  </span>
-  <input type="checkbox" id="onScreenControls">
-  <span class="settings-switch" aria-hidden="true"></span>
- </label>
 </div>
  <div class="button-row">
  <button class="game-button primary" onclick="saveSettings()">Save</button>
@@ -1216,9 +1208,9 @@
  if (!mobileControls) return;
  
  if (gameIsPlaying && (gameState === "playing" || gameState === "paused")) {
- const isMobile = window.innerWidth <= 768;
- const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
- const shouldShow = isMobile || onScreenControls;
+ const isMobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+ // Touch controls are automatic on mobile; laptops use the keyboard by default.
+ const shouldShow = isMobile;
  
  if (shouldShow) {
  mobileControls.style.display = 'block';
@@ -1338,12 +1330,9 @@
  
  function loadSettings() {
  const textures = localStorage.getItem('texturesEnabled') !== 'false';
- const onScreenControls = localStorage.getItem('onScreenControls') === 'true';
- 
  if (document.getElementById('texturesEnabled')) {
  document.getElementById('texturesEnabled').checked = textures;
  }
- document.getElementById('onScreenControls').checked = onScreenControls;
  
  // Note: Mobile controls visibility is now managed by updatePanelVisibility() based on game state
  // Settings only control whether they should be shown during gameplay
@@ -1351,10 +1340,8 @@
  
  function saveSettings() {
  const textures = document.getElementById('texturesEnabled') ? document.getElementById('texturesEnabled').checked: true;
- const onScreenControls = document.getElementById('onScreenControls').checked;
- 
  localStorage.setItem('texturesEnabled', textures);
- localStorage.setItem('onScreenControls', onScreenControls);
+ localStorage.removeItem('onScreenControls');
  
  // Apply texture setting to current game if running
  if (game && game.textureManager) {
