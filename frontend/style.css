@@ -6638,30 +6638,30 @@ body:not(.game-playing) #powerup-notifications {
 /* Slightly enlarge the mobile directional pad without changing its placement. */
 @media screen and (max-width: 700px) and (orientation: portrait) {
   body.game-playing #mobile-controls .control-pad {
-    grid-template-columns: repeat(3, 46px) !important;
-    grid-template-rows: repeat(3, 46px) !important;
+    grid-template-columns: repeat(3, 48px) !important;
+    grid-template-rows: repeat(3, 48px) !important;
     gap: 5px !important;
   }
   body.game-playing #mobile-controls .control-btn,
   body.game-playing #mobile-controls .control-pad .control-btn {
-    width: 46px !important;
-    height: 46px !important;
-    min-width: 46px !important;
-    min-height: 46px !important;
-    font-size: 22px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    font-size: 23px !important;
   }
   body.game-playing #mobile-controls #btn-up::after,
   body.game-playing #mobile-controls #btn-down::after {
-    border-left-width: 9px !important;
-    border-right-width: 9px !important;
-    border-top-width: 14px !important;
-    border-bottom-width: 14px !important;
+    border-left-width: 10px !important;
+    border-right-width: 10px !important;
+    border-top-width: 15px !important;
+    border-bottom-width: 15px !important;
   }
   body.game-playing #mobile-controls #btn-left::after,
   body.game-playing #mobile-controls #btn-right::after {
-    border-top-width: 9px !important;
-    border-bottom-width: 9px !important;
-    border-left-width: 14px !important;
-    border-right-width: 14px !important;
+    border-top-width: 10px !important;
+    border-bottom-width: 10px !important;
+    border-left-width: 15px !important;
+    border-right-width: 15px !important;
   }
 }
