@@ -6667,13 +6667,3 @@ body:not(.game-playing) #powerup-notifications {
 }
 
 
-/* Use clean triangular controller icons only; remove the extra directional arrow marks. */
-@media screen and (max-width: 700px) and (orientation: portrait) {
-  body.game-playing #mobile-controls .control-btn::before,
-  body.game-playing #mobile-controls .control-btn::after {
-    content: none !important;
-    display: none !important;
-    background: none !important;
-    box-shadow: none !important;
-  }
-}
