@@ -7488,3 +7488,40 @@ body:not(.game-playing) #powerup-notifications {
     transform: translateY(26px) !important;
   }
 }
+
+
+/* Fix the actual clipping: position the artwork independently of the fixed
+   stage so moving it down does not cut off the tops of Tom and Jerry. */
+#menuButtons .home-character-stage {
+  position: relative !important;
+  display: block !important;
+  height: 190px !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  margin: 0 auto -12px !important;
+}
+#menuButtons .home-character-stage .home-hero-art {
+  position: absolute !important;
+  top: 24px !important;
+  left: 50% !important;
+  display: block !important;
+  height: 190px !important;
+  width: auto !important;
+  max-width: min(100%, 360px) !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: translateX(-50%) !important;
+  z-index: 2 !important;
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    height: 155px !important;
+    margin-bottom: -10px !important;
+  }
+  #menuButtons .home-character-stage .home-hero-art {
+    top: 18px !important;
+    height: 155px !important;
+    max-width: min(100%, 320px) !important;
+  }
+}
