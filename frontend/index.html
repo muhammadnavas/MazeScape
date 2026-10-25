@@ -316,26 +316,26 @@
  }
 
  setupCanvas() {
- // Fixed maze dimensions for consistent gameplay
- const FIXED_MAZE_WIDTH = 20; // Portrait maze: 20 columns
- const FIXED_MAZE_HEIGHT = 30; // Portrait maze: 30 rows
- const GRID_SIZE = 40; // Same as game.js
- 
- // Calculate ideal canvas size based on fixed maze dimensions
+ // Match the game grid dimensions: landscape on desktop, portrait on phones.
+ // This must agree with MazeGame's GRID_WIDTH/GRID_HEIGHT or the inline canvas
+ // sizing will force a portrait display even when the game uses a landscape grid.
+ const isMobile = window.matchMedia('(max-width: 768px)').matches;
+ const FIXED_MAZE_WIDTH = isMobile ? 20 : 30;
+ const FIXED_MAZE_HEIGHT = isMobile ? 30 : 20;
+ const GRID_SIZE = 40;
  const idealCanvasWidth = FIXED_MAZE_WIDTH * GRID_SIZE;
  const idealCanvasHeight = FIXED_MAZE_HEIGHT * GRID_SIZE;
- 
- // Get available space
- const isMobile = window.matchMedia('(max-width: 700px)').matches;
+
+ // Use the actual available viewport, keeping room for the HUD and controls.
  const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
- const availableWidth = Math.max(240, document.documentElement.clientWidth - (isMobile ? 4 : 24));
- // Reserve room for HUD, direction pad, and safe areas so the canvas never sits underneath controls.
- const availableHeight = Math.max(360, viewportHeight - (isMobile ? 150 : 150));
- 
- // Calculate scale to fit while maintaining aspect ratio
+ const availableWidth = Math.max(240, document.documentElement.clientWidth - (isMobile ? 4 : 48));
+ const availableHeight = Math.max(360, viewportHeight - 150);
+
+ // Scale proportionally. Desktop is allowed to use a much wider canvas; mobile
+ // remains portrait and is capped to avoid clipping behind on-screen controls.
  const scaleX = availableWidth / idealCanvasWidth;
  const scaleY = availableHeight / idealCanvasHeight;
- const scale = Math.min(scaleX, scaleY, isMobile ? 2 : 1.5); // Maximize mobile canvas without cropping
+ const scale = Math.min(scaleX, scaleY, isMobile ? 2 : 1.5);
  
  // Set canvas size to maintain exact maze grid
  this.canvas.width = idealCanvasWidth;
