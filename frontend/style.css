@@ -6978,3 +6978,130 @@ body:not(.game-playing) #powerup-notifications {
     border-width: 7px 0 7px 10px !important;
   }
 }
+
+
+/* Homepage Tom & Jerry hero art — decorative only; never intercepts menu input. */
+#menuButtons .home-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  margin: 0 0 10px !important;
+}
+#menuButtons .home-character-stage {
+  width: min(100%, 340px);
+  min-height: 154px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(8px, 3vw, 22px);
+  position: relative;
+  isolation: isolate;
+  margin: 0 auto 4px;
+}
+#menuButtons .home-character {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 8px 10px rgba(0,0,0,.22));
+}
+#menuButtons .home-character canvas {
+  display: block;
+  object-fit: contain;
+  overflow: visible;
+  image-rendering: auto;
+}
+#menuButtons .home-character-tom canvas {
+  width: clamp(96px, 14vw, 142px);
+  height: clamp(96px, 14vw, 142px);
+  animation: homeTomBob 3.2s ease-in-out infinite;
+}
+#menuButtons .home-character-jerry canvas {
+  width: clamp(74px, 10vw, 104px);
+  height: clamp(74px, 10vw, 104px);
+  animation: homeJerryBob 2.6s ease-in-out infinite;
+}
+#menuButtons .home-character span {
+  margin-top: -5px;
+  color: #D9CDAE;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .22em;
+  line-height: 1.4;
+  text-shadow: 0 2px 8px rgba(0,0,0,.5);
+}
+#menuButtons .home-character-jerry span {
+  color: #D8A93D;
+}
+#menuButtons .home-chase-mark {
+  align-self: center;
+  margin: 0 -4px 16px;
+  color: #D8A93D;
+  font-size: 24px;
+  opacity: .85;
+  animation: homeChasePulse 1.8s ease-in-out infinite;
+}
+#menuButtons .home-title-block {
+  width: 100%;
+  text-align: center;
+}
+#menuButtons .home-title-block .main-title {
+  text-wrap: balance;
+}
+@keyframes homeTomBob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-5px) rotate(1deg); }
+}
+@keyframes homeJerryBob {
+  0%, 100% { transform: translateY(0) rotate(2deg); }
+  50% { transform: translateY(-7px) rotate(-2deg); }
+}
+@keyframes homeChasePulse {
+  0%, 100% { transform: scale(.9); opacity: .55; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
+@media (max-width: 700px) {
+  #menuButtons .home-character-stage {
+    min-height: 116px;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+  #menuButtons .home-character-tom canvas {
+    width: clamp(88px, 25vw, 112px);
+    height: clamp(88px, 25vw, 112px);
+  }
+  #menuButtons .home-character-jerry canvas {
+    width: clamp(68px, 19vw, 84px);
+    height: clamp(68px, 19vw, 84px);
+  }
+  #menuButtons .home-chase-mark {
+    font-size: 19px;
+    margin-bottom: 12px;
+  }
+  #menuButtons .home-hero {
+    margin-bottom: 4px !important;
+  }
+}
+@media (max-height: 650px) and (min-width: 701px) {
+  #menuButtons .home-character-stage {
+    min-height: 100px;
+  }
+  #menuButtons .home-character-tom canvas {
+    width: 90px;
+    height: 90px;
+  }
+  #menuButtons .home-character-jerry canvas {
+    width: 72px;
+    height: 72px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #menuButtons .home-character canvas,
+  #menuButtons .home-chase-mark {
+    animation: none !important;
+  }
+}
