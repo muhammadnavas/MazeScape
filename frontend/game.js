@@ -1474,8 +1474,7 @@ class MazeGame {
  this.stopAfterStep = false;
  }
  
- // Add movement trail particles
- this.particles.addTrail([this.playerPos[1] * GRID_SIZE + GRID_SIZE/2, this.playerPos[0] * GRID_SIZE + GRID_SIZE/2], NEON_GREEN, [-this.playerDir[1] * 2, -this.playerDir[0] * 2]);
+ // Jerry has no movement trail/bubbling particles.
  }
  }
  } else {
