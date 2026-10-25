@@ -514,22 +514,24 @@
    const rect = canvas.getBoundingClientRect();
    if (rect.width > 0 && rect.height > 0) {
      if (hud) {
-       hud.style.position = 'fixed';
-       hud.style.top = `${Math.round(rect.top)}px`;
-       hud.style.left = `${Math.round(rect.left)}px`;
-       hud.style.right = 'auto';
-       hud.style.bottom = 'auto';
-       hud.style.transform = 'none';
-       hud.style.margin = '0';
+       // CSS contains legacy !important rules; use important inline styles so the
+       // canvas-bound position cannot be overridden by those rules.
+       hud.style.setProperty('position', 'fixed', 'important');
+       hud.style.setProperty('top', `${Math.round(rect.top)}px`, 'important');
+       hud.style.setProperty('left', `${Math.round(rect.left)}px`, 'important');
+       hud.style.setProperty('right', 'auto', 'important');
+       hud.style.setProperty('bottom', 'auto', 'important');
+       hud.style.setProperty('transform', 'none', 'important');
+       hud.style.setProperty('margin', '0', 'important');
      }
      if (notifications) {
-       notifications.style.position = 'fixed';
-       notifications.style.top = `${Math.round(rect.top)}px`;
-       notifications.style.left = 'auto';
-       notifications.style.right = `${Math.max(0, Math.round(window.innerWidth - rect.right))}px`;
-       notifications.style.bottom = 'auto';
-       notifications.style.transform = 'none';
-       notifications.style.margin = '0';
+       notifications.style.setProperty('position', 'fixed', 'important');
+       notifications.style.setProperty('top', `${Math.round(rect.top)}px`, 'important');
+       notifications.style.setProperty('left', 'auto', 'important');
+       notifications.style.setProperty('right', `${Math.max(0, Math.round(window.innerWidth - rect.right))}px`, 'important');
+       notifications.style.setProperty('bottom', 'auto', 'important');
+       notifications.style.setProperty('transform', 'none', 'important');
+       notifications.style.setProperty('margin', '0', 'important');
      }
    }
  }
