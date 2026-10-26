@@ -7693,7 +7693,7 @@ body:not(.game-playing) #powerup-notifications {
 
   .modal-overlay .modal.final-score-modal {
     position: relative !important;
-    top: -12px !important;
+    top: -24px !important;
     z-index: 1 !important;
   }
 
