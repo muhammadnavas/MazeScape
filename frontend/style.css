@@ -7736,3 +7736,10 @@ body:not(.game-playing) #powerup-notifications {
     border-width: 10px 0 10px 15px !important;
   }
 }
+
+/* Raise the mobile controller while keeping it horizontally centered. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #mobile-controls {
+    bottom: calc(34px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
