@@ -7705,3 +7705,34 @@ body:not(.game-playing) #powerup-notifications {
     z-index: 2 !important;
   }
 }
+
+/* Final mobile controller size override: larger, easier-to-hit arrows on phones. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #mobile-controls .control-pad {
+    grid-template-columns: repeat(3, 52px) !important;
+    grid-template-rows: repeat(3, 52px) !important;
+    gap: 8px !important;
+  }
+
+  body.game-playing #mobile-controls .control-btn,
+  body.game-playing #mobile-controls .control-pad .control-btn {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    border-radius: 12px !important;
+  }
+
+  body.game-playing #mobile-controls #btn-up::after {
+    border-width: 0 10px 15px !important;
+  }
+  body.game-playing #mobile-controls #btn-down::after {
+    border-width: 15px 10px 0 !important;
+  }
+  body.game-playing #mobile-controls #btn-left::after {
+    border-width: 10px 15px 10px 0 !important;
+  }
+  body.game-playing #mobile-controls #btn-right::after {
+    border-width: 10px 0 10px 15px !important;
+  }
+}
