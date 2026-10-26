@@ -7743,3 +7743,38 @@ body:not(.game-playing) #powerup-notifications {
     bottom: calc(34px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
+
+/* Keep mobile controls compact and clear of the maze: 42px buttons. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #mobile-controls {
+    bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body.game-playing #mobile-controls .control-pad {
+    grid-template-columns: repeat(3, 42px) !important;
+    grid-template-rows: repeat(3, 42px) !important;
+    gap: 6px !important;
+  }
+
+  body.game-playing #mobile-controls .control-btn,
+  body.game-playing #mobile-controls .control-pad .control-btn {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    border-radius: 10px !important;
+  }
+
+  body.game-playing #mobile-controls #btn-up::after {
+    border-width: 0 8px 12px !important;
+  }
+  body.game-playing #mobile-controls #btn-down::after {
+    border-width: 12px 8px 0 !important;
+  }
+  body.game-playing #mobile-controls #btn-left::after {
+    border-width: 8px 12px 8px 0 !important;
+  }
+  body.game-playing #mobile-controls #btn-right::after {
+    border-width: 8px 0 8px 12px !important;
+  }
+}
