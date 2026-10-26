@@ -7778,3 +7778,10 @@ body:not(.game-playing) #powerup-notifications {
     border-width: 8px 0 8px 12px !important;
   }
 }
+
+/* Nudge the mobile maze/container slightly lower without affecting controls. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body.game-playing #gameContainer {
+    padding-top: 38px !important;
+  }
+}
