@@ -7683,3 +7683,25 @@ body:not(.game-playing) #powerup-notifications {
     padding: 20px 16px !important;
   }
 }
+
+/* Game Over composition: lift the score card and let Jerry's reaching hand
+   meet the card's upper-right edge on desktop, without changing mobile layout. */
+@media (min-width: 701px) {
+  .modal-overlay:has(.final-score-modal) {
+    gap: 0 !important;
+  }
+
+  .modal-overlay .modal.final-score-modal {
+    position: relative !important;
+    top: -12px !important;
+    z-index: 1 !important;
+  }
+
+  .modal-overlay .game-over-jerry {
+    position: relative !important;
+    left: -22px !important;
+    top: 0 !important;
+    margin-left: 0 !important;
+    z-index: 2 !important;
+  }
+}
