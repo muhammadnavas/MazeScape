@@ -7644,3 +7644,42 @@ body:not(.game-playing) #powerup-notifications {
     transform: translateY(-20px);
   }
 }
+
+
+/* Fix oversized blank Game Over card on mobile: size it to its content. */
+.modal-overlay .modal.final-score-modal {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  overflow: visible !important;
+  padding: 24px 20px !important;
+}
+.modal-overlay .modal.final-score-modal .score-celebration {
+  position: relative !important;
+  top: auto !important;
+  height: 22px !important;
+  margin: 0 0 6px !important;
+}
+.modal-overlay .modal.final-score-modal .final-score-title {
+  margin: 0 0 12px !important;
+}
+.modal-overlay .modal.final-score-modal .final-score-value {
+  margin: 0 !important;
+}
+@media (max-width: 700px) {
+  .modal-overlay:has(.final-score-modal) {
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 16px !important;
+  }
+  .modal-overlay .modal.final-score-modal {
+    width: min(100%, 390px) !important;
+    min-width: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 20px 16px !important;
+  }
+}
