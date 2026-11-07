@@ -7834,3 +7834,50 @@ body.game-playing .site-content, body.game-playing .site-footer { display: none 
     z-index: 1 !important;
   }
 }
+
+
+/* Mobile landing layout: compact page flow, visible navigation, no empty
+   viewport-sized spacer. Scoped to the menu so gameplay remains unchanged. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body:not(.game-playing) .menu-header {
+    position: sticky !important;
+    top: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+    z-index: 10002 !important;
+  }
+
+  body:not(.game-playing) #gameContainer {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 20px 0 28px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+  }
+
+  body:not(.game-playing) #menuButtons.menu-buttons {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    width: calc(100% - 28px) !important;
+    max-width: 440px !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+  }
+
+  body:not(.game-playing) .site-content {
+    padding-top: 36px !important;
+  }
+}
