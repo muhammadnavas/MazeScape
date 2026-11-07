@@ -340,6 +340,7 @@
   const menuKeyboardHint = document.getElementById('menuKeyboardHint');
   const isGameplayView = gameState === "playing" || gameState === "paused";
   document.body.classList.toggle('game-playing', isGameplayView);
+  document.body.classList.toggle('home-screen', !isGameplayView);
 
   if (gameState === "menu") {
     if (menuButtons) menuButtons.style.display = 'flex';
@@ -641,10 +642,19 @@
  if (menuHeader) menuHeader.style.display = 'flex'; // Show menu header in menu
  if (algorithmBlog) algorithmBlog.classList.remove('hidden'); // Show blog in menu
  
- // Adjust game container for menu (with header)
+ // Return the home screen to natural document flow. Do not reserve a
+ // viewport-height game stage on mobile; the game card must size to its content.
  if (gameContainer) {
- gameContainer.style.marginTop = '80px';
- gameContainer.style.height = 'calc(100vh - 80px)';
+ gameContainer.style.marginTop = '0px';
+ gameContainer.style.height = 'auto';
+ }
+ if (menuButtons && window.matchMedia('(max-width: 700px)').matches) {
+ menuButtons.style.position = 'relative';
+ menuButtons.style.top = 'auto';
+ menuButtons.style.left = 'auto';
+ menuButtons.style.right = 'auto';
+ menuButtons.style.bottom = 'auto';
+ menuButtons.style.transform = 'none';
  }
  
  // Always hide mobile controls when not playing
