@@ -11,7 +11,7 @@
      crossorigin="anonymous"></script>
  <meta name="theme-color" content="#241514">
  <meta name="application-name" content="MazeScape">
- <meta name="keywords" content="maze escape, maze escape game, escape the maze, free online maze game, maze game online, browser maze game, maze chase game, maze puzzle, ghost maze game, maze runner game, puzzle games, arcade games, free browser games, mobile maze game, MazeScape">
+ 
  <link rel="canonical" href="https://maze-scape.vercel.app/">
  <meta property="og:type" content="website">
  <meta property="og:site_name" content="MazeScape">
@@ -24,6 +24,7 @@
  <link rel="preload" as="image" href="assets/pngwing.png" fetchpriority="high">
  <link rel="stylesheet" href="style.css">
  <link rel="stylesheet" href="desktop.css">
+ <link rel="stylesheet" href="site-pages.css">
  <script type="application/ld+json">
  {
    "@context": "https://schema.org",
@@ -216,6 +217,40 @@
  </div>
  </div>
  </div>
+
+ <!-- Helpful game information for visitors and search engines -->
+ <section class="site-content" aria-labelledby="mazescape-guide-title">
+  <div class="site-content-inner">
+   <p class="site-eyebrow">EXPLORE · PLAN · ESCAPE</p>
+   <h2 id="mazescape-guide-title">A free online maze escape game</h2>
+   <p>MazeScape is a browser-based maze game where you explore a changing maze, avoid a pursuing ghost, collect power-ups and find the exit. Play on desktop or mobile without downloading an app or creating an account.</p>
+   <h3>How to play MazeScape</h3>
+   <ol>
+    <li>Start a new run and study the maze layout.</li>
+    <li>Use your keyboard or the on-screen mobile controls to navigate the corridors.</li>
+    <li>Watch the ghost, manage your remaining lives and collect useful power-ups.</li>
+    <li>Reach the exit while making the most of your time and score.</li>
+   </ol>
+   <h3>Power-ups and survival</h3>
+   <p>Speed Surge helps you move quickly, Ghost Freeze gives you a moment to escape danger, and Wall Breaker can help you open a route through the maze. Use each ability when it gives you a clear advantage.</p>
+   <h3>How A* pathfinding works</h3>
+   <p>The ghost uses pathfinding to navigate the maze. A* evaluates possible routes using the cost already travelled and a heuristic estimate of the remaining distance. Learn about the search formula, maze strategy and power-ups in our <a href="/learn.html">MazeScape game guides</a>.</p>
+   <div class="site-panel">
+    <h3>About this project</h3>
+    <p>MazeScape is an independent project built with HTML, CSS, JavaScript and Canvas. Gameplay and scoring run in your browser; the game does not require an account, database or online leaderboard.</p>
+    <p><a href="/about.html">About MazeScape</a> · <a href="/contact.html">Contact and feedback</a> · <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Use</a></p>
+   </div>
+  </div>
+ </section>
+ <footer class="site-footer">
+  <div class="site-footer-inner">
+   <div><a class="site-brand" href="/">MazeScape</a><p>Navigate. Survive. Escape.</p></div>
+   <nav aria-label="Footer navigation">
+    <a href="/learn.html">Learn</a><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/privacy-policy.html">Privacy</a><a href="/terms.html">Terms</a>
+   </nav>
+  </div>
+  <p class="site-footer-inner">MazeScape is an independent browser game. Please play respectfully and review the site policies before using third-party services.</p>
+ </footer>
 
  <!-- Load dependencies -->
  <script src="astar.js" defer></script>
