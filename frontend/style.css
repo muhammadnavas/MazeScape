@@ -7993,3 +7993,33 @@ body.game-playing .site-content, body.game-playing .site-footer { display: none 
     padding-top: 32px !important;
   }
 }
+
+
+/* The blank mobile hero area was the empty game canvas (the first child of
+   #gameContainer) still participating in flex layout on the home screen.
+   Hide gameplay-only layers while the menu is active. */
+@media screen and (max-width: 700px) {
+  body.home-screen #gameContainer > #gameCanvas,
+  body.home-screen #gameContainer > #ui-container,
+  body.home-screen #gameContainer > .blog-panel {
+    display: none !important;
+  }
+
+  body.home-screen #gameContainer {
+    align-items: center !important;
+    justify-content: flex-start !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding-top: 20px !important;
+  }
+
+  body.home-screen #menuButtons.menu-buttons {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin: 0 auto !important;
+  }
+}
