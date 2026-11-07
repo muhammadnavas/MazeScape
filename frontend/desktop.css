@@ -264,3 +264,9 @@
 @media screen and (min-width: 769px) and (prefers-reduced-motion: reduce) {
   #menuButtons .game-button { transition: none !important; }
 }
+
+@media screen and (min-width: 769px) {
+  html { height: auto !important; min-height: 100%; }
+  body:not(.game-playing) { height: auto !important; min-height: 100vh; overflow-x: hidden !important; overflow-y: auto !important; }
+  body.game-playing { height: 100vh !important; overflow: hidden !important; }
+}
