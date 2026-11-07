@@ -612,7 +612,9 @@
  }
  
  updatePanelVisibility() {
- document.body.classList.toggle("game-playing", gameState === "playing" || gameState === "paused");
+ const isGameplayView = gameState === "playing" || gameState === "paused";
+ document.body.classList.toggle("game-playing", isGameplayView);
+ document.body.classList.toggle("home-screen", !isGameplayView);
  const sidePanels = document.querySelectorAll('.side-panel');
  const menuButtons = document.getElementById('menuButtons');
  const menuHeader = document.getElementById('menuHeader');
