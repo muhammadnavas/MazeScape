@@ -7785,3 +7785,10 @@ body:not(.game-playing) #powerup-notifications {
     padding-top: 38px !important;
   }
 }
+
+/* Scroll the landing content below the game while keeping active gameplay full-screen. */
+html { height: auto; min-height: 100%; }
+body:not(.game-playing) { height: auto; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
+#gameContainer { flex-shrink: 0; }
+body.game-playing { height: 100vh !important; overflow: hidden !important; }
+body.game-playing .site-content, body.game-playing .site-footer { display: none !important; }
