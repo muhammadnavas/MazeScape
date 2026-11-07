@@ -7881,3 +7881,51 @@ body.game-playing .site-content, body.game-playing .site-footer { display: none 
     padding-top: 36px !important;
   }
 }
+
+
+/* Definitive mobile menu-flow override.
+   An older high-specificity :has() rule pins the menu to the viewport.
+   That makes the following SEO section flow underneath it. This selector
+   deliberately outranks that legacy rule and restores the menu to the
+   container's normal document flow. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body:not(.game-playing) #gameContainer {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 20px 0 28px !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  body:not(.game-playing) #gameContainer #menuButtons.menu-buttons {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    float: none !important;
+    flex: 0 0 auto !important;
+    width: min(520px, calc(100vw - 28px)) !important;
+    max-width: calc(100vw - 28px) !important;
+    min-width: 0 !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+
+  body:not(.game-playing) .site-content {
+    position: relative !important;
+    clear: both !important;
+    margin: 0 !important;
+    padding-top: 36px !important;
+  }
+}
