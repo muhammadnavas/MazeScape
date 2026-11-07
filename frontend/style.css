@@ -7792,3 +7792,45 @@ body:not(.game-playing) { height: auto; min-height: 100vh; overflow-x: hidden; o
 #gameContainer { flex-shrink: 0; }
 body.game-playing { height: 100vh !important; overflow: hidden !important; }
 body.game-playing .site-content, body.game-playing .site-footer { display: none !important; }
+
+
+/* Mobile homepage fix: the gameplay container is fixed during play, but that
+   positioning must not remain active on the menu screen. Keeping it in normal
+   document flow prevents the guide content from sliding underneath the menu. */
+@media screen and (max-width: 700px) and (orientation: portrait) {
+  body:not(.game-playing) #gameContainer {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: calc(100svh - 60px) !important;
+    margin: 60px 0 0 !important;
+    padding: 18px 0 calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+    isolation: isolate !important;
+  }
+
+  body:not(.game-playing) #menuButtons.menu-buttons {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    flex: 0 0 auto !important;
+    margin: 0 auto !important;
+    z-index: 2 !important;
+  }
+
+  body:not(.game-playing) .site-content,
+  body:not(.game-playing) .site-footer {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+}
